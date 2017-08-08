@@ -1,0 +1,60 @@
+.grid__row
+  .grid__column
+    section#sub-getting-started(data-section)
+      h1.typo__h1 Getting started
+      hr.typo__hr
+
+      .grid__row
+        .grid__column
+          h2.typo__h2 Installation
+          h3.typo__h3 via npm
+          pre.language-bash
+            code.
+              npm install vue-crosstab --save
+
+          //h3.typo__h3 via CDN
+          //pre.language-html
+          //  code
+          //    | &lt;script src="https://unpkg.com/vue-multiselect@2.0.0">&lt;/script>
+          //    | &lt;link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.0.0/dist/vue-multiselect.min.css">
+
+        .grid__column
+          h2.typo__h2 Basic usage
+          pre.language-html
+            code.
+              &lt;!-- Vue component -->
+              &lt;template>
+                &lt;div>
+                  &lt;crosstab
+                     :data="data"
+                     :cols="['country', 'city']"
+                     :rows="['category', 'product']"
+                     :aggregator="sum"
+                     :measure="sales">&lt;/crosstab>
+                &lt;/div>
+              &lt;/template>
+
+              &lt;script>
+                import Crosstab from 'vue-crosstab'
+
+                // register globally
+                Vue.component(Crosstab)
+
+                export default {
+                  // OR register locally
+                  components: { Crosstab },
+                  data () {
+                    return {
+                      data: [
+                        {country: 'USA', city: 'Los Angeles', category: 'electronics', product: 'iphone', sales: 1132},
+                        {country: 'USA', city: 'New York', category: 'electronics', product: 'mackbook', sales: 234},
+                        {country: 'Mexico', city: 'Acapulco', category: 'furniture', product: 'table', sales: 809}
+                      ]
+                    }
+                  }
+                }
+              &lt;/script>
+
+              &lt;style>
+                your styles
+              &lt;/style>

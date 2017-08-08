@@ -1,0 +1,80 @@
+h2.typo__h2#sub-props(data-section) Props
+.grid__row
+  .table__container
+    table.table.table--full-size.table--fixed
+      thead
+        tr.table__tr
+          th.table__th(width="100") Name
+          th.table__th(width="80") Type
+          th.table__th(width="180") Default
+          th.table__th(width="200") Description
+      tbody
+        tr.table__tr
+          td.table__td: strong data
+          td.table__td Array
+          td.table__td
+          td.table__td.
+            Data to be displayed in crosstab.
+        tr.table__tr
+          td.table__td: strong rows
+          td.table__td Array
+          td.table__td []
+          td.table__td.
+            Sequence of row levels.
+        tr.table__tr
+          td.table__td: strong cols
+          td.table__td Array
+          td.table__td []
+          td.table__td.
+            Sequence of column levels.
+        tr.table__tr
+          td.table__td: strong aggregator
+          td.table__td String
+          td.table__td
+          td.table__td
+            | Name of aggregation function. Can be
+            kbd sum
+            | ,
+            kbd max
+            | ,
+            kbd min
+            | ,
+            kbd avg
+            | ,
+            kbd count
+        tr.table__tr
+          td.table__td: strong measure
+          td.table__td String
+          td.table__td
+          td.table__td.
+            Name of field to perform aggregation.
+        tr.table__tr
+          td.table__td: strong width
+          td.table__td Number
+          td.table__td
+          td.table__td.
+            Crosstab width in pixels.
+        tr.table__tr
+          td.table__td: strong height
+          td.table__td Number
+          td.table__td
+          td.table__td.
+            Crosstab height in pixels.
+        tr.table__tr
+          td.table__td: strong cellWidth
+          td.table__td Number
+          td.table__td
+          td.table__td.
+            Cell width in pixels.
+        tr.table__tr
+          td.table__td: strong cellHeight
+          td.table__td Number
+          td.table__td
+          td.table__td.
+            Cell height in pixels.
+        tr.table__tr
+          td.table__td: strong fontSize
+          td.table__td Number
+          td.table__td
+          td.table__td.
+            Font size in pixels.

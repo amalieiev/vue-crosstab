@@ -1,0 +1,11 @@
+.DS_Store
+node_modules/
+npm-debug.log
+selenium-debug.log
+test/unit/coverage
+test/e2e/reports
+gh-pages/
+dist/
+.idea
+.editorconfig
+.tern-project

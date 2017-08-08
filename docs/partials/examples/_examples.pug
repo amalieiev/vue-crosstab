@@ -1,0 +1,34 @@
++section('Examples')
+  +subsection('Basic crosstab')
+    :markdown-it
+      The basic crosstab doesn’t require much configuration.
+
+      #### Optional configuration flags:
+      - `:aggregator="sum"` – sum of all aggregated measure values.
+      - `:measure"` – the field name for which aggregation will be performed.
+      - `:width"` – width of crosstab. Cells width will be ajusted.
+    +example('BasicCrosstab')
+  +subsection('Rows only')
+    :markdown-it
+      Rows only.
+
+      #### Optional configuration flags:
+      - `:aggregator="count"` – count aggregation function.
+    +example('RowsOnly')
+  +subsection('Columns only')
+    :markdown-it
+      Columns only.
+
+      #### Optional configuration flags:
+      - `:aggregator="count"` – count aggregation function.
+      - `:width"` – width of crosstab. Cells width will be ajusted.
+    +example('ColsOnly')
+  +subsection('Custom configuration')
+    :markdown-it
+      Custom cells configuration.
+
+      #### Optional configuration flags:
+      - `:cellWidth="75"` – cell width in pixels.
+      - `:cellHeight="75"` – cell height in pixels.
+      - `:fontSize="20"` – font size in pixels.
+    +example('CustomConfiguration')

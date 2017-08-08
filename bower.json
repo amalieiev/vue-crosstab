@@ -1,0 +1,25 @@
+{
+  "name": "vue-crosstab",
+  "description": "Crosstab component for vue.js",
+  "main": "./dist/vue-crosstab.min.js",
+  "authors": [
+    "Artem Malieiev <artem.malieiev@gmail.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "vuejs",
+    "crosstab",
+    "table",
+    "ui-crosstab",
+    "adhoc"
+  ],
+  "homepage": "https://github.com/amalieiev/vue-crosstab",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
