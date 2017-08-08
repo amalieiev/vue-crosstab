@@ -40,7 +40,7 @@ npm install vue-crosstab
 ```
 ## JSFiddle
 
-[Example JSFiddle](https://jsfiddle.net/amalieiev/171kzqL6/2/) – Use this for issue reproduction.
+[Example JSFiddle](https://jsfiddle.net/amalieiev/171kzqL6/) – Use this for issue reproduction.
 
 ## Contributing
 
