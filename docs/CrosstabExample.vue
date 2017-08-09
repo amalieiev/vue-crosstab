@@ -21,8 +21,8 @@ export default {
   data () {
     return {
       data,
-      rows: ['sex', 'smoker'],
-      cols: ['time', 'day'],
+      cols: ['sex', 'smoker'],
+      rows: ['time', 'day']
     }
   }
 }
