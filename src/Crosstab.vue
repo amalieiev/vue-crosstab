@@ -1,83 +1,102 @@
 <template>
-  <svg style="clear:both; background-color: white;" :height="calculatedHeight" :width="calculatedWidth">
-    <g :style="colHeaderStyle">
-      <rect
-        v-for="item in colItems"
-        :height="item.height"
-        :width="item.width"
-        :x="item.x"
-        :y="item.y"
-        style="stroke:silver;fill:rgb(238, 238, 238)"
-      ></rect>
-      <text
-        v-for="item in colItems"
-        :height="item.height"
-        :width="item.width"
-        :x="item.x"
-        :y="item.y"
-        :dy="item.height / 2 + calculatedFontSize / 2"
-        :dx="item.width / 2"
-        text-anchor="middle"
-        :style="textStyle"
-      >{{ item.text }}
-      </text>
-    </g>
+  <div class="container" :style="{height: calculatedHeight+'px', width: calculatedWidth+'px'}">
+    <div class="corner" :style="{width: `${rows.length * cellWidth}px`, height: `${cols.length * cellHeight}px`}">
 
-    <g :style="rowHeaderStyle">
-      <rect
-        v-for="item in rowItems"
-        :height="item.height"
-        :width="item.width"
-        :x="item.x"
-        :y="item.y"
-        style="stroke:silver;fill:rgb(238, 238, 238);"
-      ></rect>
-      <text
-        v-for="item in rowItems"
-        :height="item.height"
-        :width="item.width"
-        :x="item.x"
-        :y="item.y"
-        :dy="item.height / 2 + calculatedFontSize / 2"
-        :dx="item.width / 2"
-        text-anchor="middle"
-        :style="textStyle"
-      >{{ item.text }}
-      </text>
-    </g>
-
-    <g :style="dataStyle">
-      <rect
-        v-for="item in aggregatedData"
-        :height="item.height"
-        :width="item.width"
-        :x="item.x"
-        :y="item.y"
-        style="stroke:silver;fill:none"
-      ></rect>
-      <text
-        v-for="item in aggregatedData"
-        :height="item.height"
-        :width="item.width"
-        :x="item.x"
-        :y="item.y"
-        :dy="item.height / 2 + calculatedFontSize / 2"
-        :dx="item.width / 2"
-        text-anchor="middle"
-        :style="textStyle"
-      >{{ item.text }}
-      </text>
-    </g>
-  </svg>
+    </div>
+    <div class="cols" :style="colHeaderStyle">
+      <svg :height="cols.length * cellHeight" :width="calculatedColumnsWidth" :style="{transform: `translateX(${-scrollLeft}px)`}">
+        <g>
+          <rect
+                  v-for="item in colItems"
+                  :height="item.height"
+                  :width="item.width"
+                  :x="item.x"
+                  :y="item.y"
+                  style="stroke:silver;fill:rgb(238, 238, 238)"
+          ></rect>
+          <text
+                  v-for="item in colItems"
+                  :height="item.height"
+                  :width="item.width"
+                  :x="item.x"
+                  :y="item.y"
+                  :dy="item.height / 2 + calculatedFontSize / 2"
+                  :dx="item.width / 2"
+                  text-anchor="middle"
+                  :style="textStyle"
+          >{{ item.text }}
+          </text>
+        </g>
+      </svg>
+    </div>
+    <div class="rows" :style="rowHeaderStyle">
+      <svg :height="calculatedRowsHeight" :style="{transform: `translateY(${-scrollTop}px)`}">
+        <g>
+          <rect
+                  v-for="item in rowItems"
+                  :height="item.height"
+                  :width="item.width"
+                  :x="item.x"
+                  :y="item.y"
+                  style="stroke:silver;fill:rgb(238, 238, 238);"
+          ></rect>
+          <text
+                  v-for="item in rowItems"
+                  :height="item.height"
+                  :width="item.width"
+                  :x="item.x"
+                  :y="item.y"
+                  :dy="item.height / 2 + calculatedFontSize / 2"
+                  :dx="item.width / 2"
+                  text-anchor="middle"
+                  :style="textStyle"
+          >{{ item.text }}
+          </text>
+        </g>
+      </svg>
+    </div>
+    <div class="body" ref="body" :style="dataStyle" @scroll="onScroll">
+      <svg :height="calculatedRowsHeight" :width="calculatedColumnsWidth">
+        <g>
+          <rect
+                  v-for="item in aggregatedData"
+                  :height="item.height"
+                  :width="item.width"
+                  :x="item.x"
+                  :y="item.y"
+                  style="stroke:silver;fill:none"
+          ></rect>
+          <text
+                  v-for="item in aggregatedData"
+                  :height="item.height"
+                  :width="item.width"
+                  :x="item.x"
+                  :y="item.y"
+                  :dy="item.height / 2 + calculatedFontSize / 2"
+                  :dx="item.width / 2"
+                  text-anchor="middle"
+                  :style="textStyle"
+          >{{ item.text }}
+          </text>
+        </g>
+      </svg>
+    </div>
+  </div>
 </template>
 
 <script>
   import _ from 'underscore'
   import { aggregators } from './utils'
+  import Ps from 'perfect-scrollbar'
 
   export default {
     name: 'crosstab',
-
+    data () {
+      return {
+        scrollTop: 0,
+        scrollLeft: 0
+      }
+    },
     props: {
       data: {
         type: Array,
@@ -104,16 +123,23 @@
         type: Number
       },
       cellWidth: {
-        type: Number
+        type: Number,
+        default: 80
       },
       cellHeight: {
-        type: Number
+        type: Number,
+        default: 25
       },
       fontSize: {
         type: Number
       }
     },
-
+    mounted () {
+      Ps.initialize(this.$refs.body)
+    },
+    beforeDestroy () {
+      Ps.destroy(this.$refs.body)
+    },
     computed: {
       aggregatorFn () {
         return items => {
@@ -123,26 +149,26 @@
       colItems () {
         if (!this.data.length) return
 
-        return getColItems(setColPosition(aggregateBy(this.data, this.cols, this.aggregatorFn)), this.calculatedCellHeight, this.calculatedCellWidth)
+        return getColItems(setColPosition(aggregateBy(this.data, this.cols, this.aggregatorFn)), this.cellHeight, this.cellWidth)
       },
       rowItems () {
         if (!this.data.length) return
 
-        return getRowItems(setRowPosition(aggregateBy(this.data, this.rows, this.aggregatorFn)), this.calculatedCellHeight, this.calculatedCellWidth)
+        return getRowItems(setRowPosition(aggregateBy(this.data, this.rows, this.aggregatorFn)), this.cellHeight, this.cellWidth)
       },
       aggregatedData () {
         if (!this.data.length) return
 
-        return generateData(this.data, this.rows, this.cols, this.aggregatorFn, this.calculatedCellHeight, this.calculatedCellWidth)
+        return generateData(this.data, this.rows, this.cols, this.aggregatorFn, this.cellHeight, this.cellWidth)
       },
       colHeaderStyle () {
-        return `transform: translateX(${this.rows.length * this.calculatedCellWidth}px)`
+        return `height: ${this.cellHeight * this.cols.length}px; width: ${this.calculatedColumnsContainerWidth}px;`
       },
       rowHeaderStyle () {
-        return `transform: translateY(${this.cols.length * this.calculatedCellHeight}px)`
+        return `width: ${this.rows.length * this.cellWidth}px; height: ${this.height - this.cols.length * this.cellHeight}px`
       },
       dataStyle () {
-        return `transform: translateY(${this.cols.length * this.calculatedCellHeight}px) translateX(${this.rows.length * this.calculatedCellWidth}px)`
+        return `width: ${this.calculatedColumnsContainerWidth}px; height: ${this.height - this.cols.length * this.cellHeight}px;`
       },
       textStyle () {
         return `fill:black;font-size:${this.calculatedFontSize}px;`
@@ -151,37 +177,34 @@
         if (this.fontSize) {
           return this.fontSize
         }
-        return this.calculatedCellHeight / 2 < 14 ? this.calculatedCellHeight / 2 : 14
+        return this.cellHeight / 2 < 14 ? this.cellHeight / 2 : 14
       },
       calculatedWidth () {
         if (this.width) {
           return this.width
         }
-        return this.calculatedCellWidth * (this.rows.length + count(aggregateBy(this.data, this.cols, this.aggregatorFn)))
+        return this.cellWidth * (this.rows.length + count(aggregateBy(this.data, this.cols, this.aggregatorFn)))
       },
       calculatedHeight () {
         if (this.height) {
           return this.height
         }
-        return this.calculatedCellHeight * (this.cols.length + count(aggregateBy(this.data, this.rows, this.aggregatorFn)))
+        return this.cellHeight * (this.cols.length + count(aggregateBy(this.data, this.rows, this.aggregatorFn)))
       },
-      calculatedCellWidth () {
-        if (this.width) {
-          return this.width / (this.rows.length + count(aggregateBy(this.data, this.cols, this.aggregatorFn)))
-        }
-        if (this.cellWidth) {
-          return this.cellWidth
-        }
-        return 80
+      calculatedColumnsWidth () {
+        return count(aggregateBy(this.data, this.cols, this.aggregatorFn)) * this.cellWidth
       },
-      calculatedCellHeight () {
-        if (this.height) {
-          return this.height / (this.cols.length + count(aggregateBy(this.data, this.rows, this.aggregatorFn)))
-        }
-        if (this.cellHeight) {
-          return this.cellHeight
-        }
-        return 25
+      calculatedRowsHeight () {
+        return count(aggregateBy(this.data, this.rows, this.aggregatorFn)) * this.cellHeight
+      },
+      calculatedColumnsContainerWidth () {
+        return this.width - this.rows.length * this.cellWidth
+      }
+    },
+    methods: {
+      onScroll () {
+        this.scrollTop = this.$refs.body.scrollTop
+        this.scrollLeft = this.$refs.body.scrollLeft
       }
     }
   }
@@ -407,5 +430,138 @@
 </script>
 
 <style>
+  .container {
+    background-color: white;
+    position: relative;
+  }
+  .corner {
+    float: left;
+  }
+  .cols {
+    overflow: hidden;
+    float: left;
+  }
+  .rows {
+    overflow: hidden;
+    float: left;
+  }
+  .body {
+    position: relative;
+    float: left;
+  }
+
+
+  /* perfect-scrollbar v0.6.10 */
+  .ps-container {
+    -ms-touch-action: none;
+    touch-action: none;
+    overflow: hidden !important;
+    -ms-overflow-style: none; }
+  @supports (-ms-overflow-style: none) {
+    .ps-container {
+      overflow: auto !important; } }
+  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    .ps-container {
+      overflow: auto !important; } }
+  .ps-container.ps-active-x > .ps-scrollbar-x-rail,
+  .ps-container.ps-active-y > .ps-scrollbar-y-rail {
+    display: block;
+    background-color: transparent; }
+  .ps-container.ps-in-scrolling {
+    pointer-events: none; }
+  .ps-container.ps-in-scrolling.ps-x > .ps-scrollbar-x-rail {
+    background-color: #eee;
+    opacity: 0.9; }
+  .ps-container.ps-in-scrolling.ps-x > .ps-scrollbar-x-rail > .ps-scrollbar-x {
+    background-color: #999; }
+  .ps-container.ps-in-scrolling.ps-y > .ps-scrollbar-y-rail {
+    background-color: #eee;
+    opacity: 0.9; }
+  .ps-container.ps-in-scrolling.ps-y > .ps-scrollbar-y-rail > .ps-scrollbar-y {
+    background-color: #999; }
+  .ps-container > .ps-scrollbar-x-rail {
+    display: none;
+    position: absolute;
+    /* please don't change 'position' */
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    opacity: 0;
+    -webkit-transition: background-color .2s linear, opacity .2s linear;
+    -moz-transition: background-color .2s linear, opacity .2s linear;
+    -o-transition: background-color .2s linear, opacity .2s linear;
+    transition: background-color .2s linear, opacity .2s linear;
+    bottom: 3px;
+    /* there must be 'bottom' for ps-scrollbar-x-rail */
+    height: 8px; }
+  .ps-container > .ps-scrollbar-x-rail > .ps-scrollbar-x {
+    position: absolute;
+    /* please don't change 'position' */
+    background-color: #aaa;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-transition: background-color .2s linear;
+    -moz-transition: background-color .2s linear;
+    -o-transition: background-color .2s linear;
+    transition: background-color .2s linear;
+    bottom: 0;
+    /* there must be 'bottom' for ps-scrollbar-x */
+    height: 8px; }
+  .ps-container > .ps-scrollbar-y-rail {
+    display: none;
+    position: absolute;
+    /* please don't change 'position' */
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    opacity: 0;
+    -webkit-transition: background-color .2s linear, opacity .2s linear;
+    -moz-transition: background-color .2s linear, opacity .2s linear;
+    -o-transition: background-color .2s linear, opacity .2s linear;
+    transition: background-color .2s linear, opacity .2s linear;
+    right: 3px;
+    /* there must be 'right' for ps-scrollbar-y-rail */
+    width: 8px; }
+  .ps-container > .ps-scrollbar-y-rail > .ps-scrollbar-y {
+    position: absolute;
+    /* please don't change 'position' */
+    background-color: #aaa;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-transition: background-color .2s linear;
+    -moz-transition: background-color .2s linear;
+    -o-transition: background-color .2s linear;
+    transition: background-color .2s linear;
+    right: 0;
+    /* there must be 'right' for ps-scrollbar-y */
+    width: 8px; }
+  .ps-container:hover.ps-in-scrolling {
+    pointer-events: none; }
+  .ps-container:hover.ps-in-scrolling.ps-x > .ps-scrollbar-x-rail {
+    background-color: #eee;
+    opacity: 0.9; }
+  .ps-container:hover.ps-in-scrolling.ps-x > .ps-scrollbar-x-rail > .ps-scrollbar-x {
+    background-color: #999; }
+  .ps-container:hover.ps-in-scrolling.ps-y > .ps-scrollbar-y-rail {
+    background-color: #eee;
+    opacity: 0.9; }
+  .ps-container:hover.ps-in-scrolling.ps-y > .ps-scrollbar-y-rail > .ps-scrollbar-y {
+    background-color: #999; }
+  .ps-container:hover > .ps-scrollbar-x-rail,
+  .ps-container:hover > .ps-scrollbar-y-rail {
+    opacity: 0.6; }
+  .ps-container:hover > .ps-scrollbar-x-rail:hover {
+    background-color: #eee;
+    opacity: 0.9; }
+  .ps-container:hover > .ps-scrollbar-x-rail:hover > .ps-scrollbar-x {
+    background-color: #999; }
+  .ps-container:hover > .ps-scrollbar-y-rail:hover {
+    background-color: #eee;
+    opacity: 0.9; }
+  .ps-container:hover > .ps-scrollbar-y-rail:hover > .ps-scrollbar-y {
+    background-color: #999; }
+
 
 </style>

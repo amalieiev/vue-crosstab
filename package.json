@@ -1,6 +1,6 @@
 {
   "name": "vue-crosstab",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Crosstab component for vue.js",
   "author": "Artem Malieiev <artem.malieiev@gmail.com>",
   "private": false,
@@ -125,6 +125,7 @@
     "npm": ">= 3.0.0"
   },
   "dependencies": {
+    "perfect-scrollbar": "0.6.10",
     "underscore": "^1.8.3"
   }
 }
