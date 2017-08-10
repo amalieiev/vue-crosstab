@@ -17,8 +17,10 @@ npm install vue-crosstab
        :data="data"
        :cols="['country', 'city']"
        :rows="['category', 'product']"
-       :aggregator="sum"
-       :measure="sales"></crosstab>
+       :width="600"
+       :height="300"
+       aggregator="sum"
+       measure="sales"></crosstab>
   </div>
 </template>
 
