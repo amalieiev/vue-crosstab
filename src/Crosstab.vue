@@ -171,13 +171,43 @@
           return aggregators[this.aggregator](items, this.measure)
         }
       },
+      rowsAggregation () {
+        return aggregateBy(this.data, this.rows, this.aggregatorFn)
+      },
+      colsAggregation () {
+        return aggregateBy(this.data, this.cols, this.aggregatorFn)
+      },
       cornerItems () {
         return getCornerItems(this.rows, this.cols, this.cellHeight, this.cellWidth, this.measure)
       },
       colItems () {
         if (!this.data.length) return
         if (this.cols.length) {
-          return getColItems(setColPosition(aggregateBy(this.data, this.cols, this.aggregatorFn)), this.cellHeight, this.cellWidth, undefined, this.aggregator, this.measure)
+          let colsCount = count(this.colsAggregation)
+          let colItems = getColItems(setColPosition(this.colsAggregation), this.cellHeight, this.cellWidth)
+          let colMeasureItems = _.map(Array(colsCount), (item, colIdx) => {
+            return {
+              text: this.aggregator,
+              x: colIdx * this.cellWidth,
+              y: this.cols.length * this.cellHeight,
+              height: this.cellHeight,
+              width: this.cellWidth
+            }
+          })
+          let emptyCellItems = _.map(Array(colsCount), (item, colIdx) => {
+            return {
+              x: colIdx * this.cellWidth,
+              y: (this.cols.length + 1) * this.cellHeight,
+              height: this.cellHeight,
+              width: this.cellWidth
+            }
+          })
+
+          if (this.rows.length) {
+            return colItems.concat(colMeasureItems, emptyCellItems)
+          } else {
+            return colItems.concat(colMeasureItems)
+          }
         } else {
           return [{
             text: 'Totals',
@@ -191,9 +221,8 @@
       rowItems () {
         if (!this.data.length) return
         if (this.rows.length) {
-          let rowsAggregation = aggregateBy(this.data, this.rows, this.aggregatorFn)
-          let rowsCount = count(rowsAggregation)
-          let rowItems = getRowItems(setRowPosition(rowsAggregation), this.cellHeight, this.cellWidth, undefined, this.aggregator, this.measure)
+          let rowsCount = count(this.rowsAggregation)
+          let rowItems = getRowItems(setRowPosition(this.rowsAggregation), this.cellHeight, this.cellWidth)
 
           if (this.cols.length) {
             return rowItems
@@ -349,7 +378,7 @@
     }
   }
 
-  function getCornerItems (rows, cols, cellHeight, cellWidth, measure) {
+  function getCornerItems (rows, cols, cellHeight, cellWidth, measureName) {
     let result = []
 
     if (rows.length && cols.length) {
@@ -374,7 +403,7 @@
       })
 
       result.push({
-        text: measure || 'measure',
+        text: measureName || 'measure',
         x: 0,
         y: cols.length * cellHeight,
         height: cellHeight,
@@ -394,7 +423,7 @@
       })
 
       result.push({
-        text: measure || 'measure',
+        text: measureName || 'measure',
         x: 0,
         y: cols.length * cellHeight,
         height: cellHeight,
@@ -414,7 +443,7 @@
       })
 
       result.push({
-        text: measure || 'measure',
+        text: measureName || 'measure',
         x: rows.length * cellWidth,
         y: 0,
         height: cellHeight,
@@ -453,7 +482,7 @@
     return result
   }
 
-  function getColItems (item, cellHeight, cellWidth, result, aggregator, measure) {
+  function getColItems (item, cellHeight, cellWidth, result) {
     if (result === undefined) result = []
 
     _.each(item.items, (item) => {
@@ -465,7 +494,7 @@
         width: count(item) * cellWidth
       })
 
-      getColItems(item, cellHeight, cellWidth, result, aggregator, measure)
+      getColItems(item, cellHeight, cellWidth, result)
     })
 
     if (item.items) {
@@ -474,24 +503,6 @@
         x: (item.items[item.items.length - 1].x + count(item.items[item.items.length - 1])) * cellWidth,
         y: item.y * cellHeight,
         height: deep(item) * cellHeight,
-        width: cellWidth
-      })
-
-      result.push({
-        text: measure ? `${measure} (${aggregator})` : aggregator,
-        x: (item.items[item.items.length - 1].x + count(item.items[item.items.length - 1])) * cellWidth,
-        y: (item.y + deep(item)) * cellHeight,
-        height: cellHeight * 2,
-        width: cellWidth
-      })
-    }
-
-    if (item.values) {
-      result.push({
-        text: measure ? `${measure} (${aggregator})` : aggregator,
-        x: item.x * cellWidth,
-        y: item.y * cellHeight,
-        height: cellHeight * 2,
         width: cellWidth
       })
     }

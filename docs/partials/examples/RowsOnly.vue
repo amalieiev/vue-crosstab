@@ -5,7 +5,9 @@ div
     crosstab(
       :data="data",
       :rows="rows",
-      aggregator="count"
+      :width="380",
+      measure="tip",
+      aggregator="sum"
     )
 </template>
 
@@ -20,7 +22,7 @@ export default {
   data () {
     return {
       data,
-      rows: ['sex', 'smoker', 'day']
+      rows: ['sex', 'smoker']
     }
   }
 }
