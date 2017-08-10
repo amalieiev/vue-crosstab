@@ -53,7 +53,7 @@
       </svg>
     </div>
     <div class="rows" :style="rowHeaderStyle">
-      <svg :height="calculatedRowsHeight" :width="calculatedRowsWidth" :style="{transform: `translateY(${-scrollTop}px)`}">
+      <svg :height="calculatedRowsHeight" :width="cornerWidth" :style="{transform: `translateY(${-scrollTop}px)`}">
         <g>
           <rect
                   v-for="item in rowItems"
@@ -74,6 +74,27 @@
                   text-anchor="middle"
                   :style="textStyle"
           >{{ item.text }}
+          </text>
+
+          <rect
+                  v-if="!rowItems.length"
+                  :height="cellHeight"
+                  :width="cellWidth"
+                  x="0"
+                  y="0"
+                  style="stroke:silver;fill:rgb(238, 238, 238)"
+          ></rect>
+          <text
+                  v-if="!rowItems.length"
+                  :height="cellHeight"
+                  :width="cellWidth"
+                  x="0"
+                  y="0"
+                  :dy="cellHeight / 2 + calculatedFontSize / 2"
+                  :dx="cellWidth / 2"
+                  text-anchor="middle"
+                  :style="textStyle"
+          >Total
           </text>
         </g>
       </svg>
@@ -212,7 +233,7 @@
           return this.rows.length * this.cellWidth
         }
         if (!this.rows.length && this.cols.length) {
-          return this.rows.length * this.cellWidth
+          return this.cellWidth
         }
         if (this.rows.length && !this.cols.length) {
           return (this.rows.length + 2) * this.cellWidth
@@ -222,19 +243,19 @@
       colHeaderStyle () {
         return {
           height: this.cornerHeight + 'px',
-          width: this.calculatedColumnsContainerWidth + 'px'
+          width: this.width - this.cornerWidth + 'px'
         }
       },
       rowHeaderStyle () {
         return {
           height: `${this.height - this.cornerHeight}px`,
-          width: `${this.rows.length * this.cellWidth}px`
+          width: `${this.cornerWidth}px`
         }
       },
       dataStyle () {
         return {
           height: `${this.height - this.cornerHeight}px`,
-          width: `${this.calculatedColumnsContainerWidth}px`
+          width: `${this.width - this.cornerWidth}px`
         }
       },
       textStyle () {
@@ -343,6 +364,26 @@
         y: cols.length * cellHeight,
         height: cellHeight,
         width: rows.length * cellWidth
+      })
+    }
+
+    if (!rows.length && cols.length) {
+      cols.forEach((col, colIdx) => {
+        result.push({
+          text: col,
+          x: 0,
+          y: colIdx * cellHeight,
+          height: cellHeight,
+          width: cellWidth
+        })
+      })
+
+      result.push({
+        text: 'measure',
+        x: 0,
+        y: cols.length * cellHeight,
+        height: cellHeight * 2,
+        width: cellWidth
       })
     }
 
