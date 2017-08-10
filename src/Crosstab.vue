@@ -75,27 +75,6 @@
                   :style="textStyle"
           >{{ item.text }}
           </text>
-
-          <rect
-                  v-if="!rowItems.length"
-                  :height="cellHeight"
-                  :width="cellWidth"
-                  x="0"
-                  y="0"
-                  style="stroke:silver;fill:rgb(238, 238, 238)"
-          ></rect>
-          <text
-                  v-if="!rowItems.length"
-                  :height="cellHeight"
-                  :width="cellWidth"
-                  x="0"
-                  y="0"
-                  :dy="cellHeight / 2 + calculatedFontSize / 2"
-                  :dx="cellWidth / 2"
-                  text-anchor="middle"
-                  :style="textStyle"
-          >Total
-          </text>
         </g>
       </svg>
     </div>
@@ -193,17 +172,53 @@
         }
       },
       cornerItems () {
-        return getCornerItems(this.rows, this.cols, this.cellHeight, this.cellWidth)
+        return getCornerItems(this.rows, this.cols, this.cellHeight, this.cellWidth, this.measure)
       },
       colItems () {
         if (!this.data.length) return
-
-        return getColItems(setColPosition(aggregateBy(this.data, this.cols, this.aggregatorFn)), this.cellHeight, this.cellWidth, undefined, this.aggregator, this.measure)
+        if (this.cols.length) {
+          return getColItems(setColPosition(aggregateBy(this.data, this.cols, this.aggregatorFn)), this.cellHeight, this.cellWidth, undefined, this.aggregator, this.measure)
+        } else {
+          return [{
+            text: 'Totals',
+            x: 0,
+            y: 0,
+            height: this.cellHeight,
+            width: this.cellWidth
+          }]
+        }
       },
       rowItems () {
         if (!this.data.length) return
+        if (this.rows.length) {
+          let rowsAggregation = aggregateBy(this.data, this.rows, this.aggregatorFn)
+          let rowsCount = count(rowsAggregation)
+          let rowItems = getRowItems(setRowPosition(rowsAggregation), this.cellHeight, this.cellWidth, undefined, this.aggregator, this.measure)
 
-        return getRowItems(setRowPosition(aggregateBy(this.data, this.rows, this.aggregatorFn)), this.cellHeight, this.cellWidth, undefined, this.aggregator, this.measure)
+          if (this.cols.length) {
+            return rowItems
+          } else {
+            let rowMeasureItems = _.map(Array(rowsCount), (item, rowIdx) => {
+              return {
+                text: this.aggregator,
+                x: this.rows.length * this.cellWidth,
+                y: rowIdx * this.cellHeight,
+                height: this.cellHeight,
+                width: this.cellWidth
+              }
+            })
+
+            return rowItems.concat(rowMeasureItems)
+          }
+        } else {
+          return [{
+            text: 'Totals',
+            x: 0,
+            y: 0,
+            height: this.cellHeight,
+            width: this.cellWidth
+          }]
+        }
       },
       aggregatedData () {
         if (!this.data.length) return
@@ -222,7 +237,7 @@
           return (this.cols.length + 2) * this.cellHeight
         }
         if (!this.rows.length && this.cols.length) {
-          return (this.cols.length + 2) * this.cellHeight
+          return (this.cols.length + 1) * this.cellHeight
         }
         if (this.rows.length && !this.cols.length) {
           return this.cellHeight
@@ -236,7 +251,7 @@
           return this.cellWidth
         }
         if (this.rows.length && !this.cols.length) {
-          return (this.rows.length + 2) * this.cellWidth
+          return (this.rows.length + 1) * this.cellWidth
         }
       },
 
@@ -334,7 +349,7 @@
     }
   }
 
-  function getCornerItems (rows, cols, cellHeight, cellWidth) {
+  function getCornerItems (rows, cols, cellHeight, cellWidth, measure) {
     let result = []
 
     if (rows.length && cols.length) {
@@ -359,7 +374,7 @@
       })
 
       result.push({
-        text: 'measure',
+        text: measure || 'measure',
         x: 0,
         y: cols.length * cellHeight,
         height: cellHeight,
@@ -379,10 +394,30 @@
       })
 
       result.push({
-        text: 'measure',
+        text: measure || 'measure',
         x: 0,
         y: cols.length * cellHeight,
-        height: cellHeight * 2,
+        height: cellHeight,
+        width: cellWidth
+      })
+    }
+
+    if (rows.length && !cols.length) {
+      rows.forEach((row, rowIdx) => {
+        result.push({
+          text: row,
+          x: rowIdx * cellWidth,
+          y: 0,
+          height: cellHeight,
+          width: cellWidth
+        })
+      })
+
+      result.push({
+        text: measure || 'measure',
+        x: rows.length * cellWidth,
+        y: 0,
+        height: cellHeight,
         width: cellWidth
       })
     }
