@@ -30,7 +30,7 @@
       </svg>
     </div>
     <div class="rows" :style="rowHeaderStyle">
-      <svg :height="calculatedRowsHeight" :style="{transform: `translateY(${-scrollTop}px)`}">
+      <svg :height="calculatedRowsHeight" :width="calculatedRowsWidth" :style="{transform: `translateY(${-scrollTop}px)`}">
         <g>
           <rect
                   v-for="item in rowItems"
@@ -196,6 +196,9 @@
       },
       calculatedRowsHeight () {
         return count(aggregateBy(this.data, this.rows, this.aggregatorFn)) * this.cellHeight
+      },
+      calculatedRowsWidth () {
+        return this.rows.length * this.cellWidth
       },
       calculatedColumnsContainerWidth () {
         return this.width - this.rows.length * this.cellWidth
