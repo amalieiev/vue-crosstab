@@ -1,10 +1,33 @@
 <template>
   <div class="container" :style="{height: calculatedHeight+'px', width: calculatedWidth+'px'}">
-    <div class="corner" :style="{width: `${rows.length * cellWidth}px`, height: `${cols.length * cellHeight}px`}">
-
+    <div class="corner" :style="cornerStyle">
+      <svg :height="cornerHeight" :width="cornerWidth">
+        <g>
+          <rect
+                  v-for="item in cornerItems"
+                  :height="item.height"
+                  :width="item.width"
+                  :x="item.x"
+                  :y="item.y"
+                  style="stroke:silver;fill:rgb(238, 238, 238)"
+          ></rect>
+          <text
+                  v-for="item in cornerItems"
+                  :height="item.height"
+                  :width="item.width"
+                  :x="item.x"
+                  :y="item.y"
+                  :dy="item.height / 2 + calculatedFontSize / 2"
+                  :dx="item.width / 2"
+                  text-anchor="middle"
+                  :style="textStyle"
+          >{{ item.text }}
+          </text>
+        </g>
+      </svg>
     </div>
     <div class="cols" :style="colHeaderStyle">
-      <svg :height="cols.length * cellHeight" :width="calculatedColumnsWidth" :style="{transform: `translateX(${-scrollLeft}px)`}">
+      <svg :height="cornerHeight" :width="calculatedColumnsWidth" :style="{transform: `translateX(${-scrollLeft}px)`}">
         <g>
           <rect
                   v-for="item in colItems"
@@ -111,10 +134,12 @@
         default: () => []
       },
       aggregator: {
-        type: String
+        type: String,
+        default: 'count'
       },
       measure: {
-        type: String
+        type: String,
+        default: ''
       },
       width: {
         type: Number
@@ -124,7 +149,7 @@
       },
       cellWidth: {
         type: Number,
-        default: 80
+        default: 100
       },
       cellHeight: {
         type: Number,
@@ -143,32 +168,74 @@
     computed: {
       aggregatorFn () {
         return items => {
-          return aggregators[this.aggregator] ? aggregators[this.aggregator](items, this.measure) : null
+          return aggregators[this.aggregator](items, this.measure)
         }
+      },
+      cornerItems () {
+        return getCornerItems(this.rows, this.cols, this.cellHeight, this.cellWidth)
       },
       colItems () {
         if (!this.data.length) return
 
-        return getColItems(setColPosition(aggregateBy(this.data, this.cols, this.aggregatorFn)), this.cellHeight, this.cellWidth)
+        return getColItems(setColPosition(aggregateBy(this.data, this.cols, this.aggregatorFn)), this.cellHeight, this.cellWidth, undefined, this.aggregator, this.measure)
       },
       rowItems () {
         if (!this.data.length) return
 
-        return getRowItems(setRowPosition(aggregateBy(this.data, this.rows, this.aggregatorFn)), this.cellHeight, this.cellWidth)
+        return getRowItems(setRowPosition(aggregateBy(this.data, this.rows, this.aggregatorFn)), this.cellHeight, this.cellWidth, undefined, this.aggregator, this.measure)
       },
       aggregatedData () {
         if (!this.data.length) return
 
         return generateData(this.data, this.rows, this.cols, this.aggregatorFn, this.cellHeight, this.cellWidth)
       },
+
+      cornerStyle () {
+        return {
+          height: this.cornerHeight + 'px',
+          width: this.cornerWidth + 'px'
+        }
+      },
+      cornerHeight () {
+        if (this.rows.length && this.cols.length) {
+          return (this.cols.length + 2) * this.cellHeight
+        }
+        if (!this.rows.length && this.cols.length) {
+          return (this.cols.length + 2) * this.cellHeight
+        }
+        if (this.rows.length && !this.cols.length) {
+          return this.cellHeight
+        }
+      },
+      cornerWidth () {
+        if (this.rows.length && this.cols.length) {
+          return this.rows.length * this.cellWidth
+        }
+        if (!this.rows.length && this.cols.length) {
+          return this.rows.length * this.cellWidth
+        }
+        if (this.rows.length && !this.cols.length) {
+          return (this.rows.length + 2) * this.cellWidth
+        }
+      },
+
       colHeaderStyle () {
-        return `height: ${this.cellHeight * this.cols.length}px; width: ${this.calculatedColumnsContainerWidth}px;`
+        return {
+          height: this.cornerHeight + 'px',
+          width: this.calculatedColumnsContainerWidth + 'px'
+        }
       },
       rowHeaderStyle () {
-        return `width: ${this.rows.length * this.cellWidth}px; height: ${this.height - this.cols.length * this.cellHeight}px`
+        return {
+          height: `${this.height - this.cornerHeight}px`,
+          width: `${this.rows.length * this.cellWidth}px`
+        }
       },
       dataStyle () {
-        return `width: ${this.calculatedColumnsContainerWidth}px; height: ${this.height - this.cols.length * this.cellHeight}px;`
+        return {
+          height: `${this.height - this.cornerHeight}px`,
+          width: `${this.calculatedColumnsContainerWidth}px`
+        }
       },
       textStyle () {
         return `fill:black;font-size:${this.calculatedFontSize}px;`
@@ -246,60 +313,110 @@
     }
   }
 
-  function getRowItems (item, height, width, result) {
-    if (result === undefined) result = []
-    if (height === undefined) height = 30
-    if (width === undefined) width = 80
+  function getCornerItems (rows, cols, cellHeight, cellWidth) {
+    let result = []
 
-    _.each(item.items, (item) => {
-      result.push({
-        text: item.name,
-        x: (item.x - 1) * width,
-        y: item.y * height,
-        height: count(item) * height,
-        width: width
+    if (rows.length && cols.length) {
+      rows.forEach((row, rowIdx) => {
+        result.push({
+          text: row,
+          x: rowIdx * cellWidth,
+          y: (cols.length + 1) * cellHeight,
+          height: cellHeight,
+          width: cellWidth
+        })
       })
 
-      getRowItems(item, height, width, result)
-    })
+      cols.forEach((col, colIdx) => {
+        result.push({
+          text: col,
+          x: 0,
+          y: colIdx * cellHeight,
+          height: cellHeight,
+          width: rows.length * cellWidth
+        })
+      })
 
-    if (item.items) {
       result.push({
-        text: 'Total',
-        y: (item.items[item.items.length - 1].y + count(item.items[item.items.length - 1])) * height,
-        x: item.x * width,
-        width: deep(item) * width,
-        height
+        text: 'measure',
+        x: 0,
+        y: cols.length * cellHeight,
+        height: cellHeight,
+        width: rows.length * cellWidth
       })
     }
 
     return result
   }
 
-  function getColItems (item, height, width, result) {
+  function getRowItems (item, cellHeight, cellWidth, result) {
     if (result === undefined) result = []
-    if (height === undefined) height = 30
-    if (width === undefined) width = 80
 
     _.each(item.items, (item) => {
       result.push({
         text: item.name,
-        x: item.x * width,
-        y: (item.y - 1) * height,
-        height,
-        width: count(item) * width
+        x: (item.x - 1) * cellWidth,
+        y: item.y * cellHeight,
+        height: count(item) * cellHeight,
+        width: cellWidth
       })
 
-      getColItems(item, height, width, result)
+      getRowItems(item, cellHeight, cellWidth, result)
     })
 
     if (item.items) {
       result.push({
         text: 'Total',
-        x: (item.items[item.items.length - 1].x + count(item.items[item.items.length - 1])) * width,
-        y: item.y * height,
-        height: deep(item) * height,
-        width
+        y: (item.items[item.items.length - 1].y + count(item.items[item.items.length - 1])) * cellHeight,
+        x: item.x * cellWidth,
+        width: deep(item) * cellWidth,
+        height: cellHeight
+      })
+    }
+
+    return result
+  }
+
+  function getColItems (item, cellHeight, cellWidth, result, aggregator, measure) {
+    if (result === undefined) result = []
+
+    _.each(item.items, (item) => {
+      result.push({
+        text: item.name,
+        x: item.x * cellWidth,
+        y: (item.y - 1) * cellHeight,
+        height: cellHeight,
+        width: count(item) * cellWidth
+      })
+
+      getColItems(item, cellHeight, cellWidth, result, aggregator, measure)
+    })
+
+    if (item.items) {
+      result.push({
+        text: 'Total',
+        x: (item.items[item.items.length - 1].x + count(item.items[item.items.length - 1])) * cellWidth,
+        y: item.y * cellHeight,
+        height: deep(item) * cellHeight,
+        width: cellWidth
+      })
+
+      result.push({
+        text: measure ? `${measure} (${aggregator})` : aggregator,
+        x: (item.items[item.items.length - 1].x + count(item.items[item.items.length - 1])) * cellWidth,
+        y: (item.y + deep(item)) * cellHeight,
+        height: cellHeight * 2,
+        width: cellWidth
+      })
+    }
+
+    if (item.values) {
+      result.push({
+        text: measure ? `${measure} (${aggregator})` : aggregator,
+        x: item.x * cellWidth,
+        y: item.y * cellHeight,
+        height: cellHeight * 2,
+        width: cellWidth
       })
     }
 
