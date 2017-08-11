@@ -18,8 +18,8 @@
                 :x="item.x"
                 :y="item.y"
                 :dy="item.height / 2 + calculatedFontSize / 2"
-                :dx="item.width / 2"
-                text-anchor="middle"
+                :dx="item.textStyle.dx"
+                :text-anchor="item.textStyle.textAnchor"
                 :style="item.textStyle"
         >{{ item.text }}
         </text>
@@ -202,7 +202,9 @@
               textStyle: {
                 fontSize: this.calculatedFontSize,
                 fontWeight: 'bold',
-                fill: this.theme.font
+                fill: this.theme.font,
+                dx: this.cellWidth / 2,
+                'text-anchor': 'middle'
               },
               rectStyle: {
                 fill: this.theme.base,
@@ -221,7 +223,9 @@
               textStyle: {
                 fontSize: this.calculatedFontSize,
                 fontWeight: 'bold',
-                fill: this.theme.font
+                fill: this.theme.font,
+                dx: (this.cellWidth * this.rows.length) - this.cellWidth / 4,
+                'text-anchor': 'end'
               },
               rectStyle: {
                 fill: 'none'
@@ -238,7 +242,9 @@
             textStyle: {
               fontSize: this.calculatedFontSize,
               fontWeight: 'bold',
-              fill: this.theme.font
+              fill: this.theme.font,
+              dx: (this.cellWidth * this.rows.length) - this.cellWidth / 4,
+              'text-anchor': 'end'
             },
             rectStyle: {
               fill: 'none'
@@ -257,7 +263,9 @@
               textStyle: {
                 fontSize: this.calculatedFontSize,
                 fontWeight: 'bold',
-                fill: this.theme.font
+                fill: this.theme.font,
+                dx: this.cellWidth - this.cellWidth / 4,
+                'text-anchor': 'end'
               },
               rectStyle: {
                 fill: 'none'
@@ -274,7 +282,9 @@
             textStyle: {
               fontSize: this.calculatedFontSize,
               fontWeight: 'bold',
-              fill: this.theme.font
+              fill: this.theme.font,
+              dx: this.cellWidth - this.cellWidth / 4,
+              'text-anchor': 'end'
             },
             rectStyle: {
               fill: 'none'
@@ -293,7 +303,9 @@
               textStyle: {
                 fontSize: this.calculatedFontSize,
                 fontWeight: 'bold',
-                fill: this.theme.font
+                fill: this.theme.font,
+                dx: this.cellWidth / 2,
+                'text-anchor': 'middle'
               },
               rectStyle: {
                 fill: 'none',
@@ -311,7 +323,9 @@
             textStyle: {
               fontSize: this.calculatedFontSize,
               fontWeight: 'bold',
-              fill: this.theme.font
+              fill: this.theme.font,
+              dx: this.cellWidth / 2,
+              'text-anchor': 'middle'
             },
             rectStyle: {
               fill: 'none'
