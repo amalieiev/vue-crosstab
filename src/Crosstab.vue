@@ -2,28 +2,27 @@
   <div class="container" :style="{height: calculatedHeight+'px', width: calculatedWidth+'px'}">
     <div class="corner" :style="cornerStyle">
       <svg :height="cornerHeight" :width="cornerWidth">
-        <g>
-          <rect
-                  v-for="item in cornerItems"
-                  :height="item.height"
-                  :width="item.width"
-                  :x="item.x"
-                  :y="item.y"
-                  style="stroke:silver;fill:rgb(238, 238, 238)"
-          ></rect>
-          <text
-                  v-for="item in cornerItems"
-                  :height="item.height"
-                  :width="item.width"
-                  :x="item.x"
-                  :y="item.y"
-                  :dy="item.height / 2 + calculatedFontSize / 2"
-                  :dx="item.width / 2"
-                  text-anchor="middle"
-                  :style="textStyle"
-          >{{ item.text }}
-          </text>
-        </g>
+        <rect :height="cornerHeight" :width="cornerWidth" :style="`fill:${theme.white};stroke:${theme.border}`"></rect>
+        <rect
+                v-for="item in cornerItems"
+                :height="item.height"
+                :width="item.width"
+                :x="item.x"
+                :y="item.y"
+                :style="item.rectStyle"
+        ></rect>
+        <text
+                v-for="item in cornerItems"
+                :height="item.height"
+                :width="item.width"
+                :x="item.x"
+                :y="item.y"
+                :dy="item.height / 2 + calculatedFontSize / 2"
+                :dx="item.width / 2"
+                text-anchor="middle"
+                :style="item.textStyle"
+        >{{ item.text }}
+        </text>
       </svg>
     </div>
     <div class="cols" :style="colHeaderStyle">
@@ -35,7 +34,7 @@
                   :width="item.width"
                   :x="item.x"
                   :y="item.y"
-                  style="stroke:silver;fill:rgb(238, 238, 238)"
+                  :style="item.rectStyle"
           ></rect>
           <text
                   v-for="item in colItems"
@@ -46,7 +45,7 @@
                   :dy="item.height / 2 + calculatedFontSize / 2"
                   :dx="item.width / 2"
                   text-anchor="middle"
-                  :style="textStyle"
+                  :style="item.textStyle"
           >{{ item.text }}
           </text>
         </g>
@@ -61,7 +60,7 @@
                   :width="item.width"
                   :x="item.x"
                   :y="item.y"
-                  style="stroke:silver;fill:rgb(238, 238, 238);"
+                  :style="item.rectStyle"
           ></rect>
           <text
                   v-for="item in rowItems"
@@ -72,7 +71,7 @@
                   :dy="item.height / 2 + calculatedFontSize / 2"
                   :dx="item.width / 2"
                   text-anchor="middle"
-                  :style="textStyle"
+                  :style="item.textStyle"
           >{{ item.text }}
           </text>
         </g>
@@ -88,7 +87,7 @@
                     :width="item.width"
                     :x="item.x"
                     :y="item.y"
-                    style="stroke:silver;fill:none"
+                    :style="item.rectStyle"
             ></rect>
             <text
                     v-for="item in aggregatedData"
@@ -99,7 +98,7 @@
                     :dy="item.height / 2 + calculatedFontSize / 2"
                     :dx="item.width / 2"
                     text-anchor="middle"
-                    :style="textStyle"
+                    :style="item.textStyle"
             >{{ item.text }}
             </text>
           </g>
@@ -113,6 +112,14 @@
   import _ from 'underscore'
   import { aggregators } from './utils'
   import Ps from 'perfect-scrollbar'
+
+  const palette = {
+    base: '#d9e4f1',
+    secondary: '#f4f4f4',
+    border: '#d4d4d4',
+    white: '#ffffff',
+    font: '#555555'
+  }
 
   export default {
     name: 'crosstab',
@@ -140,8 +147,7 @@
         default: 'count'
       },
       measure: {
-        type: String,
-        default: ''
+        type: String
       },
       width: {
         type: Number
@@ -159,6 +165,9 @@
       },
       fontSize: {
         type: Number
+      },
+      palette: {
+        type: Object
       }
     },
     mounted () {
@@ -189,7 +198,16 @@
               x: rowIdx * this.cellWidth,
               y: (this.cols.length + 1) * this.cellHeight,
               height: this.cellHeight,
-              width: this.cellWidth
+              width: this.cellWidth,
+              textStyle: {
+                fontSize: this.calculatedFontSize,
+                fontWeight: 'bold',
+                fill: this.theme.font
+              },
+              rectStyle: {
+                fill: this.theme.base,
+                stroke: this.theme.border
+              }
             })
           })
 
@@ -199,16 +217,32 @@
               x: 0,
               y: colIdx * this.cellHeight,
               height: this.cellHeight,
-              width: this.rows.length * this.cellWidth
+              width: this.rows.length * this.cellWidth,
+              textStyle: {
+                fontSize: this.calculatedFontSize,
+                fontWeight: 'bold',
+                fill: this.theme.font
+              },
+              rectStyle: {
+                fill: 'none'
+              }
             })
           })
 
           result.push({
-            text: this.measure,
+            text: 'measure',
             x: 0,
             y: this.cols.length * this.cellHeight,
             height: this.cellHeight,
-            width: this.rows.length * this.cellWidth
+            width: this.rows.length * this.cellWidth,
+            textStyle: {
+              fontSize: this.calculatedFontSize,
+              fontWeight: 'bold',
+              fill: this.theme.font
+            },
+            rectStyle: {
+              fill: 'none'
+            }
           })
         }
 
@@ -219,16 +253,32 @@
               x: 0,
               y: colIdx * this.cellHeight,
               height: this.cellHeight,
-              width: this.cellWidth
+              width: this.cellWidth,
+              textStyle: {
+                fontSize: this.calculatedFontSize,
+                fontWeight: 'bold',
+                fill: this.theme.font
+              },
+              rectStyle: {
+                fill: 'none'
+              }
             })
           })
 
           result.push({
-            text: this.measure,
+            text: 'measure',
             x: 0,
             y: this.cols.length * this.cellHeight,
             height: this.cellHeight,
-            width: this.cellWidth
+            width: this.cellWidth,
+            textStyle: {
+              fontSize: this.calculatedFontSize,
+              fontWeight: 'bold',
+              fill: this.theme.font
+            },
+            rectStyle: {
+              fill: 'none'
+            }
           })
         }
 
@@ -239,16 +289,33 @@
               x: rowIdx * this.cellWidth,
               y: 0,
               height: this.cellHeight,
-              width: this.cellWidth
+              width: this.cellWidth,
+              textStyle: {
+                fontSize: this.calculatedFontSize,
+                fontWeight: 'bold',
+                fill: this.theme.font
+              },
+              rectStyle: {
+                fill: 'none',
+                stroke: this.theme.border
+              }
             })
           })
 
           result.push({
-            text: this.measure,
+            text: 'measure',
             x: this.rows.length * this.cellWidth,
             y: 0,
             height: this.cellHeight,
-            width: this.cellWidth
+            width: this.cellWidth,
+            textStyle: {
+              fontSize: this.calculatedFontSize,
+              fontWeight: 'bold',
+              fill: this.theme.font
+            },
+            rectStyle: {
+              fill: 'none'
+            }
           })
         }
 
@@ -259,14 +326,22 @@
         if (!this.data.length) return
         if (this.cols.length) {
           let colsCount = count(this.colsAggregation)
-          let colItems = getColItems(setColPosition(this.colsAggregation), this.cellHeight, this.cellWidth)
+          let colItems = this.getColItems(setColPosition(this.colsAggregation), this.cellHeight, this.cellWidth)
           let colMeasureItems = _.map(Array(colsCount), (item, colIdx) => {
             return {
-              text: this.aggregator,
+              text: this.measure,
               x: colIdx * this.cellWidth,
               y: this.cols.length * this.cellHeight,
               height: this.cellHeight,
-              width: this.cellWidth
+              width: this.cellWidth,
+              textStyle: {
+                fontSize: this.calculatedFontSize,
+                fill: this.theme.font
+              },
+              rectStyle: {
+                fill: this.theme.base,
+                stroke: this.theme.border
+              }
             }
           })
           let emptyCellItems = _.map(Array(colsCount), (item, colIdx) => {
@@ -274,7 +349,15 @@
               x: colIdx * this.cellWidth,
               y: (this.cols.length + 1) * this.cellHeight,
               height: this.cellHeight,
-              width: this.cellWidth
+              width: this.cellWidth,
+              textStyle: {
+                fontSize: this.calculatedFontSize,
+                fill: this.theme.font
+              },
+              rectStyle: {
+                fill: this.theme.secondary,
+                stroke: this.theme.border
+              }
             }
           })
 
@@ -289,7 +372,16 @@
             x: 0,
             y: 0,
             height: this.cellHeight,
-            width: this.cellWidth
+            width: this.cellWidth,
+            textStyle: {
+              fontSize: this.calculatedFontSize,
+              fontWeight: 'bold',
+              fill: this.theme.font
+            },
+            rectStyle: {
+              fill: this.theme.base,
+              stroke: this.theme.border
+            }
           }]
         }
       },
@@ -297,18 +389,26 @@
         if (!this.data.length) return
         if (this.rows.length) {
           let rowsCount = count(this.rowsAggregation)
-          let rowItems = getRowItems(setRowPosition(this.rowsAggregation), this.cellHeight, this.cellWidth)
+          let rowItems = this.getRowItems(setRowPosition(this.rowsAggregation), this.cellHeight, this.cellWidth)
 
           if (this.cols.length) {
             return rowItems
           } else {
             let rowMeasureItems = _.map(Array(rowsCount), (item, rowIdx) => {
               return {
-                text: this.aggregator,
+                text: this.measure,
                 x: this.rows.length * this.cellWidth,
                 y: rowIdx * this.cellHeight,
                 height: this.cellHeight,
-                width: this.cellWidth
+                width: this.cellWidth,
+                textStyle: {
+                  fontSize: this.calculatedFontSize,
+                  fill: this.theme.font
+                },
+                rectStyle: {
+                  fill: this.theme.base,
+                  stroke: this.theme.border
+                }
               }
             })
 
@@ -320,14 +420,47 @@
             x: 0,
             y: 0,
             height: this.cellHeight,
-            width: this.cellWidth
+            width: this.cellWidth,
+            textStyle: {
+              fontSize: this.calculatedFontSize,
+              fill: this.theme.font,
+              fontWeight: 'bold'
+            },
+            rectStyle: {
+              fill: this.theme.base,
+              stroke: this.theme.border
+            }
           }]
         }
       },
       aggregatedData () {
         if (!this.data.length) return
 
-        return generateData(this.data, this.rows, this.cols, this.aggregatorFn, this.cellHeight, this.cellWidth)
+        let rowItems = flat(aggregateBy(this.data, this.rows, this.aggregatorFn))
+        let colItems = flat(aggregateBy(this.data, this.cols, this.aggregatorFn))
+        let result = []
+
+        _.each(rowItems, (row, rowIdx) => {
+          _.each(colItems, (col, colIdx) => {
+            result.push({
+              text: getValue(this.data, this.rows, this.cols, rowItems[rowIdx].concat(colItems[colIdx]), this.aggregatorFn),
+              x: colIdx * this.cellWidth,
+              y: rowIdx * this.cellHeight,
+              width: this.cellWidth,
+              height: this.cellHeight,
+              textStyle: {
+                fontSize: this.calculatedFontSize,
+                fill: this.theme.font
+              },
+              rectStyle: {
+                fill: this.theme.white,
+                stroke: this.theme.border
+              }
+            })
+          })
+        })
+
+        return result
       },
 
       cornerStyle () {
@@ -386,6 +519,9 @@
         }
         return this.cellHeight / 2 < 14 ? this.cellHeight / 2 : 14
       },
+      theme () {
+        return _.extend({}, palette, this.palette)
+      },
       calculatedWidth () {
         if (this.width) {
           return this.width
@@ -426,6 +562,96 @@
       onScroll () {
         this.scrollTop = this.$refs.body.scrollTop
         this.scrollLeft = this.$refs.body.scrollLeft
+      },
+
+      getColItems (item, cellHeight, cellWidth, result) {
+        if (result === undefined) result = []
+
+        _.each(item.items, (item) => {
+          result.push({
+            text: item.name,
+            x: item.x * cellWidth,
+            y: (item.y - 1) * cellHeight,
+            height: cellHeight,
+            width: count(item) * cellWidth,
+            textStyle: {
+              fontSize: this.calculatedFontSize,
+              fill: this.theme.font
+            },
+            rectStyle: {
+              fill: this.theme.base,
+              stroke: this.theme.border
+            }
+          })
+
+          this.getColItems(item, cellHeight, cellWidth, result)
+        })
+
+        if (item.items) {
+          result.push({
+            text: 'Total',
+            x: (item.items[item.items.length - 1].x + count(item.items[item.items.length - 1])) * cellWidth,
+            y: item.y * cellHeight,
+            height: deep(item) * cellHeight,
+            width: cellWidth,
+            textStyle: {
+              fontSize: this.calculatedFontSize,
+              fontWeight: 'bold',
+              fill: this.theme.font
+            },
+            rectStyle: {
+              fill: this.theme.base,
+              stroke: this.theme.border
+            }
+          })
+        }
+
+        return result
+      },
+
+      getRowItems (item, cellHeight, cellWidth, result) {
+        if (result === undefined) result = []
+
+        _.each(item.items, (item) => {
+          result.push({
+            text: item.name,
+            x: (item.x - 1) * cellWidth,
+            y: item.y * cellHeight,
+            height: count(item) * cellHeight,
+            width: cellWidth,
+            textStyle: {
+              fontSize: this.calculatedFontSize,
+              fill: this.theme.font
+            },
+            rectStyle: {
+              fill: this.theme.base,
+              stroke: this.theme.border
+            }
+          })
+
+          this.getRowItems(item, cellHeight, cellWidth, result)
+        })
+
+        if (item.items) {
+          result.push({
+            text: 'Total',
+            y: (item.items[item.items.length - 1].y + count(item.items[item.items.length - 1])) * cellHeight,
+            x: item.x * cellWidth,
+            width: deep(item) * cellWidth,
+            height: cellHeight,
+            textStyle: {
+              fontSize: this.calculatedFontSize,
+              fontWeight: 'bold',
+              fill: this.theme.font
+            },
+            rectStyle: {
+              fill: this.theme.base,
+              stroke: this.theme.border
+            }
+          })
+        }
+
+        return result
       }
     }
   }
@@ -462,62 +688,6 @@
         return tmp
       })
     }
-  }
-
-  function getRowItems (item, cellHeight, cellWidth, result) {
-    if (result === undefined) result = []
-
-    _.each(item.items, (item) => {
-      result.push({
-        text: item.name,
-        x: (item.x - 1) * cellWidth,
-        y: item.y * cellHeight,
-        height: count(item) * cellHeight,
-        width: cellWidth
-      })
-
-      getRowItems(item, cellHeight, cellWidth, result)
-    })
-
-    if (item.items) {
-      result.push({
-        text: 'Total',
-        y: (item.items[item.items.length - 1].y + count(item.items[item.items.length - 1])) * cellHeight,
-        x: item.x * cellWidth,
-        width: deep(item) * cellWidth,
-        height: cellHeight
-      })
-    }
-
-    return result
-  }
-
-  function getColItems (item, cellHeight, cellWidth, result) {
-    if (result === undefined) result = []
-
-    _.each(item.items, (item) => {
-      result.push({
-        text: item.name,
-        x: item.x * cellWidth,
-        y: (item.y - 1) * cellHeight,
-        height: cellHeight,
-        width: count(item) * cellWidth
-      })
-
-      getColItems(item, cellHeight, cellWidth, result)
-    })
-
-    if (item.items) {
-      result.push({
-        text: 'Total',
-        x: (item.items[item.items.length - 1].x + count(item.items[item.items.length - 1])) * cellWidth,
-        y: item.y * cellHeight,
-        height: deep(item) * cellHeight,
-        width: cellWidth
-      })
-    }
-
-    return result
   }
 
   function deep (item) {
@@ -612,26 +782,6 @@
     })
 
     return result && result.aggregation
-  }
-
-  function generateData (data, rows, cols, aggregatorFn, cellHeight, cellWidth) {
-    let rowItems = flat(aggregateBy(data, rows, aggregatorFn))
-    let colItems = flat(aggregateBy(data, cols, aggregatorFn))
-    let result = []
-
-    _.each(rowItems, function (row, rowIdx) {
-      _.each(colItems, function (col, colIdx) {
-        result.push({
-          text: getValue(data, rows, cols, rowItems[rowIdx].concat(colItems[colIdx]), aggregatorFn),
-          x: colIdx * cellWidth,
-          y: rowIdx * cellHeight,
-          width: cellWidth,
-          height: cellHeight
-        })
-      })
-    })
-
-    return result
   }
 
   function findWhere (item, values, levelIdx) {
