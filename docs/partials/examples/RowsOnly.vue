@@ -1,11 +1,11 @@
 <template lang="pug">
 div
-  label.typo__label Basic Crosstab
+  label.typo__label Rows Only
   div.overflow-auto
     crosstab(
       :data="data",
       :rows="rows",
-      :width="380",
+      :cellWidth="80",
       measure="tip",
       aggregator="sum"
     )

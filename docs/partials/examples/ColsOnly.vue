@@ -1,6 +1,6 @@
 <template lang="pug">
 div
-  label.typo__label Basic Crosstab
+  label.typo__label Cols Only
   div.overflow-auto
     crosstab(
       :data="data",
