@@ -180,8 +180,81 @@
         return aggregateBy(this.data, this.cols, this.aggregatorFn)
       },
       cornerItems () {
-        return getCornerItems(this.rows, this.cols, this.cellHeight, this.cellWidth, this.measure)
+        let result = []
+
+        if (this.hasRowsAndCols) {
+          this.rows.forEach((row, rowIdx) => {
+            result.push({
+              text: row,
+              x: rowIdx * this.cellWidth,
+              y: (this.cols.length + 1) * this.cellHeight,
+              height: this.cellHeight,
+              width: this.cellWidth
+            })
+          })
+
+          this.cols.forEach((col, colIdx) => {
+            result.push({
+              text: col,
+              x: 0,
+              y: colIdx * this.cellHeight,
+              height: this.cellHeight,
+              width: this.rows.length * this.cellWidth
+            })
+          })
+
+          result.push({
+            text: this.measure,
+            x: 0,
+            y: this.cols.length * this.cellHeight,
+            height: this.cellHeight,
+            width: this.rows.length * this.cellWidth
+          })
+        }
+
+        if (this.hasColsOnly) {
+          this.cols.forEach((col, colIdx) => {
+            result.push({
+              text: col,
+              x: 0,
+              y: colIdx * this.cellHeight,
+              height: this.cellHeight,
+              width: this.cellWidth
+            })
+          })
+
+          result.push({
+            text: this.measure,
+            x: 0,
+            y: this.cols.length * this.cellHeight,
+            height: this.cellHeight,
+            width: this.cellWidth
+          })
+        }
+
+        if (this.hasRowsOnly) {
+          this.rows.forEach((row, rowIdx) => {
+            result.push({
+              text: row,
+              x: rowIdx * this.cellWidth,
+              y: 0,
+              height: this.cellHeight,
+              width: this.cellWidth
+            })
+          })
+
+          result.push({
+            text: this.measure,
+            x: this.rows.length * this.cellWidth,
+            y: 0,
+            height: this.cellHeight,
+            width: this.cellWidth
+          })
+        }
+
+        return result
       },
+
       colItems () {
         if (!this.data.length) return
         if (this.cols.length) {
@@ -389,82 +462,6 @@
         return tmp
       })
     }
-  }
-
-  function getCornerItems (rows, cols, cellHeight, cellWidth, measureName) {
-    let result = []
-
-    if (rows.length && cols.length) {
-      rows.forEach((row, rowIdx) => {
-        result.push({
-          text: row,
-          x: rowIdx * cellWidth,
-          y: (cols.length + 1) * cellHeight,
-          height: cellHeight,
-          width: cellWidth
-        })
-      })
-
-      cols.forEach((col, colIdx) => {
-        result.push({
-          text: col,
-          x: 0,
-          y: colIdx * cellHeight,
-          height: cellHeight,
-          width: rows.length * cellWidth
-        })
-      })
-
-      result.push({
-        text: measureName || 'measure',
-        x: 0,
-        y: cols.length * cellHeight,
-        height: cellHeight,
-        width: rows.length * cellWidth
-      })
-    }
-
-    if (!rows.length && cols.length) {
-      cols.forEach((col, colIdx) => {
-        result.push({
-          text: col,
-          x: 0,
-          y: colIdx * cellHeight,
-          height: cellHeight,
-          width: cellWidth
-        })
-      })
-
-      result.push({
-        text: measureName || 'measure',
-        x: 0,
-        y: cols.length * cellHeight,
-        height: cellHeight,
-        width: cellWidth
-      })
-    }
-
-    if (rows.length && !cols.length) {
-      rows.forEach((row, rowIdx) => {
-        result.push({
-          text: row,
-          x: rowIdx * cellWidth,
-          y: 0,
-          height: cellHeight,
-          width: cellWidth
-        })
-      })
-
-      result.push({
-        text: measureName || 'measure',
-        x: rows.length * cellWidth,
-        y: 0,
-        height: cellHeight,
-        width: cellWidth
-      })
-    }
-
-    return result
   }
 
   function getRowItems (item, cellHeight, cellWidth, result) {
