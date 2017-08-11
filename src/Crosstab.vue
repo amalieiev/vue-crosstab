@@ -79,30 +79,32 @@
       </svg>
     </div>
     <div class="body" ref="body" :style="dataStyle" @scroll="onScroll">
-      <svg :height="calculatedRowsHeight" :width="calculatedColumnsWidth">
-        <g>
-          <rect
-                  v-for="item in aggregatedData"
-                  :height="item.height"
-                  :width="item.width"
-                  :x="item.x"
-                  :y="item.y"
-                  style="stroke:silver;fill:none"
-          ></rect>
-          <text
-                  v-for="item in aggregatedData"
-                  :height="item.height"
-                  :width="item.width"
-                  :x="item.x"
-                  :y="item.y"
-                  :dy="item.height / 2 + calculatedFontSize / 2"
-                  :dx="item.width / 2"
-                  text-anchor="middle"
-                  :style="textStyle"
-          >{{ item.text }}
-          </text>
-        </g>
-      </svg>
+      <div class="wrap" :style="{height: calculatedRowsHeight+'px', width: calculatedColumnsWidth+'px'}">
+        <svg :height="calculatedRowsHeight" :width="calculatedColumnsWidth">
+          <g>
+            <rect
+                    v-for="item in aggregatedData"
+                    :height="item.height"
+                    :width="item.width"
+                    :x="item.x"
+                    :y="item.y"
+                    style="stroke:silver;fill:none"
+            ></rect>
+            <text
+                    v-for="item in aggregatedData"
+                    :height="item.height"
+                    :width="item.width"
+                    :x="item.x"
+                    :y="item.y"
+                    :dy="item.height / 2 + calculatedFontSize / 2"
+                    :dx="item.width / 2"
+                    text-anchor="middle"
+                    :style="textStyle"
+            >{{ item.text }}
+            </text>
+          </g>
+        </svg>
+      </div>
     </div>
   </div>
 </template>
@@ -287,19 +289,19 @@
       colHeaderStyle () {
         return {
           height: this.cornerHeight + 'px',
-          width: this.width - this.cornerWidth + 'px'
+          width: this.calculatedWidth - this.cornerWidth + 'px'
         }
       },
       rowHeaderStyle () {
         return {
-          height: `${this.height - this.cornerHeight}px`,
+          height: `${this.calculatedHeight - this.cornerHeight}px`,
           width: `${this.cornerWidth}px`
         }
       },
       dataStyle () {
         return {
-          height: `${this.height - this.cornerHeight}px`,
-          width: `${this.width - this.cornerWidth}px`
+          height: `${this.calculatedHeight - this.cornerHeight}px`,
+          width: `${this.calculatedWidth - this.cornerWidth}px`
         }
       },
       textStyle () {
@@ -315,25 +317,36 @@
         if (this.width) {
           return this.width
         }
-        return this.cellWidth * (this.rows.length + count(aggregateBy(this.data, this.cols, this.aggregatorFn)))
+
+        return this.cellWidth * (this.rows.length + count(this.colsAggregation) + (this.hasColsOnly || this.hasRowsOnly ? 1 : 0))
       },
       calculatedHeight () {
         if (this.height) {
           return this.height
         }
-        return this.cellHeight * (this.cols.length + count(aggregateBy(this.data, this.rows, this.aggregatorFn)))
+
+        return this.cellHeight * (this.cols.length + count(this.rowsAggregation) + (this.hasRowsAndCols ? 2 : 1))
       },
       calculatedColumnsWidth () {
-        return count(aggregateBy(this.data, this.cols, this.aggregatorFn)) * this.cellWidth
+        return count(this.colsAggregation) * this.cellWidth
       },
       calculatedRowsHeight () {
-        return count(aggregateBy(this.data, this.rows, this.aggregatorFn)) * this.cellHeight
+        return count(this.rowsAggregation) * this.cellHeight
       },
       calculatedRowsWidth () {
         return this.rows.length * this.cellWidth
       },
       calculatedColumnsContainerWidth () {
-        return this.width - this.rows.length * this.cellWidth
+        return this.calculatedWidth - this.rows.length * this.cellWidth
+      },
+      hasRowsAndCols () {
+        return !!(this.rows.length && this.cols.length)
+      },
+      hasRowsOnly () {
+        return !!(this.rows.length && !this.cols.length)
+      },
+      hasColsOnly () {
+        return !!(this.cols.length && !this.rows.length)
       }
     },
     methods: {
@@ -655,6 +668,9 @@
   .body {
     position: relative;
     float: left;
+  }
+  .wrap {
+    overflow: hidden;
   }
 
 
