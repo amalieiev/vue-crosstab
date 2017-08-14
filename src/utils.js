@@ -8,18 +8,18 @@ export const aggregators = {
     }, 0))
   },
   max (items, measure) {
-    return items.reduce((max, item) => {
+    return Math.round(items.reduce((max, item) => {
       return max > item[measure] ? max : item[measure]
-    }, -Infinity)
+    }, -Infinity))
   },
   min (items, measure) {
-    return items.reduce((min, item) => {
+    return Math.round(items.reduce((min, item) => {
       return min < item[measure] ? min : item[measure]
-    }, Infinity)
+    }, Infinity))
   },
   avg (items, measure) {
-    return items.reduce((total, item) => {
+    return Math.round(items.reduce((total, item) => {
       return total + item[measure]
-    }, 0) / items.length
+    }, 0) / items.length)
   }
 }

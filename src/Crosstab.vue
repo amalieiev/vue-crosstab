@@ -2,7 +2,7 @@
   <div class="container" :style="{height: calculatedHeight+'px', width: calculatedWidth+'px'}">
     <div class="corner" :style="cornerStyle">
       <svg :height="cornerHeight" :width="cornerWidth">
-        <rect :height="cornerHeight" :width="cornerWidth" :style="`fill:${theme.white};stroke:${theme.border}`"></rect>
+        <rect :height="cornerHeight" :width="cornerWidth" :style="`fill:${theme.background};stroke:${theme.border}`"></rect>
         <rect
                 v-for="item in cornerItems"
                 :height="item.height"
@@ -114,11 +114,11 @@
   import Ps from 'perfect-scrollbar'
 
   const palette = {
-    base: '#d9e4f1',
+    primary: '#d9e4f1',
     secondary: '#f4f4f4',
     border: '#d4d4d4',
-    white: '#ffffff',
-    font: '#555555'
+    background: '#ffffff',
+    text: '#555555'
   }
 
   export default {
@@ -202,12 +202,12 @@
               textStyle: {
                 fontSize: this.calculatedFontSize,
                 fontWeight: 'bold',
-                fill: this.theme.font,
+                fill: this.theme.text,
                 dx: this.cellWidth / 2,
                 'text-anchor': 'middle'
               },
               rectStyle: {
-                fill: this.theme.base,
+                fill: this.theme.primary,
                 stroke: this.theme.border
               }
             })
@@ -223,7 +223,7 @@
               textStyle: {
                 fontSize: this.calculatedFontSize,
                 fontWeight: 'bold',
-                fill: this.theme.font,
+                fill: this.theme.text,
                 dx: (this.cellWidth * this.rows.length) - this.cellWidth / 4,
                 'text-anchor': 'end'
               },
@@ -242,7 +242,7 @@
             textStyle: {
               fontSize: this.calculatedFontSize,
               fontWeight: 'bold',
-              fill: this.theme.font,
+              fill: this.theme.text,
               dx: (this.cellWidth * this.rows.length) - this.cellWidth / 4,
               'text-anchor': 'end'
             },
@@ -263,7 +263,7 @@
               textStyle: {
                 fontSize: this.calculatedFontSize,
                 fontWeight: 'bold',
-                fill: this.theme.font,
+                fill: this.theme.text,
                 dx: this.cellWidth - this.cellWidth / 4,
                 'text-anchor': 'end'
               },
@@ -282,7 +282,7 @@
             textStyle: {
               fontSize: this.calculatedFontSize,
               fontWeight: 'bold',
-              fill: this.theme.font,
+              fill: this.theme.text,
               dx: this.cellWidth - this.cellWidth / 4,
               'text-anchor': 'end'
             },
@@ -303,7 +303,7 @@
               textStyle: {
                 fontSize: this.calculatedFontSize,
                 fontWeight: 'bold',
-                fill: this.theme.font,
+                fill: this.theme.text,
                 dx: this.cellWidth / 2,
                 'text-anchor': 'middle'
               },
@@ -323,7 +323,7 @@
             textStyle: {
               fontSize: this.calculatedFontSize,
               fontWeight: 'bold',
-              fill: this.theme.font,
+              fill: this.theme.text,
               dx: this.cellWidth / 2,
               'text-anchor': 'middle'
             },
@@ -350,10 +350,10 @@
               width: this.cellWidth,
               textStyle: {
                 fontSize: this.calculatedFontSize,
-                fill: this.theme.font
+                fill: this.theme.text
               },
               rectStyle: {
-                fill: this.theme.base,
+                fill: this.theme.primary,
                 stroke: this.theme.border
               }
             }
@@ -366,7 +366,7 @@
               width: this.cellWidth,
               textStyle: {
                 fontSize: this.calculatedFontSize,
-                fill: this.theme.font
+                fill: this.theme.text
               },
               rectStyle: {
                 fill: this.theme.secondary,
@@ -390,10 +390,10 @@
             textStyle: {
               fontSize: this.calculatedFontSize,
               fontWeight: 'bold',
-              fill: this.theme.font
+              fill: this.theme.text
             },
             rectStyle: {
-              fill: this.theme.base,
+              fill: this.theme.primary,
               stroke: this.theme.border
             }
           }]
@@ -417,10 +417,10 @@
                 width: this.cellWidth,
                 textStyle: {
                   fontSize: this.calculatedFontSize,
-                  fill: this.theme.font
+                  fill: this.theme.text
                 },
                 rectStyle: {
-                  fill: this.theme.base,
+                  fill: this.theme.primary,
                   stroke: this.theme.border
                 }
               }
@@ -437,11 +437,11 @@
             width: this.cellWidth,
             textStyle: {
               fontSize: this.calculatedFontSize,
-              fill: this.theme.font,
+              fill: this.theme.text,
               fontWeight: 'bold'
             },
             rectStyle: {
-              fill: this.theme.base,
+              fill: this.theme.primary,
               stroke: this.theme.border
             }
           }]
@@ -464,10 +464,10 @@
               height: this.cellHeight,
               textStyle: {
                 fontSize: this.calculatedFontSize,
-                fill: this.theme.font
+                fill: this.theme.text
               },
               rectStyle: {
-                fill: this.theme.white,
+                fill: this.theme.background,
                 stroke: this.theme.border
               }
             })
@@ -590,10 +590,10 @@
             width: count(item) * cellWidth,
             textStyle: {
               fontSize: this.calculatedFontSize,
-              fill: this.theme.font
+              fill: this.theme.text
             },
             rectStyle: {
-              fill: this.theme.base,
+              fill: this.theme.primary,
               stroke: this.theme.border
             }
           })
@@ -611,10 +611,10 @@
             textStyle: {
               fontSize: this.calculatedFontSize,
               fontWeight: 'bold',
-              fill: this.theme.font
+              fill: this.theme.text
             },
             rectStyle: {
-              fill: this.theme.base,
+              fill: this.theme.primary,
               stroke: this.theme.border
             }
           })
@@ -635,10 +635,10 @@
             width: cellWidth,
             textStyle: {
               fontSize: this.calculatedFontSize,
-              fill: this.theme.font
+              fill: this.theme.text
             },
             rectStyle: {
-              fill: this.theme.base,
+              fill: this.theme.primary,
               stroke: this.theme.border
             }
           })
@@ -656,10 +656,10 @@
             textStyle: {
               fontSize: this.calculatedFontSize,
               fontWeight: 'bold',
-              fill: this.theme.font
+              fill: this.theme.text
             },
             rectStyle: {
-              fill: this.theme.base,
+              fill: this.theme.primary,
               stroke: this.theme.border
             }
           })
