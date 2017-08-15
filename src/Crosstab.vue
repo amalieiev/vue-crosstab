@@ -1,7 +1,82 @@
 <template>
-  <div class="container" :style="{height: calculatedHeight+'px', width: calculatedWidth+'px'}">
-    <div class="corner" :style="cornerStyle">
-      <svg :height="cornerHeight" :width="cornerWidth">
+  <svg :height="calculatedHeight" :width="calculatedWidth">
+    <minimap
+            :viewportHeight="calculatedHeight - cornerHeight"
+            :viewportWidth="calculatedWidth - cornerWidth"
+            :viewportX="cornerWidth"
+            :viewportY="cornerHeight"
+            :contentWidth="calculatedColumnsWidth"
+            :contentHeight="calculatedRowsHeight"
+            @dragX="onDragX"
+            @dragY="onDragY"
+    >
+      <g :style="dataStyle">
+        <rect
+                v-for="item in aggregatedData"
+                :height="item.height"
+                :width="item.width"
+                :x="item.x"
+                :y="item.y"
+                :style="item.rectStyle"
+        ></rect>
+        <text
+                v-for="item in aggregatedData"
+                :height="item.height"
+                :width="item.width"
+                :x="item.x"
+                :y="item.y"
+                :dy="item.height / 2 + calculatedFontSize / 2"
+                :dx="item.width / 2"
+                text-anchor="middle"
+                :style="item.textStyle"
+        >{{ item.text }}
+        </text>
+      </g>
+      <g :style="colHeaderStyle">
+        <rect
+                v-for="item in colItems"
+                :height="item.height"
+                :width="item.width"
+                :x="item.x"
+                :y="item.y"
+                :style="item.rectStyle"
+        ></rect>
+        <text
+                v-for="item in colItems"
+                :height="item.height"
+                :width="item.width"
+                :x="item.x"
+                :y="item.y"
+                :dy="item.height / 2 + calculatedFontSize / 2"
+                :dx="item.width / 2"
+                text-anchor="middle"
+                :style="item.textStyle"
+        >{{ item.text }}
+        </text>
+      </g>
+      <g :style="rowHeaderStyle">
+        <rect
+                v-for="item in rowItems"
+                :height="item.height"
+                :width="item.width"
+                :x="item.x"
+                :y="item.y"
+                :style="item.rectStyle"
+        ></rect>
+        <text
+                v-for="item in rowItems"
+                :height="item.height"
+                :width="item.width"
+                :x="item.x"
+                :y="item.y"
+                :dy="item.height / 2 + calculatedFontSize / 2"
+                :dx="item.width / 2"
+                text-anchor="middle"
+                :style="item.textStyle"
+        >{{ item.text }}
+        </text>
+      </g>
+      <g>
         <rect :height="cornerHeight" :width="cornerWidth" :style="`fill:${theme.background};stroke:${theme.border}`"></rect>
         <rect
                 v-for="item in cornerItems"
@@ -23,95 +98,15 @@
                 :style="item.textStyle"
         >{{ item.text }}
         </text>
-      </svg>
-    </div>
-    <div class="cols" :style="colHeaderStyle">
-      <svg :height="cornerHeight" :width="calculatedColumnsWidth" :style="{transform: `translateX(${-scrollLeft}px)`}">
-        <g>
-          <rect
-                  v-for="item in colItems"
-                  :height="item.height"
-                  :width="item.width"
-                  :x="item.x"
-                  :y="item.y"
-                  :style="item.rectStyle"
-          ></rect>
-          <text
-                  v-for="item in colItems"
-                  :height="item.height"
-                  :width="item.width"
-                  :x="item.x"
-                  :y="item.y"
-                  :dy="item.height / 2 + calculatedFontSize / 2"
-                  :dx="item.width / 2"
-                  text-anchor="middle"
-                  :style="item.textStyle"
-          >{{ item.text }}
-          </text>
-        </g>
-      </svg>
-    </div>
-    <div class="rows" :style="rowHeaderStyle">
-      <svg :height="calculatedRowsHeight" :width="cornerWidth" :style="{transform: `translateY(${-scrollTop}px)`}">
-        <g>
-          <rect
-                  v-for="item in rowItems"
-                  :height="item.height"
-                  :width="item.width"
-                  :x="item.x"
-                  :y="item.y"
-                  :style="item.rectStyle"
-          ></rect>
-          <text
-                  v-for="item in rowItems"
-                  :height="item.height"
-                  :width="item.width"
-                  :x="item.x"
-                  :y="item.y"
-                  :dy="item.height / 2 + calculatedFontSize / 2"
-                  :dx="item.width / 2"
-                  text-anchor="middle"
-                  :style="item.textStyle"
-          >{{ item.text }}
-          </text>
-        </g>
-      </svg>
-    </div>
-    <div class="body" ref="body" :style="dataStyle" @scroll="onScroll">
-      <div class="wrap" :style="{height: calculatedRowsHeight+'px', width: calculatedColumnsWidth+'px'}">
-        <svg :height="calculatedRowsHeight" :width="calculatedColumnsWidth">
-          <g>
-            <rect
-                    v-for="item in aggregatedData"
-                    :height="item.height"
-                    :width="item.width"
-                    :x="item.x"
-                    :y="item.y"
-                    :style="item.rectStyle"
-            ></rect>
-            <text
-                    v-for="item in aggregatedData"
-                    :height="item.height"
-                    :width="item.width"
-                    :x="item.x"
-                    :y="item.y"
-                    :dy="item.height / 2 + calculatedFontSize / 2"
-                    :dx="item.width / 2"
-                    text-anchor="middle"
-                    :style="item.textStyle"
-            >{{ item.text }}
-            </text>
-          </g>
-        </svg>
-      </div>
-    </div>
-  </div>
+      </g>
+    </minimap>
+  </svg>
 </template>
 
 <script>
   import _ from 'underscore'
   import { aggregators } from './utils'
-  import Ps from 'perfect-scrollbar'
+  import Minimap from './Minimap.vue'
 
   const palette = {
     primary: '#d9e4f1',
@@ -122,11 +117,14 @@
   }
 
   export default {
+    components: {
+      Minimap
+    },
     name: 'crosstab',
     data () {
       return {
-        scrollTop: 0,
-        scrollLeft: 0
+        dragX: 0,
+        dragY: 0
       }
     },
     props: {
@@ -169,12 +167,6 @@
       palette: {
         type: Object
       }
-    },
-    mounted () {
-      Ps.initialize(this.$refs.body)
-    },
-    beforeDestroy () {
-      Ps.destroy(this.$refs.body)
     },
     computed: {
       aggregatorFn () {
@@ -477,12 +469,6 @@
         return result
       },
 
-      cornerStyle () {
-        return {
-          height: this.cornerHeight + 'px',
-          width: this.cornerWidth + 'px'
-        }
-      },
       cornerHeight () {
         if (this.rows.length && this.cols.length) {
           return (this.cols.length + 2) * this.cellHeight
@@ -508,24 +494,18 @@
 
       colHeaderStyle () {
         return {
-          height: this.cornerHeight + 'px',
-          width: this.calculatedWidth - this.cornerWidth + 'px'
+          transform: `translateX(${this.cornerWidth + this.dragX}px)`
         }
       },
       rowHeaderStyle () {
         return {
-          height: `${this.calculatedHeight - this.cornerHeight}px`,
-          width: `${this.cornerWidth}px`
+          transform: `translateY(${this.cornerHeight + this.dragY}px)`
         }
       },
       dataStyle () {
         return {
-          height: `${this.calculatedHeight - this.cornerHeight}px`,
-          width: `${this.calculatedWidth - this.cornerWidth}px`
+          transform: `translateX(${this.cornerWidth + this.dragX}px) translateY(${this.cornerHeight + this.dragY}px)`
         }
-      },
-      textStyle () {
-        return `fill:black;font-size:${this.calculatedFontSize}px;`
       },
       calculatedFontSize () {
         if (this.fontSize) {
@@ -556,12 +536,6 @@
       calculatedRowsHeight () {
         return count(this.rowsAggregation) * this.cellHeight
       },
-      calculatedRowsWidth () {
-        return this.rows.length * this.cellWidth
-      },
-      calculatedColumnsContainerWidth () {
-        return this.calculatedWidth - this.rows.length * this.cellWidth
-      },
       hasRowsAndCols () {
         return !!(this.rows.length && this.cols.length)
       },
@@ -573,9 +547,12 @@
       }
     },
     methods: {
-      onScroll () {
-        this.scrollTop = this.$refs.body.scrollTop
-        this.scrollLeft = this.$refs.body.scrollLeft
+      onDragX (value) {
+        this.dragX = value
+      },
+
+      onDragY (value) {
+        this.dragY = value
       },
 
       getColItems (item, cellHeight, cellWidth, result) {
@@ -811,141 +788,5 @@
 </script>
 
 <style>
-  .container {
-    background-color: white;
-    position: relative;
-  }
-  .corner {
-    float: left;
-  }
-  .cols {
-    overflow: hidden;
-    float: left;
-  }
-  .rows {
-    overflow: hidden;
-    float: left;
-  }
-  .body {
-    position: relative;
-    float: left;
-  }
-  .wrap {
-    overflow: hidden;
-  }
-
-
-  /* perfect-scrollbar v0.6.10 */
-  .ps-container {
-    -ms-touch-action: none;
-    touch-action: none;
-    overflow: hidden !important;
-    -ms-overflow-style: none; }
-  @supports (-ms-overflow-style: none) {
-    .ps-container {
-      overflow: auto !important; } }
-  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-    .ps-container {
-      overflow: auto !important; } }
-  .ps-container.ps-active-x > .ps-scrollbar-x-rail,
-  .ps-container.ps-active-y > .ps-scrollbar-y-rail {
-    display: block;
-    background-color: transparent; }
-  .ps-container.ps-in-scrolling {
-    pointer-events: none; }
-  .ps-container.ps-in-scrolling.ps-x > .ps-scrollbar-x-rail {
-    background-color: #eee;
-    opacity: 0.9; }
-  .ps-container.ps-in-scrolling.ps-x > .ps-scrollbar-x-rail > .ps-scrollbar-x {
-    background-color: #999; }
-  .ps-container.ps-in-scrolling.ps-y > .ps-scrollbar-y-rail {
-    background-color: #eee;
-    opacity: 0.9; }
-  .ps-container.ps-in-scrolling.ps-y > .ps-scrollbar-y-rail > .ps-scrollbar-y {
-    background-color: #999; }
-  .ps-container > .ps-scrollbar-x-rail {
-    display: none;
-    position: absolute;
-    /* please don't change 'position' */
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    opacity: 0;
-    -webkit-transition: background-color .2s linear, opacity .2s linear;
-    -moz-transition: background-color .2s linear, opacity .2s linear;
-    -o-transition: background-color .2s linear, opacity .2s linear;
-    transition: background-color .2s linear, opacity .2s linear;
-    bottom: 3px;
-    /* there must be 'bottom' for ps-scrollbar-x-rail */
-    height: 8px; }
-  .ps-container > .ps-scrollbar-x-rail > .ps-scrollbar-x {
-    position: absolute;
-    /* please don't change 'position' */
-    background-color: #aaa;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    -webkit-transition: background-color .2s linear;
-    -moz-transition: background-color .2s linear;
-    -o-transition: background-color .2s linear;
-    transition: background-color .2s linear;
-    bottom: 0;
-    /* there must be 'bottom' for ps-scrollbar-x */
-    height: 8px; }
-  .ps-container > .ps-scrollbar-y-rail {
-    display: none;
-    position: absolute;
-    /* please don't change 'position' */
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    opacity: 0;
-    -webkit-transition: background-color .2s linear, opacity .2s linear;
-    -moz-transition: background-color .2s linear, opacity .2s linear;
-    -o-transition: background-color .2s linear, opacity .2s linear;
-    transition: background-color .2s linear, opacity .2s linear;
-    right: 3px;
-    /* there must be 'right' for ps-scrollbar-y-rail */
-    width: 8px; }
-  .ps-container > .ps-scrollbar-y-rail > .ps-scrollbar-y {
-    position: absolute;
-    /* please don't change 'position' */
-    background-color: #aaa;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    -webkit-transition: background-color .2s linear;
-    -moz-transition: background-color .2s linear;
-    -o-transition: background-color .2s linear;
-    transition: background-color .2s linear;
-    right: 0;
-    /* there must be 'right' for ps-scrollbar-y */
-    width: 8px; }
-  .ps-container:hover.ps-in-scrolling {
-    pointer-events: none; }
-  .ps-container:hover.ps-in-scrolling.ps-x > .ps-scrollbar-x-rail {
-    background-color: #eee;
-    opacity: 0.9; }
-  .ps-container:hover.ps-in-scrolling.ps-x > .ps-scrollbar-x-rail > .ps-scrollbar-x {
-    background-color: #999; }
-  .ps-container:hover.ps-in-scrolling.ps-y > .ps-scrollbar-y-rail {
-    background-color: #eee;
-    opacity: 0.9; }
-  .ps-container:hover.ps-in-scrolling.ps-y > .ps-scrollbar-y-rail > .ps-scrollbar-y {
-    background-color: #999; }
-  .ps-container:hover > .ps-scrollbar-x-rail,
-  .ps-container:hover > .ps-scrollbar-y-rail {
-    opacity: 0.6; }
-  .ps-container:hover > .ps-scrollbar-x-rail:hover {
-    background-color: #eee;
-    opacity: 0.9; }
-  .ps-container:hover > .ps-scrollbar-x-rail:hover > .ps-scrollbar-x {
-    background-color: #999; }
-  .ps-container:hover > .ps-scrollbar-y-rail:hover {
-    background-color: #eee;
-    opacity: 0.9; }
-  .ps-container:hover > .ps-scrollbar-y-rail:hover > .ps-scrollbar-y {
-    background-color: #999; }
-
 
 </style>
