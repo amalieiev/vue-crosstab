@@ -7,8 +7,9 @@
             :viewportY="cornerHeight"
             :contentWidth="calculatedColumnsWidth"
             :contentHeight="calculatedRowsHeight"
-            :mapMaxHeight="100"
-            :mapMaxWidth="100"
+            :mapMaxHeight="98"
+            :mapMaxWidth="98"
+            :mapIndentation="1"
             @dragX="onDragX"
             @dragY="onDragY"
     >
