@@ -1,5 +1,15 @@
 <template>
-    <g @mousedown="select" @mousemove="move" @mouseup="deselect" @mouseleave="deselect">
+    <g
+            @mousedown="mousedown"
+            @mousemove="mousemove"
+            @mouseup="mouseup"
+            @mouseleave="mouseleave"
+            @touchstart.prevent="touchstart"
+            @touchmove.prevent="touchmove"
+            @touchend.prevent="touchend"
+            @mousewheel.prevent="mousewheel"
+            @DOMMouseScroll.prevent="mousewheel"
+    >
         <slot></slot>
         <rect :x="mapX" :y="mapY" fill="gray" fill-opacity=".5" :width="mapWidth" :height="mapHeight" v-if="isRequired"></rect>
         <rect :x="mapX" :y="mapY" fill="white" fill-opacity=".5" :width="mapViewportWidth" :height="mapViewportHeight" :style="mapViewportStyle" v-if="isRequired"></rect>
@@ -132,6 +142,34 @@
 
       deselect () {
         this.selected = false
+      },
+
+      mousedown (evt) {
+        this.select(evt)
+      },
+
+      mousemove (evt) {
+        this.move(evt)
+      },
+
+      mouseup (evt) {
+        this.deselect(evt)
+      },
+
+      mouseleave (evt) {
+        this.deselect(evt)
+      },
+
+      touchstart (evt) {
+        this.select(evt.touches[0])
+      },
+
+      touchmove (evt) {
+        this.move(evt.touches[0])
+      },
+
+      touchend (evt) {
+        this.deselect(evt.touches[0])
       }
     }
   }
