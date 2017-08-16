@@ -1,8 +1,8 @@
 <template>
     <g @mousedown="select" @mousemove="move" @mouseup="deselect" @mouseleave="deselect">
         <slot></slot>
-        <rect :x="mapX" :y="mapY" fill="gray" fill-opacity=".5" :width="mapWidth" :height="mapHeight"></rect>
-        <rect :x="mapX" :y="mapY" fill="white" fill-opacity=".5" :width="mapViewportWidth" :height="mapViewportHeight" :style="mapViewportStyle"></rect>
+        <rect :x="mapX" :y="mapY" fill="gray" fill-opacity=".5" :width="mapWidth" :height="mapHeight" v-if="isRequired"></rect>
+        <rect :x="mapX" :y="mapY" fill="white" fill-opacity=".5" :width="mapViewportWidth" :height="mapViewportHeight" :style="mapViewportStyle" v-if="isRequired"></rect>
     </g>
 </template>
 
@@ -96,6 +96,9 @@
         return {
           transform: `translateX(${x}px) translateY(${y}px)`
         }
+      },
+      isRequired () {
+        return this.viewportHeight < this.contentHeight || this.viewportWidth < this.contentWidth
       }
     },
     methods: {
@@ -108,6 +111,7 @@
         this.toX = evt.clientX
         this.toY = evt.clientY
       },
+
       move (evt) {
         if (this.selected) {
           let clientX = evt.clientX
@@ -125,6 +129,7 @@
           this.$emit('dragY', this.currentY + this.toY - this.fromY)
         }
       },
+
       deselect () {
         this.selected = false
       }
