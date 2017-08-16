@@ -114,8 +114,7 @@
     methods: {
       select (evt) {
         this.selected = true
-        this.currentX = this.currentX + this.toX - this.fromX
-        this.currentY = this.currentY + this.toY - this.fromY
+
         this.fromX = evt.clientX
         this.fromY = evt.clientY
         this.toX = evt.clientX
@@ -142,6 +141,12 @@
 
       deselect () {
         this.selected = false
+
+        this.currentX = this.currentX + this.toX - this.fromX
+        this.currentY = this.currentY + this.toY - this.fromY
+
+        this.fromX = this.toX
+        this.fromY = this.toY
       },
 
       mousedown (evt) {
@@ -172,7 +177,20 @@
         this.deselect(evt.touches[0])
       },
 
-      mousewheel (evt) {}
+      mousewheel (evt) {
+        let deltaX = evt.deltaX
+        let deltaY = evt.deltaY
+
+        if (this.currentX + deltaX > 0) deltaX = -this.currentX
+        if (this.currentX + deltaX < this.viewportWidth - this.contentWidth) deltaX = this.viewportWidth - this.contentWidth - this.currentX
+        if (this.currentY + deltaY > 0) deltaY = -this.currentY
+        if (this.currentY + deltaY < this.viewportHeight - this.contentHeight) deltaY = this.viewportHeight - this.contentHeight - this.currentY
+
+        this.$emit('dragX', this.currentX + deltaX)
+        this.$emit('dragY', this.currentY + deltaY)
+        this.currentX = this.currentX + deltaX
+        this.currentY = this.currentY + deltaY
+      }
     }
   }
 </script>
