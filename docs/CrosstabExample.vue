@@ -5,8 +5,7 @@
     :cols="cols"
     aggregator="sum"
     measure="total_bill"
-    :width="600"
-    :height="200"
+    height="200"
   ></crosstab>
 </template>
 

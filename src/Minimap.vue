@@ -170,7 +170,9 @@
 
       touchend (evt) {
         this.deselect(evt.touches[0])
-      }
+      },
+
+      mousewheel (evt) {}
     }
   }
 </script>

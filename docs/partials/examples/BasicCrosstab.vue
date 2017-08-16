@@ -7,8 +7,7 @@ div
       :cols="cols",
       :rows="rows",
       aggregator="sum",
-      measure="total_bill",
-      :width="380"
+      measure="total_bill"
     )
 </template>
 

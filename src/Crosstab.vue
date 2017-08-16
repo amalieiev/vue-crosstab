@@ -126,7 +126,9 @@
     data () {
       return {
         dragX: 0,
-        dragY: 0
+        dragY: 0,
+        parentNodeHeight: Infinity,
+        parentNodeWidth: Infinity
       }
     },
     props: {
@@ -149,12 +151,8 @@
       measure: {
         type: String
       },
-      width: {
-        type: Number
-      },
-      height: {
-        type: Number
-      },
+      width: {},
+      height: {},
       cellWidth: {
         type: Number,
         default: 100
@@ -169,6 +167,10 @@
       palette: {
         type: Object
       }
+    },
+    mounted () {
+      this.parentNodeHeight = this.$el.parentNode.clientHeight
+      this.parentNodeWidth = this.$el.parentNode.clientWidth
     },
     computed: {
       aggregatorFn () {
@@ -520,17 +522,27 @@
       },
       calculatedWidth () {
         if (this.width) {
+          if (/%$/.test(this.width)) {
+            return this.parentNodeWidth * Number.parseInt(this.width) / 100
+          }
           return this.width
-        }
+        } else {
+          let fullWidth = this.cellWidth * (this.rows.length + count(this.colsAggregation) + (this.hasColsOnly || this.hasRowsOnly ? 1 : 0))
 
-        return this.cellWidth * (this.rows.length + count(this.colsAggregation) + (this.hasColsOnly || this.hasRowsOnly ? 1 : 0))
+          return fullWidth < this.parentNodeWidth ? fullWidth : this.parentNodeWidth
+        }
       },
       calculatedHeight () {
         if (this.height) {
+          if (/%$/.test(this.height)) {
+            return this.parentNodeHeight * Number.parseInt(this.height) / 100
+          }
           return this.height
-        }
+        } else {
+          let fullHeight = this.cellHeight * (this.cols.length + count(this.rowsAggregation) + (this.hasRowsAndCols ? 2 : 1))
 
-        return this.cellHeight * (this.cols.length + count(this.rowsAggregation) + (this.hasRowsAndCols ? 2 : 1))
+          return fullHeight < this.parentNodeHeight ? fullHeight : this.parentNodeHeight
+        }
       },
       calculatedColumnsWidth () {
         return count(this.colsAggregation) * this.cellWidth
