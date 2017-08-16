@@ -86,10 +86,10 @@
         }
       },
       mapY () {
-        return this.viewportHeight + this.viewportY - this.mapHeight - this.mapIndentation
+        return this.mapIndentation
       },
       mapX () {
-        return this.viewportWidth + this.viewportX - this.mapWidth - this.mapIndentation
+        return this.mapIndentation
       },
       mapViewportWidth () {
         return this.mapWidth / this.contentWidth * this.viewportWidth
