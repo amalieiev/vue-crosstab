@@ -20,7 +20,9 @@
                 :width="item.width"
                 :x="item.x"
                 :y="item.y"
-                :style="item.rectStyle"
+                :style="getRectStyle(item)"
+                @click="onCellClick($event, item)"
+                @touchstart="onCellClick($event, item)"
         ></rect>
         <text
                 v-for="item in aggregatedData"
@@ -31,7 +33,9 @@
                 :dy="item.height / 2 + calculatedFontSize / 2"
                 :dx="item.width / 2"
                 text-anchor="middle"
-                :style="item.textStyle"
+                :style="getTextStyle(item)"
+                @click="onCellClick($event, item)"
+                @touchstart="onCellClick($event, item)"
         >{{ item.text }}
         </text>
       </g>
@@ -444,6 +448,7 @@
           }]
         }
       },
+
       aggregatedData () {
         if (!this.data.length) return
 
@@ -451,22 +456,37 @@
         let colItems = flat(aggregateBy(this.data, this.cols, this.aggregatorFn))
         let result = []
 
+        const isTotal = item => item.length === 1
+        const isGrandTotal = item => item.length === 0
+        const isOdd = isTotalRow => {
+          if (isOdd.prev) {
+            isOdd.prev.isOdd = !isOdd.prev.isOdd
+            if (isOdd.prev.isTotalRow) isOdd.prev.isOdd = true
+            isOdd.prev.isTotalRow = isTotalRow
+            return isOdd.prev.isOdd
+          } else {
+            isOdd.prev = {}
+            isOdd.prev.isTotalRow = isTotalRow
+            isOdd.prev.isOdd = true
+            return true
+          }
+        }
+
         _.each(rowItems, (row, rowIdx) => {
+          let isOddRow = isOdd(isTotal(row))
+
           _.each(colItems, (col, colIdx) => {
             result.push({
-              text: getValue(this.data, this.rows, this.cols, rowItems[rowIdx].concat(colItems[colIdx]), this.aggregatorFn),
+              text: getValue(this.data, this.rows, this.cols, row.concat(col), this.aggregatorFn),
               x: colIdx * this.cellWidth,
               y: rowIdx * this.cellHeight,
+              isTotalColumn: isTotal(col),
+              isTotalRow: isTotal(row),
+              isGrandTotalColumn: isGrandTotal(col),
+              isGrandTotalRow: isGrandTotal(row),
+              isOddRow: isOddRow,
               width: this.cellWidth,
-              height: this.cellHeight,
-              textStyle: {
-                fontSize: this.calculatedFontSize,
-                fill: this.theme.text
-              },
-              rectStyle: {
-                fill: this.theme.background,
-                stroke: this.theme.border
-              }
+              height: this.cellHeight
             })
           })
         })
@@ -568,6 +588,23 @@
 
       onDragY (value) {
         this.dragY = value
+      },
+
+      onCellClick (evt, item) {},
+
+      getTextStyle (item) {
+        return {
+          fontSize: this.calculatedFontSize,
+          fontWeight: item.isTotalRow || item.isGrandTotalRow || item.isTotalColumn || item.isGrandTotalColumn ? 'bold' : 'normal',
+          fill: this.theme.text
+        }
+      },
+
+      getRectStyle (item) {
+        return {
+          fill: item.isTotalRow || item.isGrandTotalRow ? this.theme.primary : item.isOddRow ? this.theme.background : this.theme.secondary,
+          stroke: this.theme.border
+        }
       },
 
       getColItems (item, cellHeight, cellWidth, result) {
