@@ -10,6 +10,7 @@
             :mapMaxHeight="98"
             :mapMaxWidth="98"
             :mapIndentation="1"
+            :scrollReverse="scrollReverse"
             @dragX="onDragX"
             @dragY="onDragY"
     >
@@ -171,6 +172,10 @@
       },
       palette: {
         type: Object
+      },
+      scrollReverse: {
+        type: Boolean,
+        default: true
       }
     },
     mounted () {

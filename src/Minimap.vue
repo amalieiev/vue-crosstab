@@ -56,6 +56,10 @@
       mapIndentation: {
         type: Number,
         default: 3
+      },
+      scrollReverse: {
+        type: Boolean,
+        default: true
       }
     },
 
@@ -66,8 +70,8 @@
         currentY: 0,
         fromX: 0,
         fromY: 0,
-        toX: 0,
-        toY: 0
+        deltaX: 0,
+        deltaY: 0
       }
     },
     computed: {
@@ -101,8 +105,8 @@
         return this.mapWidth / this.contentWidth
       },
       mapViewportStyle () {
-        let x = -(this.currentX + this.toX - this.fromX) * this.scale
-        let y = -(this.currentY + this.toY - this.fromY) * this.scale
+        let x = -(this.currentX + this.deltaX) * this.scale
+        let y = -(this.currentY + this.deltaY) * this.scale
         return {
           transform: `translateX(${x}px) translateY(${y}px)`
         }
@@ -115,38 +119,40 @@
       select (evt) {
         this.selected = true
 
+        this.deltaX = 0
+        this.deltaY = 0
         this.fromX = evt.clientX
         this.fromY = evt.clientY
-        this.toX = evt.clientX
-        this.toY = evt.clientY
       },
 
-      move (evt) {
+      move (evt, scrollReverse) {
         if (this.selected) {
-          let clientX = evt.clientX
-          let clientY = evt.clientY
+          let deltaX = scrollReverse ? this.fromX - evt.clientX : evt.clientX - this.fromX
+          let deltaY = scrollReverse ? this.fromY - evt.clientY : evt.clientY - this.fromY
 
-          if (this.currentX + clientX - this.fromX > 0) clientX = this.fromX - this.currentX
-          if (this.currentX + clientX - this.fromX < this.viewportWidth - this.contentWidth) clientX = this.viewportWidth + this.fromX - this.currentX - this.contentWidth
-          if (this.currentY + clientY - this.fromY > 0) clientY = this.fromY - this.currentY
-          if (this.currentY + clientY - this.fromY < this.viewportHeight - this.contentHeight) clientY = this.viewportHeight + this.fromY - this.currentY - this.contentHeight
+          if (this.currentX + deltaX > 0) deltaX = -this.currentX
+          if (this.currentX + deltaX < this.viewportWidth - this.contentWidth) deltaX = this.viewportWidth - this.contentWidth - this.currentX
+          if (this.currentY + deltaY > 0) deltaY = -this.currentY
+          if (this.currentY + deltaY < this.viewportHeight - this.contentHeight) deltaY = this.viewportHeight - this.contentHeight - this.currentY
 
-          this.toX = clientX
-          this.toY = clientY
+          this.$emit('dragX', this.currentX + deltaX)
+          this.$emit('dragY', this.currentY + deltaY)
 
-          this.$emit('dragX', this.currentX + this.toX - this.fromX)
-          this.$emit('dragY', this.currentY + this.toY - this.fromY)
+          this.deltaX = deltaX
+          this.deltaY = deltaY
         }
       },
 
       deselect () {
         this.selected = false
 
-        this.currentX = this.currentX + this.toX - this.fromX
-        this.currentY = this.currentY + this.toY - this.fromY
+        this.currentX = this.currentX + this.deltaX
+        this.currentY = this.currentY + this.deltaY
 
-        this.fromX = this.toX
-        this.fromY = this.toY
+        this.deltaX = 0
+        this.deltaY = 0
+        this.fromX = 0
+        this.fromY = 0
       },
 
       mousedown (evt) {
@@ -170,7 +176,7 @@
       },
 
       touchmove (evt) {
-        this.move(evt.touches[0])
+        this.move(evt.touches[0], this.scrollReverse)
       },
 
       touchend (evt) {
@@ -178,8 +184,8 @@
       },
 
       mousewheel (evt) {
-        let deltaX = evt.deltaX
-        let deltaY = evt.deltaY
+        let deltaX = this.scrollReverse ? -evt.deltaX : evt.deltaX
+        let deltaY = this.scrollReverse ? -evt.deltaY : evt.deltaY
 
         if (this.currentX + deltaX > 0) deltaX = -this.currentX
         if (this.currentX + deltaX < this.viewportWidth - this.contentWidth) deltaX = this.viewportWidth - this.contentWidth - this.currentX
