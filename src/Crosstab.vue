@@ -339,6 +339,26 @@
           })
         }
 
+        if (this.hasNothing) {
+          result.push({
+            text: 'measure',
+            x: 0,
+            y: 0,
+            height: this.cellHeight,
+            width: this.cellWidth,
+            textStyle: {
+              fontSize: this.calculatedFontSize,
+              fontWeight: 'bold',
+              fill: this.theme.text,
+              dx: this.cellWidth / 2,
+              'text-anchor': 'middle'
+            },
+            rectStyle: {
+              fill: 'none'
+            }
+          })
+        }
+
         return result
       },
 
@@ -387,22 +407,41 @@
             return colItems.concat(colMeasureItems)
           }
         } else {
-          return [{
-            text: 'Totals',
-            x: 0,
-            y: 0,
-            height: this.cellHeight,
-            width: this.cellWidth,
-            textStyle: {
-              fontSize: this.calculatedFontSize,
-              fontWeight: 'bold',
-              fill: this.theme.text
-            },
-            rectStyle: {
-              fill: this.theme.primary,
-              stroke: this.theme.border
-            }
-          }]
+          if (this.hasNothing) {
+            return [{
+              text: this.measure,
+              x: 0,
+              y: 0,
+              height: this.cellHeight,
+              width: this.cellWidth,
+              textStyle: {
+                fontSize: this.calculatedFontSize,
+                fontWeight: 'bold',
+                fill: this.theme.text
+              },
+              rectStyle: {
+                fill: this.theme.primary,
+                stroke: this.theme.border
+              }
+            }]
+          } else {
+            return [{
+              text: 'Totals',
+              x: 0,
+              y: 0,
+              height: this.cellHeight,
+              width: this.cellWidth,
+              textStyle: {
+                fontSize: this.calculatedFontSize,
+                fontWeight: 'bold',
+                fill: this.theme.text
+              },
+              rectStyle: {
+                fill: this.theme.primary,
+                stroke: this.theme.border
+              }
+            }]
+          }
         }
       },
       rowItems () {
@@ -509,6 +548,9 @@
         if (this.hasRowsOnly) {
           return this.cellHeight
         }
+        if (this.hasNothing) {
+          return this.cellHeight
+        }
       },
       cornerWidth () {
         if (this.hasRowsAndCols) {
@@ -519,6 +561,9 @@
         }
         if (this.hasRowsOnly) {
           return (this.rows.length + 1) * this.cellWidth
+        }
+        if (this.hasNothing) {
+          return this.cellWidth
         }
       },
 
@@ -547,7 +592,7 @@
         return _.extend({}, palette, this.palette)
       },
       calculatedWidth () {
-        let fullWidth = this.cellWidth * (this.rows.length + count(this.colsAggregation) + (this.hasColsOnly || this.hasRowsOnly ? 1 : 0))
+        let fullWidth = this.cellWidth * (this.rows.length + count(this.colsAggregation) + (this.hasColsOnly || this.hasRowsOnly || this.hasNothing ? 1 : 0))
 
         if (this.width) {
           if (/%$/.test(this.width)) {
@@ -584,6 +629,9 @@
       },
       hasColsOnly () {
         return !!(this.cols.length && !this.rows.length)
+      },
+      hasNothing () {
+        return !!(!this.cols.length && !this.rows.length)
       }
     },
     methods: {
