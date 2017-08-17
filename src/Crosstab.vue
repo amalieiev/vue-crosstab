@@ -500,24 +500,24 @@
       },
 
       cornerHeight () {
-        if (this.rows.length && this.cols.length) {
+        if (this.hasRowsAndCols) {
           return (this.cols.length + 2) * this.cellHeight
         }
-        if (!this.rows.length && this.cols.length) {
+        if (this.hasColsOnly) {
           return (this.cols.length + 1) * this.cellHeight
         }
-        if (this.rows.length && !this.cols.length) {
+        if (this.hasRowsOnly) {
           return this.cellHeight
         }
       },
       cornerWidth () {
-        if (this.rows.length && this.cols.length) {
+        if (this.hasRowsAndCols) {
           return this.rows.length * this.cellWidth
         }
-        if (!this.rows.length && this.cols.length) {
+        if (this.hasColsOnly) {
           return this.cellWidth
         }
-        if (this.rows.length && !this.cols.length) {
+        if (this.hasRowsOnly) {
           return (this.rows.length + 1) * this.cellWidth
         }
       },
@@ -547,26 +547,26 @@
         return _.extend({}, palette, this.palette)
       },
       calculatedWidth () {
+        let fullWidth = this.cellWidth * (this.rows.length + count(this.colsAggregation) + (this.hasColsOnly || this.hasRowsOnly ? 1 : 0))
+
         if (this.width) {
           if (/%$/.test(this.width)) {
             return this.parentNodeWidth * Number.parseInt(this.width) / 100
           }
-          return this.width
+          return this.width > fullWidth ? fullWidth : this.width
         } else {
-          let fullWidth = this.cellWidth * (this.rows.length + count(this.colsAggregation) + (this.hasColsOnly || this.hasRowsOnly ? 1 : 0))
-
           return fullWidth < this.parentNodeWidth ? fullWidth : this.parentNodeWidth
         }
       },
       calculatedHeight () {
+        let fullHeight = this.cellHeight * (this.cols.length + count(this.rowsAggregation) + (this.hasRowsAndCols ? 2 : 1))
+
         if (this.height) {
           if (/%$/.test(this.height)) {
             return this.parentNodeHeight * Number.parseInt(this.height) / 100
           }
-          return this.height
+          return this.height > fullHeight ? fullHeight : this.height
         } else {
-          let fullHeight = this.cellHeight * (this.cols.length + count(this.rowsAggregation) + (this.hasRowsAndCols ? 2 : 1))
-
           return fullHeight < this.parentNodeHeight ? fullHeight : this.parentNodeHeight
         }
       },
