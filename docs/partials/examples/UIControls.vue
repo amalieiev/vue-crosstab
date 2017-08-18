@@ -15,7 +15,7 @@
           :cols="cols",
           :aggregator="aggregator",
           :measure="measure",
-          :cellWidth="50",
+          :cellWidth="60",
           :fontSize="10",
           height="300")
 </template>
@@ -36,7 +36,7 @@ export default {
       data,
       measure: 'tip',
       aggregator: 'count',
-      cols: ['sex'],
+      cols: ['sex', 'smoker'],
       rows: ['time', 'day']
     }
   },
