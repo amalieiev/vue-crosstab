@@ -11,11 +11,11 @@
     >
         <slot></slot>
         <rect
+            class="x-scrollbar"
             :x="viewportX"
             :y="viewportY + viewportHeight - 6"
             :width="xScrollbarWidth"
             height=5 fill="gray"
-            fill-opacity=".3"
             rx="3"
             ry="3"
             :style="xScrollbarStyle"
@@ -23,6 +23,7 @@
             @mousedown="mousedown"
         ></rect>
         <rect
+            class="y-scrollbar"
             :x="viewportX + viewportWidth - 6"
             :y="viewportY"
             width="5"
@@ -159,7 +160,7 @@
       },
 
       mousemove (evt) {
-        this.move(evt, this.scrollReverse)
+        this.move(evt, true)
       },
 
       mouseup (evt) {
@@ -200,7 +201,7 @@
   }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
     svg text {
         -webkit-user-select: none;
         -moz-user-select: none;
@@ -209,5 +210,15 @@
     }
     svg text::selection {
         background: none;
+    }
+
+    .x-scrollbar,
+    .y-scrollbar {
+        transition: fill-opacity .5s;
+        fill-opacity: .3;
+    }
+    .x-scrollbar:hover,
+    .y-scrollbar:hover {
+        fill-opacity: .7;
     }
 </style>

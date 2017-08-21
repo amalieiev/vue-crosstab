@@ -366,7 +366,7 @@
           let colItems = this.getColItems(setColPosition(this.colsAggregation), this.cellHeight, this.cellWidth)
           let colMeasureItems = _.map(Array(colsCount), (item, colIdx) => {
             return {
-              text: this.measure,
+              text: this.measure ? `${this.measure}(${this.aggregator})` : this.aggregator,
               x: colIdx * this.cellWidth,
               y: this.cols.length * this.cellHeight,
               height: this.cellHeight,
@@ -406,7 +406,7 @@
         } else {
           if (this.hasNothing) {
             return [{
-              text: this.measure,
+              text: this.measure ? `${this.measure}(${this.aggregator})` : this.aggregator,
               x: 0,
               y: 0,
               height: this.cellHeight,
@@ -452,7 +452,7 @@
           } else {
             let rowMeasureItems = _.map(Array(rowsCount), (item, rowIdx) => {
               return {
-                text: this.measure,
+                text: this.measure ? `${this.measure}(${this.aggregator})` : this.aggregator,
                 x: this.rows.length * this.cellWidth,
                 y: rowIdx * this.cellHeight,
                 height: this.cellHeight,
@@ -497,32 +497,30 @@
         let colItems = flat(aggregateBy(this.data, this.cols, this.aggregatorFn))
         let result = []
 
-        const isTotal = item => item.length === 1
-        const isGrandTotal = item => item.length === 0
-        const isOdd = isTotalRow => {
+        const isTotal = (item, items) => items.length > 1 ? item.length === 1 : false
+        const isGrandTotal = (item) => item.length === 0
+        const isOdd = () => {
           if (isOdd.prev) {
             isOdd.prev.isOdd = !isOdd.prev.isOdd
-            if (isOdd.prev.isTotalRow) isOdd.prev.isOdd = true
-            isOdd.prev.isTotalRow = isTotalRow
             return isOdd.prev.isOdd
           } else {
             isOdd.prev = {}
-            isOdd.prev.isTotalRow = isTotalRow
             isOdd.prev.isOdd = true
             return true
           }
         }
+        console.log(colItems)
 
         _.each(rowItems, (row, rowIdx) => {
-          let isOddRow = isOdd(isTotal(row))
+          let isOddRow = isOdd()
 
           _.each(colItems, (col, colIdx) => {
             result.push({
               text: getValue(this.data, this.rows, this.cols, row.concat(col), this.aggregatorFn),
               x: colIdx * this.cellWidth,
               y: rowIdx * this.cellHeight,
-              isTotalColumn: isTotal(col),
-              isTotalRow: isTotal(row),
+              isTotalColumn: isTotal(col, this.cols),
+              isTotalRow: isTotal(row, this.rows),
               isGrandTotalColumn: isGrandTotal(col),
               isGrandTotalRow: isGrandTotal(row),
               isOddRow: isOddRow,
@@ -652,7 +650,7 @@
 
       getRectStyle (item) {
         return {
-          fill: item.isTotalRow || item.isGrandTotalRow ? this.theme.primary : item.isOddRow ? this.theme.background : this.theme.secondary,
+          fill: item.isOddRow ? this.theme.background : this.theme.secondary,
           stroke: this.theme.border
         }
       },
