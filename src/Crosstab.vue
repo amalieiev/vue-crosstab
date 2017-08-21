@@ -1,15 +1,12 @@
 <template>
   <svg :height="calculatedHeight" :width="calculatedWidth">
-    <minimap
+    <scrollbar
             :viewportHeight="calculatedHeight - cornerHeight"
             :viewportWidth="calculatedWidth - cornerWidth"
             :viewportX="cornerWidth"
             :viewportY="cornerHeight"
             :contentWidth="calculatedColumnsWidth"
             :contentHeight="calculatedRowsHeight"
-            :mapMaxHeight="98"
-            :mapMaxWidth="98"
-            :mapIndentation="1"
             :scrollReverse="scrollReverse"
             @dragX="onDragX"
             @dragY="onDragY"
@@ -107,14 +104,14 @@
         >{{ item.text }}
         </text>
       </g>
-    </minimap>
+    </scrollbar>
   </svg>
 </template>
 
 <script>
   import _ from 'underscore'
   import { aggregators } from './utils'
-  import Minimap from './Minimap.vue'
+  import Scrollbar from './Scrollbar.vue'
 
   const palette = {
     primary: '#d9e4f1',
@@ -126,7 +123,7 @@
 
   export default {
     components: {
-      Minimap
+      Scrollbar
     },
     name: 'crosstab',
     data () {

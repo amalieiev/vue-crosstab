@@ -1,6 +1,5 @@
 <template>
     <g
-            @mousedown="mousedown"
             @mousemove="mousemove"
             @mouseup="mouseup"
             @mouseleave="mouseleave"
@@ -11,14 +10,37 @@
             @DOMMouseScroll.prevent="mousewheel"
     >
         <slot></slot>
-        <rect :x="mapX" :y="mapY" fill="gray" fill-opacity=".5" :width="mapWidth" :height="mapHeight" v-if="isRequired"></rect>
-        <rect :x="mapX" :y="mapY" fill="white" fill-opacity=".5" :width="mapViewportWidth" :height="mapViewportHeight" :style="mapViewportStyle" v-if="isRequired"></rect>
+        <rect
+            :x="viewportX"
+            :y="viewportY + viewportHeight - 6"
+            :width="xScrollbarWidth"
+            height=5 fill="gray"
+            fill-opacity=".3"
+            rx="3"
+            ry="3"
+            :style="xScrollbarStyle"
+            v-if="isXScrollbarRequired"
+            @mousedown="mousedown"
+        ></rect>
+        <rect
+            :x="viewportX + viewportWidth - 6"
+            :y="viewportY"
+            width="5"
+            :height="yScrollbarHeight"
+            fill="gray"
+            fill-opacity=".3"
+            rx="3"
+            ry="3"
+            :style="yScrollbarStyle"
+            v-if="isYScrollbarRequired"
+            @mousedown="mousedown"
+        ></rect>
     </g>
 </template>
 
 <script>
   export default {
-    name: 'minimap',
+    name: 'scrollbar',
 
     props: {
       viewportHeight: {
@@ -45,18 +67,6 @@
         type: Number,
         default: 0
       },
-      mapMaxHeight: {
-        type: Number,
-        default: 50
-      },
-      mapMaxWidth: {
-        type: Number,
-        default: 50
-      },
-      mapIndentation: {
-        type: Number,
-        default: 3
-      },
       scrollReverse: {
         type: Boolean,
         default: true
@@ -75,44 +85,33 @@
       }
     },
     computed: {
-      mapHeight () {
-        if (this.contentHeight > this.contentWidth) {
-          return this.mapMaxHeight
-        } else {
-          return this.contentHeight * this.mapMaxWidth / this.contentWidth
-        }
+      xScrollbarWidth () {
+        return (this.viewportWidth / this.contentWidth) * this.viewportWidth
       },
-      mapWidth () {
-        if (this.contentHeight < this.contentWidth) {
-          return this.mapMaxWidth
-        } else {
-          return this.contentWidth * this.mapMaxHeight / this.contentHeight
-        }
+      yScrollbarHeight () {
+        return (this.viewportHeight / this.contentHeight) * this.viewportHeight
       },
-      mapY () {
-        return this.mapIndentation
-      },
-      mapX () {
-        return this.mapIndentation
-      },
-      mapViewportWidth () {
-        return this.mapWidth / this.contentWidth * this.viewportWidth
-      },
-      mapViewportHeight () {
-        return this.mapHeight / this.contentHeight * this.viewportHeight
-      },
-      scale () {
-        return this.mapWidth / this.contentWidth
-      },
-      mapViewportStyle () {
-        let x = -(this.currentX + this.deltaX) * this.scale
-        let y = -(this.currentY + this.deltaY) * this.scale
+      xScrollbarStyle () {
         return {
-          transform: `translateX(${x}px) translateY(${y}px)`
+          transform: `translateX(${-(this.currentX + this.deltaX) * this.xScale}px)`
         }
       },
-      isRequired () {
-        return this.viewportHeight < this.contentHeight || this.viewportWidth < this.contentWidth
+      yScrollbarStyle () {
+        return {
+          transform: `translateY(${-(this.currentY + this.deltaY) * this.yScale}px)`
+        }
+      },
+      isXScrollbarRequired () {
+        return this.viewportWidth < this.contentWidth
+      },
+      isYScrollbarRequired () {
+        return this.viewportHeight < this.contentHeight
+      },
+      xScale () {
+        return this.viewportWidth / this.contentWidth
+      },
+      yScale () {
+        return this.viewportHeight / this.contentHeight
       }
     },
     methods: {
@@ -160,7 +159,7 @@
       },
 
       mousemove (evt) {
-        this.move(evt)
+        this.move(evt, this.scrollReverse)
       },
 
       mouseup (evt) {
@@ -176,7 +175,7 @@
       },
 
       touchmove (evt) {
-        this.move(evt.touches[0], this.scrollReverse)
+        this.move(evt.touches[0])
       },
 
       touchend (evt) {
