@@ -185,11 +185,11 @@
           return aggregators[this.aggregator](items, this.measure)
         }
       },
-      rowsAggregation () {
-        return aggregateBy(this.data, this.rows, this.aggregatorFn)
+      groupedRows () {
+        return groupBy(this.data, this.rows)
       },
-      colsAggregation () {
-        return aggregateBy(this.data, this.cols, this.aggregatorFn)
+      groupedCols () {
+        return groupBy(this.data, this.cols)
       },
       cornerItems () {
         let result = []
@@ -362,8 +362,8 @@
       colItems () {
         if (!this.data.length) return
         if (this.cols.length) {
-          let colsCount = count(this.colsAggregation)
-          let colItems = this.getColItems(setColPosition(this.colsAggregation), this.cellHeight, this.cellWidth)
+          let colsCount = count(this.groupedCols)
+          let colItems = this.getColItems(setColPosition(this.groupedCols), this.cellHeight, this.cellWidth)
           let colMeasureItems = _.map(Array(colsCount), (item, colIdx) => {
             return {
               text: this.measure ? `${this.measure}(${this.aggregator})` : this.aggregator,
@@ -444,8 +444,8 @@
       rowItems () {
         if (!this.data.length) return
         if (this.rows.length) {
-          let rowsCount = count(this.rowsAggregation)
-          let rowItems = this.getRowItems(setRowPosition(this.rowsAggregation), this.cellHeight, this.cellWidth)
+          let rowsCount = count(this.groupedRows)
+          let rowItems = this.getRowItems(setRowPosition(this.groupedRows), this.cellHeight, this.cellWidth)
 
           if (this.cols.length) {
             return rowItems
@@ -493,8 +493,8 @@
       aggregatedData () {
         if (!this.data.length) return
 
-        let rowItems = flat(this.rowsAggregation)
-        let colItems = flat(this.colsAggregation)
+        let rowItems = flat(this.groupedRows)
+        let colItems = flat(this.groupedCols)
         let result = []
 
         const isOdd = () => {
@@ -580,7 +580,7 @@
         return _.extend({}, palette, this.palette)
       },
       calculatedWidth () {
-        let fullWidth = this.cellWidth * (this.rows.length + count(this.colsAggregation) + (this.hasColsOnly || this.hasRowsOnly || this.hasNothing ? 1 : 0))
+        let fullWidth = this.cellWidth * (this.rows.length + count(this.groupedCols) + (this.hasColsOnly || this.hasRowsOnly || this.hasNothing ? 1 : 0))
 
         if (this.width) {
           if (/%$/.test(this.width)) {
@@ -592,7 +592,7 @@
         }
       },
       calculatedHeight () {
-        let fullHeight = this.cellHeight * (this.cols.length + count(this.rowsAggregation) + (this.hasRowsAndCols ? 2 : 1))
+        let fullHeight = this.cellHeight * (this.cols.length + count(this.groupedRows) + (this.hasRowsAndCols ? 2 : 1))
 
         if (this.height) {
           if (/%$/.test(this.height)) {
@@ -604,10 +604,10 @@
         }
       },
       calculatedColumnsWidth () {
-        return count(this.colsAggregation) * this.cellWidth
+        return count(this.groupedCols) * this.cellWidth
       },
       calculatedRowsHeight () {
-        return count(this.rowsAggregation) * this.cellHeight
+        return count(this.groupedRows) * this.cellHeight
       },
       hasRowsAndCols () {
         return !!(this.rows.length && this.cols.length)
@@ -726,6 +726,36 @@
           tmp.items = aggregateBy(value, names, aggregatorFn, levelIdx + 1)
         } else {
           tmp.aggregation = aggregatorFn(value)
+        }
+
+        return tmp
+      })
+    }
+  }
+
+  function groupBy (data, items, levelIdx) {
+    if (levelIdx === undefined) {
+      levelIdx = 0
+
+      let tmp = {
+        name: 'All'
+      }
+
+      if (items.length) {
+        tmp.items = groupBy(data, items, levelIdx)
+      }
+
+      return tmp
+    } else {
+      return _.map(_.groupBy(data, items[levelIdx]), function (value, key) {
+        let tmp = {
+          name: key
+        }
+
+        if (items.length > levelIdx + 1) {
+          tmp.items = groupBy(value, items, levelIdx + 1)
+        } else {
+          tmp.values = value
         }
 
         return tmp
