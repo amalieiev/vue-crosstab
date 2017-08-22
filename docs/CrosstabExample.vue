@@ -3,8 +3,7 @@
     :data="data"
     :rows="rows"
     :cols="cols"
-    aggregator="sum"
-    measure="total_bill"
+    aggregator="count"
     height="200"
   ></crosstab>
 </template>
@@ -20,8 +19,8 @@ export default {
   data () {
     return {
       data,
-      cols: ['sex', 'smoker'],
-      rows: ['time', 'day']
+      cols: [],
+      rows: ['sex', 'day', 'time']
     }
   }
 }

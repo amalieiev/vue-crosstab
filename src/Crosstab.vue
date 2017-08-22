@@ -493,12 +493,10 @@
       aggregatedData () {
         if (!this.data.length) return
 
-        let rowItems = flat(aggregateBy(this.data, this.rows, this.aggregatorFn))
-        let colItems = flat(aggregateBy(this.data, this.cols, this.aggregatorFn))
+        let rowItems = flat(this.rowsAggregation)
+        let colItems = flat(this.colsAggregation)
         let result = []
 
-        const isTotal = (item, items) => items.length > 1 ? item.length === 1 : false
-        const isGrandTotal = (item) => item.length === 0
         const isOdd = () => {
           if (isOdd.prev) {
             isOdd.prev.isOdd = !isOdd.prev.isOdd
@@ -509,7 +507,6 @@
             return true
           }
         }
-        console.log(colItems)
 
         _.each(rowItems, (row, rowIdx) => {
           let isOddRow = isOdd()
@@ -519,10 +516,6 @@
               text: getValue(this.data, this.rows, this.cols, row.concat(col), this.aggregatorFn),
               x: colIdx * this.cellWidth,
               y: rowIdx * this.cellHeight,
-              isTotalColumn: isTotal(col, this.cols),
-              isTotalRow: isTotal(row, this.rows),
-              isGrandTotalColumn: isGrandTotal(col),
-              isGrandTotalRow: isGrandTotal(row),
               isOddRow: isOddRow,
               width: this.cellWidth,
               height: this.cellHeight
@@ -643,7 +636,6 @@
       getTextStyle (item) {
         return {
           fontSize: this.calculatedFontSize,
-          fontWeight: item.isTotalRow || item.isGrandTotalRow || item.isTotalColumn || item.isGrandTotalColumn ? 'bold' : 'normal',
           fill: this.theme.text
         }
       },
@@ -678,25 +670,6 @@
           this.getColItems(item, cellHeight, cellWidth, result)
         })
 
-        if (item.items) {
-          result.push({
-            text: 'Total',
-            x: (item.items[item.items.length - 1].x + count(item.items[item.items.length - 1])) * cellWidth,
-            y: item.y * cellHeight,
-            height: deep(item) * cellHeight,
-            width: cellWidth,
-            textStyle: {
-              fontSize: this.calculatedFontSize,
-              fontWeight: 'bold',
-              fill: this.theme.text
-            },
-            rectStyle: {
-              fill: this.theme.primary,
-              stroke: this.theme.border
-            }
-          })
-        }
-
         return result
       },
 
@@ -723,25 +696,6 @@
           this.getRowItems(item, cellHeight, cellWidth, result)
         })
 
-        if (item.items) {
-          result.push({
-            text: 'Total',
-            y: (item.items[item.items.length - 1].y + count(item.items[item.items.length - 1])) * cellHeight,
-            x: item.x * cellWidth,
-            width: deep(item) * cellWidth,
-            height: cellHeight,
-            textStyle: {
-              fontSize: this.calculatedFontSize,
-              fontWeight: 'bold',
-              fill: this.theme.text
-            },
-            rectStyle: {
-              fill: this.theme.primary,
-              stroke: this.theme.border
-            }
-          })
-        }
-
         return result
       }
     }
@@ -752,40 +706,30 @@
       levelIdx = 0
 
       let tmp = {
-        name: 'All',
-        aggregation: aggregatorFn(data)
+        name: 'All'
       }
 
       if (names.length) {
         tmp.items = aggregateBy(data, names, aggregatorFn, levelIdx)
       } else {
-        tmp.values = data
+        tmp.aggregation = aggregatorFn(data)
       }
 
       return tmp
     } else {
       return _.map(_.groupBy(data, names[levelIdx]), function (value, key) {
         let tmp = {
-          name: key,
-          aggregation: aggregatorFn(value)
+          name: key
         }
 
         if (names.length > levelIdx + 1) {
           tmp.items = aggregateBy(value, names, aggregatorFn, levelIdx + 1)
         } else {
-          tmp.values = value
+          tmp.aggregation = aggregatorFn(value)
         }
 
         return tmp
       })
-    }
-  }
-
-  function deep (item) {
-    if (item.items) {
-      return deep(item.items[0]) + 1
-    } else {
-      return 0
     }
   }
 
@@ -797,9 +741,11 @@
     item.y = levelIdx
 
     if (item.items) {
-      item.items.forEach((item) => {
-        setColPosition(item, position, levelIdx + 1)
-        position.x++
+      item.items.forEach((itm, itmIdx) => {
+        setColPosition(itm, position, levelIdx + 1)
+        if (itmIdx !== item.items.length - 1) {
+          position.x++
+        }
       })
     }
 
@@ -814,9 +760,11 @@
     item.y = position.y
 
     if (item.items) {
-      item.items.forEach((item) => {
-        setRowPosition(item, position, levelIdx + 1)
-        position.y++
+      item.items.forEach((itm, itmIdx) => {
+        setRowPosition(itm, position, levelIdx + 1)
+        if (itmIdx !== item.items.length - 1) {
+          position.y++
+        }
       })
     }
 
@@ -826,11 +774,15 @@
   function count (item, result) {
     if (result === undefined) result = {count: 0}
 
-    _.each(item.items, item => {
-      count(item, result)
-    })
+    if (item.items) {
+      item.items.forEach(item => {
+        count(item, result)
+      })
+    } else {
+      result.count++
+    }
 
-    return ++result.count
+    return result.count
   }
 
   function flat (item, prefix, result) {
@@ -841,7 +793,6 @@
       item.items.forEach(item => {
         flat(item, prefix.concat(item.name), result)
       })
-      result.push(prefix)
     } else {
       result.push(prefix)
     }
