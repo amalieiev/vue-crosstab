@@ -34,8 +34,8 @@
     data () {
       return {
         data,
-        rows: ['day', 'time'],
-        cols: ['sex', 'smoker']
+        rows: [{field: 'day'}, {field: 'time'}],
+        cols: [{field: 'sex'}, {field: 'smoker'}]
       }
     }
   }

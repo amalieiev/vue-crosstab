@@ -21,7 +21,7 @@ export default {
   data () {
     return {
       data,
-      cols: ['sex', 'smoker']
+      cols: [{field: 'sex'}, {field: 'smoker'}]
     }
   }
 }

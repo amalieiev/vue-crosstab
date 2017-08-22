@@ -221,7 +221,7 @@
         if (this.hasRowsAndCols) {
           this.rows.forEach((row, rowIdx) => {
             result.push({
-              text: row,
+              text: row.field,
               x: rowIdx * this.cellWidth,
               y: (this.cols.length + 1) * this.cellHeight,
               height: this.cellHeight,
@@ -242,7 +242,7 @@
 
           this.cols.forEach((col, colIdx) => {
             result.push({
-              text: col,
+              text: col.field,
               x: 0,
               y: colIdx * this.cellHeight,
               height: this.cellHeight,
@@ -282,7 +282,7 @@
         if (this.hasColsOnly) {
           this.cols.forEach((col, colIdx) => {
             result.push({
-              text: col,
+              text: col.field,
               x: 0,
               y: colIdx * this.cellHeight,
               height: this.cellHeight,
@@ -322,7 +322,7 @@
         if (this.hasRowsOnly) {
           this.rows.forEach((row, rowIdx) => {
             result.push({
-              text: row,
+              text: row.field,
               x: rowIdx * this.cellWidth,
               y: 0,
               height: this.cellHeight,
@@ -741,7 +741,7 @@
 
       return tmp
     } else {
-      return _.map(_.groupBy(data, names[levelIdx]), function (value, key) {
+      return _.map(_.groupBy(data, names[levelIdx].field), function (value, key) {
         let tmp = {
           name: key
         }
@@ -771,7 +771,7 @@
 
       return tmp
     } else {
-      return _.map(_.groupBy(data, items[levelIdx]), function (value, key) {
+      return _.map(_.groupBy(data, items[levelIdx].field), function (value, key) {
         let tmp = {
           name: key
         }

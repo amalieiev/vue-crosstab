@@ -22,7 +22,7 @@ export default {
   data () {
     return {
       data,
-      rows: ['sex', 'smoker']
+      rows: [{field: 'sex'}, {field: 'smoker'}]
     }
   }
 }

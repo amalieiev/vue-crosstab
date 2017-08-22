@@ -1,16 +1,16 @@
 <template>
   <crosstab
     :data="data"
+    :transform="transform"
     :rows="rows"
     :cols="cols"
-    aggregator="count"
     height="200"
   ></crosstab>
 </template>
 
 <script>
 import Crosstab from '../src/Crosstab.vue'
-import data from '../docs/data/people.json'
+import data from '../docs/data/seattle-weather-lite.json'
 
 export default {
   components: {
@@ -19,13 +19,16 @@ export default {
   data () {
     return {
       data,
-      cols: [],
-      rows: ['sex', 'day', 'time']
+      cols: [{field: 'year'}],
+      rows: [{field: 'weather'}],
+      transform: [
+        {calculate: 'datum.year = new Date(datum.date).getFullYear()'}
+      ]
     }
   }
 }
 </script>
 
-<style lang="sass">
+<style lang="scss">
 
 </style>

@@ -24,8 +24,8 @@ export default {
   data () {
     return {
       data,
-      rows: ['day', 'time'],
-      cols: ['sex', 'smoker'],
+      rows: [{field: 'day'}, {field: 'time'}],
+      cols: [{field: 'sex'}, {field: 'smoker'}],
       palette: {
         primary: '#edc68a',
         secondary: '#edb118',

@@ -1,9 +1,9 @@
 <template lang="pug">
     div
         label.typo__label Cols:
-        multiselect(v-model="cols", :options="fields", :multiple="true")
+        multiselect(v-model="cols", :options="fields", :multiple="true", label="field", track-by="field")
         label.typo__label Rows:
-        multiselect(v-model="rows", :options="fields", :multiple="true")
+        multiselect(v-model="rows", :options="fields", :multiple="true", label="field", track-by="field")
         label.typo__label Measure:
         multiselect(v-model="measure", :options="measures")
         label.typo__label Aggregator:
@@ -36,21 +36,26 @@ export default {
       data,
       measure: 'tip',
       aggregator: 'count',
-      cols: ['sex', 'smoker'],
-      rows: ['time', 'day']
+      cols: [{field: 'sex'}, {field: 'smoker'}],
+      rows: [{field: 'time'}, {field: 'day'}]
     }
   },
   computed: {
     fields () {
       return _.reduce(this.data[0], (memo, value, key) => {
         if (Number.isNaN(Number.parseFloat(value))) {
-          return memo.concat(key)
+          return memo.concat({field: key})
         }
         return memo
       }, [])
     },
     measures () {
-      return _.difference(_.keys(this.data[0]), this.fields)
+      return _.reduce(this.data[0], (memo, value, key) => {
+        if (!Number.isNaN(Number.parseFloat(value))) {
+          return memo.concat({field: key})
+        }
+        return memo
+      }, [])
     },
     aggregators () {
       return ['max', 'min', 'avg', 'sum', 'count']
