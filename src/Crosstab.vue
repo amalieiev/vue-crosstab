@@ -109,6 +109,7 @@
 </template>
 
 <script>
+  /* eslint-disable no-eval */
   import _ from 'underscore'
   import { aggregators } from './utils'
   import Scrollbar from './Scrollbar.vue'
@@ -136,6 +137,10 @@
     },
     props: {
       data: {
+        type: Array,
+        default: () => []
+      },
+      transform: {
         type: Array,
         default: () => []
       },
@@ -180,16 +185,35 @@
       this.parentNodeWidth = this.$el.parentNode.clientWidth
     },
     computed: {
+      transformedData () {
+        let filters = this.transform.filter(item => item.filter)
+        let calculations = this.transform.filter(item => item.calculate)
+        let data = this.data
+
+        data.forEach(datum => {
+          calculations.forEach(calculation => {
+            eval(calculation.calculate)
+          })
+        })
+
+        filters.forEach(filter => {
+          data = data.filter(datum => {
+            return eval(filter.filter)
+          })
+        })
+
+        return data
+      },
       aggregatorFn () {
         return items => {
           return aggregators[this.aggregator](items, this.measure)
         }
       },
       groupedRows () {
-        return groupBy(this.data, this.rows)
+        return groupBy(this.transformedData, this.rows)
       },
       groupedCols () {
-        return groupBy(this.data, this.cols)
+        return groupBy(this.transformedData, this.cols)
       },
       cornerItems () {
         let result = []
@@ -360,7 +384,7 @@
       },
 
       colItems () {
-        if (!this.data.length) return
+        if (!this.transformedData.length) return
         if (this.cols.length) {
           let colsCount = count(this.groupedCols)
           let colItems = this.getColItems(setColPosition(this.groupedCols), this.cellHeight, this.cellWidth)
@@ -442,7 +466,7 @@
         }
       },
       rowItems () {
-        if (!this.data.length) return
+        if (!this.transformedData.length) return
         if (this.rows.length) {
           let rowsCount = count(this.groupedRows)
           let rowItems = this.getRowItems(setRowPosition(this.groupedRows), this.cellHeight, this.cellWidth)
@@ -491,7 +515,7 @@
       },
 
       aggregatedData () {
-        if (!this.data.length) return
+        if (!this.transformedData.length) return
 
         let rowItems = flat(this.groupedRows)
         let colItems = flat(this.groupedCols)
@@ -513,7 +537,7 @@
 
           _.each(colItems, (col, colIdx) => {
             result.push({
-              text: getValue(this.data, this.rows, this.cols, row.concat(col), this.aggregatorFn),
+              text: getValue(this.transformedData, this.rows, this.cols, row.concat(col), this.aggregatorFn),
               x: colIdx * this.cellWidth,
               y: rowIdx * this.cellHeight,
               isOddRow: isOddRow,
