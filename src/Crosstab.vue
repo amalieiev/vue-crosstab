@@ -800,28 +800,8 @@
     return result
   }
 
-  function getAggregations (data, rows, cols, aggregatorFn) {
-    const result = []
-
-    if (rows.length) {
-      rows.forEach(function (row, idx) {
-        result.push(aggregateBy(data, rows.slice(0, rows.length - idx).concat(cols), aggregatorFn))
-      })
-    }
-
-    result.push(aggregateBy(data, cols, aggregatorFn))
-
-    return result
-  }
-
   function getValue (data, rows, cols, values, aggregatorFn) {
-    let result
-
-    getAggregations(data, rows, cols, aggregatorFn).forEach(aggregation => {
-      if (result === undefined) {
-        result = findWhere(aggregation, values)
-      }
-    })
+    let result = findWhere(aggregateBy(data, rows.concat(cols), aggregatorFn), values)
 
     return result && result.aggregation
   }
