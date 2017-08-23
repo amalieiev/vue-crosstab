@@ -1,7 +1,6 @@
 <template>
   <crosstab
     :data="data"
-    :transform="transform"
     :rows="rows"
     :cols="cols"
     height="200"
@@ -19,10 +18,13 @@ export default {
   data () {
     return {
       data,
-      cols: [{field: 'year'}],
-      rows: [{field: 'weather'}],
-      transform: [
-        {calculate: 'datum.year = new Date(datum.date).getFullYear()'}
+      rows: [
+        {field: 'date', type: 'temporal', timeUnit: 'year'},
+        {field: 'date', type: 'temporal', timeUnit: 'quarter'},
+        {field: 'date', type: 'temporal', timeUnit: 'month'}
+      ],
+      cols: [
+        {field: 'weather'}
       ]
     }
   }

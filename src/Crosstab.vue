@@ -111,7 +111,7 @@
 <script>
   /* eslint-disable no-eval */
   import _ from 'underscore'
-  import { aggregators } from './utils'
+  import { aggregators, temporalMixin } from './utils'
   import Scrollbar from './Scrollbar.vue'
 
   const palette = {
@@ -189,6 +189,14 @@
         let filters = this.transform.filter(item => item.filter)
         let calculations = this.transform.filter(item => item.calculate)
         let data = this.data
+        let temporal = this.rows.filter(item => item.type === 'temporal')
+          .concat(this.cols.filter(item => item.type === 'temporal'))
+
+        data.forEach(datum => {
+          temporal.forEach(item => {
+            temporalMixin(datum, item)
+          })
+        })
 
         data.forEach(datum => {
           calculations.forEach(calculation => {
@@ -221,7 +229,7 @@
         if (this.hasRowsAndCols) {
           this.rows.forEach((row, rowIdx) => {
             result.push({
-              text: row.field,
+              text: getFieldLabel(row),
               x: rowIdx * this.cellWidth,
               y: (this.cols.length + 1) * this.cellHeight,
               height: this.cellHeight,
@@ -242,7 +250,7 @@
 
           this.cols.forEach((col, colIdx) => {
             result.push({
-              text: col.field,
+              text: getFieldLabel(col),
               x: 0,
               y: colIdx * this.cellHeight,
               height: this.cellHeight,
@@ -282,7 +290,7 @@
         if (this.hasColsOnly) {
           this.cols.forEach((col, colIdx) => {
             result.push({
-              text: col.field,
+              text: getFieldLabel(col),
               x: 0,
               y: colIdx * this.cellHeight,
               height: this.cellHeight,
@@ -322,7 +330,7 @@
         if (this.hasRowsOnly) {
           this.rows.forEach((row, rowIdx) => {
             result.push({
-              text: row.field,
+              text: getFieldLabel(row),
               x: rowIdx * this.cellWidth,
               y: 0,
               height: this.cellHeight,
@@ -741,7 +749,7 @@
 
       return tmp
     } else {
-      return _.map(_.groupBy(data, names[levelIdx].field), function (value, key) {
+      return _.map(_.groupBy(data, getFieldLabel(names[levelIdx])), function (value, key) {
         let tmp = {
           name: key
         }
@@ -771,7 +779,7 @@
 
       return tmp
     } else {
-      return _.map(_.groupBy(data, items[levelIdx].field), function (value, key) {
+      return _.map(_.groupBy(data, getFieldLabel(items[levelIdx])), function (value, key) {
         let tmp = {
           name: key
         }
@@ -852,6 +860,14 @@
     }
 
     return result
+  }
+
+  function getFieldLabel (item) {
+    if (item.type === 'temporal') {
+      return item.timeUnit.concat('_', item.field)
+    }
+
+    return item.field
   }
 
   function getValue (data, rows, cols, values, aggregatorFn) {

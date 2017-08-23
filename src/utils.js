@@ -23,3 +23,24 @@ export const aggregators = {
     }, 0) / items.length)
   }
 }
+
+export const temporalMixin = (datum, item) => {
+  let timeUnit = item.timeUnit
+  let fieldName = item.field
+  let date = new Date(datum[fieldName])
+
+  if (timeUnit === 'year') {
+    datum['year_' + fieldName] = date.getFullYear()
+  }
+  if (timeUnit === 'quarter') {
+    let month = date.getMonth()
+
+    datum['quarter_' + fieldName] = month < 3 ? 'Q1' : month < 6 ? 'Q2' : month < 9 ? 'Q3' : 'Q4'
+  }
+  if (timeUnit === 'month') {
+    datum['month_' + fieldName] = date.toLocaleString('en-us', {month: 'long'})
+  }
+  if (timeUnit === 'day') {
+    datum['day_' + fieldName] = date.toLocaleString('en-us', {weekday: 'long'})
+  }
+}
