@@ -19,13 +19,12 @@ export default {
     return {
       data,
       rows: [
-        {field: 'date', type: 'temporal', timeUnit: 'year'},
-        {field: 'date', type: 'temporal', timeUnit: 'quarter'},
-        {field: '', aggregate: 'count'}
+        {field: 'date', type: 'temporal', timeUnit: 'year', label: 'Year'},
+        {field: 'date', type: 'temporal', timeUnit: 'month', label: 'Month'},
+        {field: 'wind', aggregate: 'avg', label: 'Wind'}
       ],
       cols: [
-        {field: 'date', type: 'temporal', timeUnit: 'day'},
-        {field: 'weather'}
+        {field: 'weather', label: 'Weather'}
       ]
     }
   }

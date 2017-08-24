@@ -28,7 +28,7 @@ h2.typo__h2#sub-props(data-section) Props
           td.table__td.
             Sequence of column levels.
         tr.table__tr
-          td.table__td: strong aggregator
+          td.table__td: strong aggregate
           td.table__td String
           td.table__td
           td.table__td
@@ -43,11 +43,25 @@ h2.typo__h2#sub-props(data-section) Props
             | ,
             kbd count
         tr.table__tr
-          td.table__td: strong measure
+          td.table__td: strong type
           td.table__td String
           td.table__td
-          td.table__td.
-            Name of field to perform aggregation.
+          td.table__td
+            | Field type. Can be
+            kbd temporal
+        tr.table__tr
+          td.table__td: strong timeUnit
+          td.table__td String
+          td.table__td
+          td.table__td
+            | Can be applied for temporal field type. Can be
+            kbd year
+            | ,
+            kbd quarter
+            | ,
+            kbd month
+            | ,
+            kbd day
         tr.table__tr
           td.table__td: strong width
           td.table__td Number

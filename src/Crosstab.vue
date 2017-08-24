@@ -217,11 +217,12 @@
       },
       cornerItems () {
         let result = []
+        let isCornerField = true
 
         if (this.hasRowsAndCols) {
           this.rows.forEach((row, rowIdx) => {
             result.push({
-              text: getFieldLabel(row),
+              text: getFieldLabel(row, isCornerField),
               x: rowIdx * this.cellWidth,
               y: (this.cols.length) * this.cellHeight,
               height: this.cellHeight,
@@ -242,7 +243,7 @@
 
           this.cols.forEach((col, colIdx) => {
             result.push({
-              text: getFieldLabel(col),
+              text: getFieldLabel(col, isCornerField),
               x: 0,
               y: colIdx * this.cellHeight,
               height: this.cellHeight,
@@ -264,7 +265,7 @@
         if (this.hasColsOnly) {
           this.cols.forEach((col, colIdx) => {
             result.push({
-              text: getFieldLabel(col),
+              text: getFieldLabel(col, isCornerField),
               x: 0,
               y: colIdx * this.cellHeight,
               height: this.cellHeight,
@@ -286,7 +287,7 @@
         if (this.hasRowsOnly) {
           this.rows.forEach((row, rowIdx) => {
             result.push({
-              text: getFieldLabel(row),
+              text: getFieldLabel(row, isCornerField),
               x: rowIdx * this.cellWidth,
               y: 0,
               height: this.cellHeight,
@@ -756,15 +757,17 @@
     return result
   }
 
-  function getFieldLabel (item) {
+  function getFieldLabel (item, isCornerField) {
+    let label = isCornerField && item.label
+
     if (item.type === 'temporal') {
-      return item.timeUnit.concat('_', item.field)
+      return label || item.timeUnit.concat('_', item.field)
     }
     if (item.aggregate) {
-      return `${item.aggregate}(${item.field})`
+      return isCornerField ? label || item.field ? item.field : item.aggregate.toUpperCase() : item.aggregate.toUpperCase()
     }
 
-    return item.field
+    return label || item.field
   }
 
   function getValue (data, rows, cols, values) {

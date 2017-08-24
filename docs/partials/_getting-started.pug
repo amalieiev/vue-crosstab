@@ -31,12 +31,8 @@
                 &lt;div>
                   &lt;crosstab
                      :data="data"
-                     :cols="['country', 'city']"
-                     :rows="['category', 'product']"
-                     :height="300"
-                     :width="600"
-                     aggregator="sum"
-                     measure="sales">&lt;/crosstab>
+                     :cols="cols"
+                     :rows="rows">&lt;/crosstab>
                 &lt;/div>
               &lt;/template>
 
@@ -52,9 +48,38 @@
                   data () {
                     return {
                       data: [
-                        {country: 'USA', city: 'Los Angeles', category: 'electronics', product: 'iphone', sales: 1132},
-                        {country: 'USA', city: 'New York', category: 'electronics', product: 'mackbook', sales: 234},
-                        {country: 'Mexico', city: 'Acapulco', category: 'furniture', product: 'table', sales: 809}
+                        {
+                          "date": "2012/01/01",
+                          "precipitation": 0,
+                          "temp_max": 12.8,
+                          "temp_min": 5,
+                          "wind": 4.7,
+                          "weather": "drizzle"
+                        },
+                        {
+                          "date": "2012/01/02",
+                          "precipitation": 10.9,
+                          "temp_max": 10.6,
+                          "temp_min": 2.8,
+                          "wind": 4.5,
+                          "weather": "rain"
+                        },
+                        {
+                          "date": "2012/02/06",
+                          "precipitation": 0,
+                          "temp_max": 16.1,
+                          "temp_min": 1.7,
+                          "wind": 5,
+                          "weather": "sun"
+                        }
+                      ],
+                      rows: [
+                        {field: 'date', type: 'temporal', timeUnit: 'year', label: 'Year'},
+                        {field: 'date', type: 'temporal', timeUnit: 'month', label: 'Month'},
+                        {field: 'wind', aggregate: 'avg', label: 'Wind'}
+                      ],
+                      cols: [
+                        {field: 'weather', label: 'Weather'}
                       ]
                     }
                   }
