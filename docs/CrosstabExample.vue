@@ -20,11 +20,12 @@ export default {
       data,
       rows: [
         {field: 'date', type: 'temporal', timeUnit: 'year', label: 'Year'},
-        {field: 'date', type: 'temporal', timeUnit: 'month', label: 'Month'},
-        {field: 'wind', aggregate: 'avg', label: 'Wind'}
+        {field: 'date', type: 'temporal', timeUnit: 'month', label: 'Month'}
       ],
       cols: [
-        {field: 'weather', label: 'Weather'}
+        {field: 'date', type: 'temporal', timeUnit: 'day', label: 'Day'},
+        {field: 'weather', label: 'Weather'},
+        {field: 'wind', aggregate: 'avg', label: 'Wind'}
       ]
     }
   }
