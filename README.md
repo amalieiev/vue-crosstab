@@ -10,36 +10,6 @@ Probably the most complete *crosstab* solution for Vue.js 2.0, without jQuery.
 npm install vue-crosstab
 ```
 
-```vue
-<template>
-  <div>
-    <crosstab
-       :data="data"
-       :cols="['country', 'city']"
-       :rows="['category', 'product']"
-       :width="600"
-       :height="300"
-       aggregator="sum"
-       measure="sales"></crosstab>
-  </div>
-</template>
-
-<script>
-  import Crosstab from 'vue-crosstab'
-  export default {
-    components: { Crosstab },
-    data () {
-      return {
-        data: [
-          {country: 'USA', city: 'Los Angeles', category: 'electronics', product: 'iphone', sales: 1132},
-          {country: 'USA', city: 'New York', category: 'electronics', product: 'mackbook', sales: 234},
-          {country: 'Mexico', city: 'Acapulco', category: 'furniture', product: 'table', sales: 809}
-        ]
-      }
-    }
-  }
-</script>
-```
 ## JSFiddle
 
 [Example JSFiddle](https://jsfiddle.net/amalieiev/171kzqL6/) – Use this for issue reproduction.
