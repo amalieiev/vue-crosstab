@@ -8,8 +8,6 @@
                 :rows="rows",
                 :cols="cols",
                 :scrollReverse="false"
-                measure="tip",
-                aggregator="avg",
                 height="300")
         div
             label.typo__label Reversed scroll direction (default)
@@ -18,8 +16,6 @@
                 :data="data",
                 :rows="rows",
                 :cols="cols",
-                measure="tip",
-                aggregator="avg",
                 height="300")
 </template>
 
@@ -34,8 +30,15 @@
     data () {
       return {
         data,
-        rows: [{field: 'day'}, {field: 'time'}],
-        cols: [{field: 'sex'}, {field: 'smoker'}]
+        cols: [
+          {field: 'day'},
+          {field: 'time'},
+          {field: 'total_bill', aggregate: 'sum'}
+        ],
+        rows: [
+          {field: 'sex'},
+          {field: 'smoker'}
+        ]
       }
     }
   }

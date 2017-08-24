@@ -5,7 +5,6 @@ div
     crosstab(
       :data="data",
       :cols="cols",
-      aggregator="count",
       :width="380"
     )
 </template>
@@ -21,7 +20,11 @@ export default {
   data () {
     return {
       data,
-      cols: [{field: 'sex'}, {field: 'smoker'}]
+      cols: [
+        {field: 'sex'},
+        {field: 'smoker'},
+        {aggregate: 'count'}
+      ]
     }
   }
 }

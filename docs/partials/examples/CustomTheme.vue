@@ -6,8 +6,6 @@ div
       :data="data",
       :rows="rows",
       :cols="cols",
-      measure="tip",
-      aggregator="avg",
       :width="380",
       :palette="palette"
     )
@@ -24,8 +22,15 @@ export default {
   data () {
     return {
       data,
-      rows: [{field: 'day'}, {field: 'time'}],
-      cols: [{field: 'sex'}, {field: 'smoker'}],
+      rows: [
+        {field: 'day'},
+        {field: 'time'}
+      ],
+      cols: [
+        {field: 'sex'},
+        {field: 'smoker'},
+        {field: 'total_bill', aggregate: 'sum'}
+      ],
       palette: {
         primary: '#edc68a',
         secondary: '#edb118',

@@ -6,7 +6,6 @@ div
       :data="data",
       :rows="rows",
       :cols="cols",
-      aggregator="count",
       :cellWidth="75",
       :cellHeight="75",
       :fontSize="20"
@@ -24,8 +23,14 @@ export default {
   data () {
     return {
       data,
-      rows: [{field: 'sex'}, {field: 'smoker'}],
-      cols: [{field: 'time'}]
+      rows: [
+        {field: 'sex'},
+        {field: 'smoker'}
+      ],
+      cols: [
+        {field: 'time'},
+        {field: 'total_bill', aggregate: 'sum'}
+      ]
     }
   }
 }

@@ -3,9 +3,7 @@ div
   label.typo__label No rows and now cols
   div.overflow-auto
     crosstab(
-      :data="data",
-      aggregator="sum",
-      measure="total_bill"
+      :data="data"
     )
 </template>
 

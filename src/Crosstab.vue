@@ -156,9 +156,6 @@
         type: String,
         default: 'count'
       },
-      measure: {
-        type: String
-      },
       width: {},
       height: {},
       cellWidth: {
@@ -212,11 +209,6 @@
 
         return data
       },
-      aggregatorFn () {
-        return items => {
-          return aggregators[this.aggregator](items, this.measure)
-        }
-      },
       groupedRows () {
         return groupBy(this.transformedData, this.rows)
       },
@@ -231,7 +223,7 @@
             result.push({
               text: getFieldLabel(row),
               x: rowIdx * this.cellWidth,
-              y: (this.cols.length + 1) * this.cellHeight,
+              y: (this.cols.length) * this.cellHeight,
               height: this.cellHeight,
               width: this.cellWidth,
               textStyle: {
@@ -267,24 +259,6 @@
               }
             })
           })
-
-          result.push({
-            text: 'measure',
-            x: 0,
-            y: this.cols.length * this.cellHeight,
-            height: this.cellHeight,
-            width: this.rows.length * this.cellWidth,
-            textStyle: {
-              fontSize: this.calculatedFontSize,
-              fontWeight: 'bold',
-              fill: this.theme.text,
-              dx: (this.cellWidth * this.rows.length) - this.cellWidth / 4,
-              'text-anchor': 'end'
-            },
-            rectStyle: {
-              fill: 'none'
-            }
-          })
         }
 
         if (this.hasColsOnly) {
@@ -306,24 +280,6 @@
                 fill: 'none'
               }
             })
-          })
-
-          result.push({
-            text: 'measure',
-            x: 0,
-            y: this.cols.length * this.cellHeight,
-            height: this.cellHeight,
-            width: this.cellWidth,
-            textStyle: {
-              fontSize: this.calculatedFontSize,
-              fontWeight: 'bold',
-              fill: this.theme.text,
-              dx: this.cellWidth - this.cellWidth / 4,
-              'text-anchor': 'end'
-            },
-            rectStyle: {
-              fill: 'none'
-            }
           })
         }
 
@@ -348,44 +304,6 @@
               }
             })
           })
-
-          result.push({
-            text: 'measure',
-            x: this.rows.length * this.cellWidth,
-            y: 0,
-            height: this.cellHeight,
-            width: this.cellWidth,
-            textStyle: {
-              fontSize: this.calculatedFontSize,
-              fontWeight: 'bold',
-              fill: this.theme.text,
-              dx: this.cellWidth / 2,
-              'text-anchor': 'middle'
-            },
-            rectStyle: {
-              fill: 'none'
-            }
-          })
-        }
-
-        if (this.hasNothing) {
-          result.push({
-            text: 'measure',
-            x: 0,
-            y: 0,
-            height: this.cellHeight,
-            width: this.cellWidth,
-            textStyle: {
-              fontSize: this.calculatedFontSize,
-              fontWeight: 'bold',
-              fill: this.theme.text,
-              dx: this.cellWidth / 2,
-              'text-anchor': 'middle'
-            },
-            rectStyle: {
-              fill: 'none'
-            }
-          })
         }
 
         return result
@@ -396,27 +314,11 @@
         if (this.cols.length) {
           let colsCount = count(this.groupedCols)
           let colItems = this.getColItems(setColPosition(this.groupedCols), this.cellHeight, this.cellWidth)
-          let colMeasureItems = _.map(Array(colsCount), (item, colIdx) => {
-            return {
-              text: this.measure ? `${this.measure}(${this.aggregator})` : this.aggregator,
-              x: colIdx * this.cellWidth,
-              y: this.cols.length * this.cellHeight,
-              height: this.cellHeight,
-              width: this.cellWidth,
-              textStyle: {
-                fontSize: this.calculatedFontSize,
-                fill: this.theme.text
-              },
-              rectStyle: {
-                fill: this.theme.primary,
-                stroke: this.theme.border
-              }
-            }
-          })
+
           let emptyCellItems = _.map(Array(colsCount), (item, colIdx) => {
             return {
               x: colIdx * this.cellWidth,
-              y: (this.cols.length + 1) * this.cellHeight,
+              y: (this.cols.length) * this.cellHeight,
               height: this.cellHeight,
               width: this.cellWidth,
               textStyle: {
@@ -431,29 +333,12 @@
           })
 
           if (this.rows.length) {
-            return colItems.concat(colMeasureItems, emptyCellItems)
+            return colItems.concat(emptyCellItems)
           } else {
-            return colItems.concat(colMeasureItems)
+            return colItems
           }
         } else {
-          if (this.hasNothing) {
-            return [{
-              text: this.measure ? `${this.measure}(${this.aggregator})` : this.aggregator,
-              x: 0,
-              y: 0,
-              height: this.cellHeight,
-              width: this.cellWidth,
-              textStyle: {
-                fontSize: this.calculatedFontSize,
-                fontWeight: 'bold',
-                fill: this.theme.text
-              },
-              rectStyle: {
-                fill: this.theme.primary,
-                stroke: this.theme.border
-              }
-            }]
-          } else {
+          if (this.hasNothing) {} else {
             return [{
               text: 'Totals',
               x: 0,
@@ -476,31 +361,12 @@
       rowItems () {
         if (!this.transformedData.length) return
         if (this.rows.length) {
-          let rowsCount = count(this.groupedRows)
           let rowItems = this.getRowItems(setRowPosition(this.groupedRows), this.cellHeight, this.cellWidth)
 
           if (this.cols.length) {
             return rowItems
           } else {
-            let rowMeasureItems = _.map(Array(rowsCount), (item, rowIdx) => {
-              return {
-                text: this.measure ? `${this.measure}(${this.aggregator})` : this.aggregator,
-                x: this.rows.length * this.cellWidth,
-                y: rowIdx * this.cellHeight,
-                height: this.cellHeight,
-                width: this.cellWidth,
-                textStyle: {
-                  fontSize: this.calculatedFontSize,
-                  fill: this.theme.text
-                },
-                rectStyle: {
-                  fill: this.theme.primary,
-                  stroke: this.theme.border
-                }
-              }
-            })
-
-            return rowItems.concat(rowMeasureItems)
+            return rowItems
           }
         } else {
           return [{
@@ -544,8 +410,11 @@
           let isOddRow = isOdd()
 
           _.each(colItems, (col, colIdx) => {
+            let aggregationInRows = this.rows.find(item => item.aggregate)
+            let value = aggregationInRows ? getValue(this.transformedData, this.cols, this.rows, col.concat(row)) : getValue(this.transformedData, this.rows, this.cols, row.concat(col))
+
             result.push({
-              text: getValue(this.transformedData, this.rows, this.cols, row.concat(col), this.aggregatorFn),
+              text: value,
               x: colIdx * this.cellWidth,
               y: rowIdx * this.cellHeight,
               isOddRow: isOddRow,
@@ -560,16 +429,16 @@
 
       cornerHeight () {
         if (this.hasRowsAndCols) {
-          return (this.cols.length + 2) * this.cellHeight
+          return (this.cols.length + 1) * this.cellHeight
         }
         if (this.hasColsOnly) {
-          return (this.cols.length + 1) * this.cellHeight
+          return (this.cols.length) * this.cellHeight
         }
         if (this.hasRowsOnly) {
           return this.cellHeight
         }
         if (this.hasNothing) {
-          return this.cellHeight
+          return 0
         }
       },
       cornerWidth () {
@@ -580,7 +449,7 @@
           return this.cellWidth
         }
         if (this.hasRowsOnly) {
-          return (this.rows.length + 1) * this.cellWidth
+          return (this.rows.length) * this.cellWidth
         }
         if (this.hasNothing) {
           return this.cellWidth
@@ -612,7 +481,7 @@
         return _.extend({}, palette, this.palette)
       },
       calculatedWidth () {
-        let fullWidth = this.cellWidth * (this.rows.length + count(this.groupedCols) + (this.hasColsOnly || this.hasRowsOnly || this.hasNothing ? 1 : 0))
+        let fullWidth = this.cellWidth * (this.rows.length + count(this.groupedCols) + (this.hasNothing ? 1 : 0))
 
         if (this.width) {
           if (/%$/.test(this.width)) {
@@ -624,7 +493,7 @@
         }
       },
       calculatedHeight () {
-        let fullHeight = this.cellHeight * (this.cols.length + count(this.groupedRows) + (this.hasRowsAndCols ? 2 : 1))
+        let fullHeight = this.cellHeight * (this.cols.length + count(this.groupedRows) + (this.hasRowsAndCols || this.hasRowsOnly ? 1 : 0))
 
         if (this.height) {
           if (/%$/.test(this.height)) {
@@ -733,7 +602,7 @@
     }
   }
 
-  function aggregateBy (data, names, aggregatorFn, levelIdx) {
+  function aggregateBy (data, items, levelIdx) {
     if (levelIdx === undefined) {
       levelIdx = 0
 
@@ -741,27 +610,40 @@
         name: 'All'
       }
 
-      if (names.length) {
-        tmp.items = aggregateBy(data, names, aggregatorFn, levelIdx)
+      if (items.length) {
+        tmp.items = aggregateBy(data, items, levelIdx)
       } else {
-        tmp.aggregation = aggregatorFn(data)
+        tmp.aggregation = data.length
       }
 
       return tmp
     } else {
-      return _.map(_.groupBy(data, getFieldLabel(names[levelIdx])), function (value, key) {
+      if (items[levelIdx].aggregate) {
         let tmp = {
-          name: key
+          name: getFieldLabel(items[levelIdx])
         }
 
-        if (names.length > levelIdx + 1) {
-          tmp.items = aggregateBy(value, names, aggregatorFn, levelIdx + 1)
+        if (items.length > levelIdx + 1) {
+          tmp.items = groupBy(data, items, levelIdx + 1)
         } else {
-          tmp.aggregation = aggregatorFn(value)
+          tmp.aggregation = aggregators[items[levelIdx].aggregate](data, items[levelIdx].field)
         }
+        return [tmp]
+      } else {
+        return _.map(_.groupBy(data, getFieldLabel(items[levelIdx])), function (value, key) {
+          let tmp = {
+            name: key
+          }
 
-        return tmp
-      })
+          if (items.length > levelIdx + 1) {
+            tmp.items = aggregateBy(value, items, levelIdx + 1)
+          } else {
+            console.warn('Please report this case')
+          }
+
+          return tmp
+        })
+      }
     }
   }
 
@@ -779,19 +661,31 @@
 
       return tmp
     } else {
-      return _.map(_.groupBy(data, getFieldLabel(items[levelIdx])), function (value, key) {
+      if (items[levelIdx].aggregate) {
         let tmp = {
-          name: key
+          name: getFieldLabel(items[levelIdx])
         }
 
         if (items.length > levelIdx + 1) {
-          tmp.items = groupBy(value, items, levelIdx + 1)
+          tmp.items = groupBy(data, items, levelIdx + 1)
         } else {
-          tmp.values = value
+          tmp.values = data
         }
+        return [tmp]
+      } else {
+        return _.map(_.groupBy(data, getFieldLabel(items[levelIdx])), function (value, key) {
+          let tmp = {
+            name: key
+          }
 
-        return tmp
-      })
+          if (items.length > levelIdx + 1) {
+            tmp.items = groupBy(value, items, levelIdx + 1)
+          } else {
+            tmp.values = value
+          }
+          return tmp
+        })
+      }
     }
   }
 
@@ -866,12 +760,15 @@
     if (item.type === 'temporal') {
       return item.timeUnit.concat('_', item.field)
     }
+    if (item.aggregate) {
+      return `${item.aggregate}(${item.field})`
+    }
 
     return item.field
   }
 
-  function getValue (data, rows, cols, values, aggregatorFn) {
-    let result = findWhere(aggregateBy(data, rows.concat(cols), aggregatorFn), values)
+  function getValue (data, rows, cols, values) {
+    let result = findWhere(aggregateBy(data, rows.concat(cols)), values)
 
     return result && result.aggregation
   }

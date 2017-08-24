@@ -21,9 +21,10 @@ export default {
       rows: [
         {field: 'date', type: 'temporal', timeUnit: 'year'},
         {field: 'date', type: 'temporal', timeUnit: 'quarter'},
-        {field: 'date', type: 'temporal', timeUnit: 'month'}
+        {field: '', aggregate: 'count'}
       ],
       cols: [
+        {field: 'date', type: 'temporal', timeUnit: 'day'},
         {field: 'weather'}
       ]
     }
