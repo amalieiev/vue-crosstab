@@ -116,8 +116,9 @@
       }
     },
     methods: {
-      select (evt) {
+      select (evt, useScrollBar) {
         this.selected = true
+        this.useScrollBar = useScrollBar
 
         this.deltaX = 0
         this.deltaY = 0
@@ -129,6 +130,11 @@
         if (this.selected) {
           let deltaX = scrollReverse ? this.fromX - evt.clientX : evt.clientX - this.fromX
           let deltaY = scrollReverse ? this.fromY - evt.clientY : evt.clientY - this.fromY
+
+          if (this.useScrollBar) {
+            deltaX *= this.contentWidth / this.viewportWidth
+            deltaY *= this.contentHeight / this.viewportHeight
+          }
 
           if (this.currentX + deltaX > 0) deltaX = -this.currentX
           if (this.currentX + deltaX < this.viewportWidth - this.contentWidth) deltaX = this.viewportWidth - this.contentWidth - this.currentX
@@ -145,6 +151,7 @@
 
       deselect () {
         this.selected = false
+        this.useScrollBar = false
 
         this.currentX = this.currentX + this.deltaX
         this.currentY = this.currentY + this.deltaY
@@ -156,7 +163,7 @@
       },
 
       mousedown (evt) {
-        this.select(evt)
+        this.select(evt, true)
       },
 
       mousemove (evt) {
