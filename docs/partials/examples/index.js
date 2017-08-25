@@ -1,4 +1,7 @@
 import BasicCrosstab from './BasicCrosstab.vue'
+import DataTypes from './DataTypes.vue'
+import Filters from './Filters.vue'
+import CalculatedFields from './CalculatedFields.vue'
 import RowsOnly from './RowsOnly.vue'
 import ColsOnly from './ColsOnly.vue'
 import NoRowsNoCols from './NoRowsNoCols.vue'
@@ -9,6 +12,9 @@ import UIControls from './UIControls.vue'
 
 export {
   BasicCrosstab,
+  DataTypes,
+  Filters,
+  CalculatedFields,
   RowsOnly,
   ColsOnly,
   NoRowsNoCols,

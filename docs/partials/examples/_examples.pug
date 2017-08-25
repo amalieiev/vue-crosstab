@@ -4,23 +4,50 @@
       The basic crosstab doesn’t require much configuration.
 
       #### Optional configuration flags:
-      - `:aggregator="sum"` – sum of all aggregated measure values.
-      - `:measure"` – the field name for which aggregation will be performed.
-      - `:width"` – width of crosstab. Cells width will be ajusted.
+      - `field: "sex"` – name of data field.
+      - `aggregate: "sum"` – sum of all aggregated measure values. Possible values: `count`, `avg`, `sum`, `max`, `min`. Must be last field in rows/cols.
     +example('BasicCrosstab')
+  +subsection('Data types')
+    :markdown-it
+      The basic crosstab doesn’t require much configuration.
+
+      #### Optional configuration flags:
+      - `type: "temporal"` – can be appied to date field type.
+      - `timeUnit: "temporal"` – can be appied temporal fields. Possible values: `year`, `quarter`, `month`, `day`.
+      - `label: "Day"` – field label.
+    +example('DataTypes')
+  +subsection('Filters')
+    :markdown-it
+      The basic crosstab doesn’t require much configuration.
+
+      #### Optional configuration flags:
+      - `transform` - an array with `filters` and `calsulated` fields
+      - `datum` – record in dataset.
+      - `datum.wearter` – `weather` field name in record.
+      - `datum.year_date` – `year` timeUnit name, `date` field name in record.
+    +example('Filters')
+  +subsection('Calculated fields')
+    :markdown-it
+      The basic crosstab doesn’t require much configuration.
+
+      #### Optional configuration flags:
+      - `datum` – record in dataset.
+      - `datum.season` – `season` new calculated field name in record.
+      - `datum.month_date` – `month` timeUnit name, `date` field name in record.
+    +example('CalculatedFields')
   +subsection('Rows only')
     :markdown-it
       Rows only.
 
       #### Optional configuration flags:
-      - `:aggregator="count"` – count aggregation function.
+      - `aggregate: "count"` – count aggregation function.
     +example('RowsOnly')
   +subsection('Columns only')
     :markdown-it
       Columns only.
 
       #### Optional configuration flags:
-      - `:aggregator="count"` – count aggregation function.
+      - `aggregate: "count"` – count aggregation function.
       - `:width"` – width of crosstab. Cells width will be ajusted.
     +example('ColsOnly')
   +subsection('No Rows No Columns')
