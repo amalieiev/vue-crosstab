@@ -8,13 +8,16 @@ describe('Crosstab.vue', () => {
       template: `<div><crosstab
             :data="data"
             :rows="rows"
-            aggregator="count"
             ></crosstab></div>
         `,
       components: { Crosstab },
       data: {
         data,
-        rows: ['sex', 'smoker']
+        rows: [
+          {field: 'sex'},
+          {field: 'smoker'},
+          {aggregate: 'count'}
+        ]
       }
     }).$mount()
   })
@@ -23,13 +26,16 @@ describe('Crosstab.vue', () => {
       template: `<div><crosstab
             :data="data"
             :cols="cols"
-            aggregator="sum"
             ></crosstab></div>
         `,
       components: { Crosstab },
       data: {
         data,
-        cols: ['sex', 'smoker']
+        cols: [
+          {field: 'sex'},
+          {field: 'smoker'},
+          {field: 'tip', aggregate: 'sum'}
+        ]
       }
     }).$mount()
   })
@@ -39,15 +45,20 @@ describe('Crosstab.vue', () => {
             :data="data"
             :rows="rows"
             :cols="cols"
-            aggregator="max"
-            measure="tip"
             ></crosstab></div>
         `,
       components: { Crosstab },
       data: {
         data,
-        rows: ['sex', 'smoker'],
-        cols: ['day', 'time']
+        rows: [
+          {field: 'sex'},
+          {field: 'smoker'},
+          {field: 'total_bill', aggregate: 'max'}
+        ],
+        cols: [
+          {field: 'day'},
+          {field: 'time'}
+        ]
       }
     }).$mount()
   })
@@ -57,15 +68,20 @@ describe('Crosstab.vue', () => {
             :data="data"
             :rows="rows"
             :cols="cols"
-            aggregator="min"
-            measure="tip"
             ></crosstab></div>
         `,
       components: { Crosstab },
       data: {
         data,
-        rows: ['sex', 'smoker'],
-        cols: ['day', 'time']
+        rows: [
+          {field: 'sex'},
+          {field: 'smoker'},
+          {field: 'total_bill', aggregate: 'min'}
+        ],
+        cols: [
+          {field: 'day'},
+          {field: 'time'}
+        ]
       }
     }).$mount()
   })
@@ -75,15 +91,20 @@ describe('Crosstab.vue', () => {
             :data="data"
             :rows="rows"
             :cols="cols"
-            aggregator="avg"
-            measure="tip"
             ></crosstab></div>
         `,
       components: { Crosstab },
       data: {
         data,
-        rows: ['sex', 'smoker'],
-        cols: ['day', 'time']
+        rows: [
+          {field: 'sex'},
+          {field: 'smoker'},
+          {field: 'total_bill', aggregate: 'avg'}
+        ],
+        cols: [
+          {field: 'day'},
+          {field: 'time'}
+        ]
       }
     }).$mount()
   })
@@ -94,15 +115,21 @@ describe('Crosstab.vue', () => {
             :data="data"
             :rows="rows"
             :cols="cols"
-            aggregator="count"
             :fontSize="50"
             ></crosstab></div>
         `,
         components: { Crosstab },
         data: {
           data,
-          rows: ['sex', 'smoker'],
-          cols: ['day', 'time']
+          rows: [
+            {field: 'sex'},
+            {field: 'smoker'},
+            {field: 'total_bill', aggregate: 'max'}
+          ],
+          cols: [
+            {field: 'day'},
+            {field: 'time'}
+          ]
         }
       }).$mount()
     })
@@ -112,7 +139,6 @@ describe('Crosstab.vue', () => {
             :data="data"
             :rows="rows"
             :cols="cols"
-            aggregator="count"
             :width="300"
             :heigth="200"
             ></crosstab></div>
@@ -120,8 +146,15 @@ describe('Crosstab.vue', () => {
         components: { Crosstab },
         data: {
           data,
-          rows: ['sex', 'smoker'],
-          cols: ['day', 'time']
+          rows: [
+            {field: 'sex'},
+            {field: 'smoker'},
+            {field: 'total_bill', aggregate: 'max'}
+          ],
+          cols: [
+            {field: 'day'},
+            {field: 'time'}
+          ]
         }
       }).$mount()
     })
@@ -131,7 +164,6 @@ describe('Crosstab.vue', () => {
             :data="data"
             :rows="rows"
             :cols="cols"
-            aggregator="count"
             :cellWidth="100"
             :cellHeigth="50"
             ></crosstab></div>
@@ -139,8 +171,15 @@ describe('Crosstab.vue', () => {
         components: { Crosstab },
         data: {
           data,
-          rows: ['sex', 'smoker'],
-          cols: ['day', 'time']
+          rows: [
+            {field: 'sex'},
+            {field: 'smoker'},
+            {field: 'total_bill', aggregate: 'max'}
+          ],
+          cols: [
+            {field: 'day'},
+            {field: 'time'}
+          ]
         }
       }).$mount()
     })
