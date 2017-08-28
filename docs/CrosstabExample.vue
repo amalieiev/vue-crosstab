@@ -3,6 +3,7 @@
     :data="data"
     :rows="rows"
     :cols="cols"
+    :transform="transform"
     height="200"
   ></crosstab>
 </template>
