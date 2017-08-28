@@ -395,6 +395,8 @@
         let rowItems = flat(this.groupedRows)
         let colItems = flat(this.groupedCols)
         let result = []
+        let aggregationInRows = this.rows.find(item => item.aggregate)
+        let aggregatedData = aggregationInRows ? aggregateBy(this.transformedData, this.cols.concat(this.rows)) : aggregateBy(this.transformedData, this.rows.concat(this.cols))
 
         const isOdd = () => {
           if (isOdd.prev) {
@@ -411,8 +413,7 @@
           let isOddRow = isOdd()
 
           _.each(colItems, (col, colIdx) => {
-            let aggregationInRows = this.rows.find(item => item.aggregate)
-            let value = aggregationInRows ? getValue(this.transformedData, this.cols, this.rows, col.concat(row)) : getValue(this.transformedData, this.rows, this.cols, row.concat(col))
+            let value = aggregationInRows ? getValue(aggregatedData, col.concat(row)) : getValue(aggregatedData, row.concat(col))
 
             result.push({
               text: value,
@@ -619,32 +620,33 @@
 
       return tmp
     } else {
-      if (items[levelIdx].aggregate) {
-        let tmp = {
-          name: getFieldLabel(items[levelIdx])
-        }
-
-        if (items.length > levelIdx + 1) {
-          tmp.items = groupBy(data, items, levelIdx + 1)
-        } else {
-          tmp.aggregation = aggregators[items[levelIdx].aggregate](data, items[levelIdx].field)
-        }
-        return [tmp]
-      } else {
+      if (items[levelIdx].aggregate && items[levelIdx].aggregate === 'count') {
         return _.map(_.groupBy(data, getFieldLabel(items[levelIdx])), function (value, key) {
           let tmp = {
-            name: key
-          }
-
-          if (items.length > levelIdx + 1) {
-            tmp.items = aggregateBy(value, items, levelIdx + 1)
-          } else {
-            console.warn('Please report this case')
+            name: key,
+            aggregation: aggregators[items[levelIdx].aggregate](value, items[levelIdx].field)
           }
 
           return tmp
         })
       }
+      if (items[levelIdx].aggregate) {
+        return [{
+          name: items[levelIdx].aggregate,
+          aggregation: aggregators[items[levelIdx].aggregate](data, items[levelIdx].field)
+        }]
+      }
+      return _.map(_.groupBy(data, getFieldLabel(items[levelIdx])), function (value, key) {
+        let tmp = {
+          name: key
+        }
+
+        if (items.length > levelIdx + 1) {
+          tmp.items = aggregateBy(value, items, levelIdx + 1)
+        }
+
+        return tmp
+      })
     }
   }
 
@@ -662,18 +664,7 @@
 
       return tmp
     } else {
-      if (items[levelIdx].aggregate) {
-        let tmp = {
-          name: getFieldLabel(items[levelIdx])
-        }
-
-        if (items.length > levelIdx + 1) {
-          tmp.items = groupBy(data, items, levelIdx + 1)
-        } else {
-          tmp.values = data
-        }
-        return [tmp]
-      } else {
+      if (items[levelIdx].aggregate && items[levelIdx].aggregate === 'count') {
         return _.map(_.groupBy(data, getFieldLabel(items[levelIdx])), function (value, key) {
           let tmp = {
             name: key
@@ -687,6 +678,24 @@
           return tmp
         })
       }
+      if (items[levelIdx].aggregate) {
+        return [{
+          name: items[levelIdx].aggregate,
+          aggregation: aggregators[items[levelIdx].aggregate](data, items[levelIdx].field)
+        }]
+      }
+      return _.map(_.groupBy(data, getFieldLabel(items[levelIdx])), function (value, key) {
+        let tmp = {
+          name: key
+        }
+
+        if (items.length > levelIdx + 1) {
+          tmp.items = groupBy(value, items, levelIdx + 1)
+        } else {
+          tmp.values = value
+        }
+        return tmp
+      })
     }
   }
 
@@ -763,15 +772,12 @@
     if (item.type === 'temporal') {
       return label || item.timeUnit.concat('_', item.field)
     }
-    if (item.aggregate) {
-      return isCornerField ? label || item.field ? item.field : item.aggregate.toUpperCase() : item.aggregate.toUpperCase()
-    }
 
     return label || item.field
   }
 
-  function getValue (data, rows, cols, values) {
-    let result = findWhere(aggregateBy(data, rows.concat(cols)), values)
+  function getValue (aggregation, values) {
+    let result = findWhere(aggregation, values)
 
     return result && result.aggregation
   }

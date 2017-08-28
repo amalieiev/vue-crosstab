@@ -22,8 +22,7 @@ export default {
       data,
       cols: [
         {field: 'sex'},
-        {field: 'smoker'},
-        {aggregate: 'count'}
+        {field: 'smoker', aggregate: 'count'}
       ]
     }
   }

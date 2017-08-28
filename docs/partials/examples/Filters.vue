@@ -27,8 +27,7 @@ div
         ],
         cols: [
           {field: 'date', type: 'temporal', timeUnit: 'year', label: 'Year'},
-          {field: 'weather', label: 'Weather'},
-          {aggregate: 'count'}
+          {field: 'weather', label: 'Weather', aggregate: 'count'}
         ],
         rows: [
           {field: 'date', type: 'temporal', timeUnit: 'month', label: 'Month'}
