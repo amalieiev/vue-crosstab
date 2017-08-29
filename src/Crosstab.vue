@@ -29,8 +29,8 @@
                 :x="item.x"
                 :y="item.y"
                 :dy="item.height / 2 + calculatedFontSize / 2"
-                :dx="item.width / 2"
-                text-anchor="middle"
+                :dx="item.width - 5"
+                text-anchor="end"
                 :style="getTextStyle(item)"
                 @click="onCellClick($event, item)"
                 @touchstart="onCellClick($event, item)"
@@ -111,7 +111,7 @@
 <script>
   /* eslint-disable no-eval */
   import _ from 'underscore'
-  import { aggregators, temporalMixin } from './utils'
+  import { aggregators, formatters, temporalMixin } from './utils'
   import Scrollbar from './Scrollbar.vue'
 
   const palette = {
@@ -622,18 +622,22 @@
     } else {
       if (items[levelIdx].aggregate && items[levelIdx].aggregate === 'count') {
         return _.map(_.groupBy(data, getFieldLabel(items[levelIdx])), function (value, key) {
-          let tmp = {
-            name: key,
-            aggregation: aggregators[items[levelIdx].aggregate](value, items[levelIdx].field)
-          }
+          let formatter = formatters[items[levelIdx].formatter] || items[levelIdx].formatter
+          let aggregation = aggregators[items[levelIdx].aggregate](value, items[levelIdx].field)
 
-          return tmp
+          return {
+            name: key,
+            aggregation: formatter ? formatter(aggregation) : aggregation
+          }
         })
       }
       if (items[levelIdx].aggregate) {
+        let aggregation = aggregators[items[levelIdx].aggregate](data, items[levelIdx].field)
+        let formatter = formatters[items[levelIdx].formatter] || items[levelIdx].formatter
+
         return [{
           name: items[levelIdx].aggregate,
-          aggregation: aggregators[items[levelIdx].aggregate](data, items[levelIdx].field)
+          aggregation: formatter ? formatter(aggregation) : aggregation
         }]
       }
       return _.map(_.groupBy(data, getFieldLabel(items[levelIdx])), function (value, key) {

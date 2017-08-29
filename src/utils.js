@@ -24,6 +24,12 @@ export const aggregators = {
   }
 }
 
+export const formatters = {
+  currency (value) {
+    return '$' + Number.parseFloat(value).toLocaleString()
+  }
+}
+
 export const temporalMixin = (datum, item) => {
   let timeUnit = item.timeUnit
   let fieldName = item.field
