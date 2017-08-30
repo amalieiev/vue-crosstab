@@ -10,6 +10,7 @@ import CustomConfiguration from './CustomConfiguration.vue'
 import CustomTheme from './CustomTheme.vue'
 import ScrollReverse from './ScrollReverse.vue'
 import UIControls from './UIControls.vue'
+import LoadData from './LoadData.vue'
 
 export {
   BasicCrosstab,
@@ -23,5 +24,6 @@ export {
   CustomConfiguration,
   CustomTheme,
   ScrollReverse,
-  UIControls
+  UIControls,
+  LoadData
 }

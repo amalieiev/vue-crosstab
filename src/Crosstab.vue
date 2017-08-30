@@ -111,7 +111,7 @@
 <script>
   /* eslint-disable no-eval */
   import _ from 'underscore'
-  import { aggregators, formatters, temporalMixin } from './utils'
+  import { aggregators, formatters, csvJSON, temporalMixin } from './utils'
   import Scrollbar from './Scrollbar.vue'
 
   const palette = {
@@ -129,6 +129,7 @@
     name: 'crosstab',
     data () {
       return {
+        values: [],
         dragX: 0,
         dragY: 0,
         parentNodeHeight: Infinity,
@@ -136,6 +137,9 @@
       }
     },
     props: {
+      dataUrl: {
+        type: String
+      },
       data: {
         type: Array,
         default: () => []
@@ -177,15 +181,28 @@
         default: true
       }
     },
+    created () {
+      if (this.dataUrl) {
+        debugger
+
+        this.loadData()
+      }
+    },
     mounted () {
       this.parentNodeHeight = this.$el.parentNode.clientHeight
       this.parentNodeWidth = this.$el.parentNode.clientWidth
     },
     computed: {
+      rawData () {
+        if (this.data.length) {
+          return this.data
+        }
+        return this.values
+      },
       transformedData () {
         let filters = this.transform.filter(item => item.filter)
         let calculations = this.transform.filter(item => item.calculate)
-        let data = this.data
+        let data = this.rawData
         let temporal = this.rows.filter(item => item.type === 'temporal')
           .concat(this.cols.filter(item => item.type === 'temporal'))
 
@@ -600,6 +617,27 @@
         })
 
         return result
+      },
+
+      loadData () {
+        let isJSON = /\.json$/.test(this.dataUrl)
+        let isCSV = /\.csv$/.test(this.dataUrl)
+
+        let xmlhttp = new window.XMLHttpRequest()
+        xmlhttp.open('GET', this.dataUrl, true)
+        xmlhttp.onreadystatechange = () => {
+          if (xmlhttp.readyState === 4) {
+            if (xmlhttp.status === 200) {
+              if (isJSON) {
+                this.values = JSON.parse(xmlhttp.responseText)
+              }
+              if (isCSV) {
+                this.values = JSON.parse(csvJSON(xmlhttp.responseText))
+              }
+            }
+          }
+        }
+        xmlhttp.send(null)
       }
     }
   }
