@@ -4,22 +4,22 @@ export const aggregators = {
   },
   sum (items, measure) {
     return Math.round(items.reduce((memo, item) => {
-      return memo + item[measure]
+      return memo + Number.parseFloat(item[measure])
     }, 0))
   },
   max (items, measure) {
     return Math.round(items.reduce((max, item) => {
-      return max > item[measure] ? max : item[measure]
+      return max > Number.parseFloat(item[measure]) ? max : Number.parseFloat(item[measure])
     }, -Infinity))
   },
   min (items, measure) {
     return Math.round(items.reduce((min, item) => {
-      return min < item[measure] ? min : item[measure]
+      return min < Number.parseFloat(item[measure]) ? min : Number.parseFloat(item[measure])
     }, Infinity))
   },
   avg (items, measure) {
     return Math.round(items.reduce((total, item) => {
-      return total + item[measure]
+      return total + Number.parseFloat(item[measure])
     }, 0) / items.length)
   }
 }
