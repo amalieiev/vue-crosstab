@@ -183,8 +183,6 @@
     },
     created () {
       if (this.dataUrl) {
-        debugger
-
         this.loadData()
       }
     },

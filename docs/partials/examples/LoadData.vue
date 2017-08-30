@@ -5,7 +5,8 @@ div
     crosstab(
       :dataUrl="dataUrl",
       :cols="cols",
-      :rows="rows"
+      :rows="rows",
+      height="200"
     )
 </template>
 
