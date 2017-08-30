@@ -630,7 +630,7 @@
                 this.values = JSON.parse(xmlhttp.responseText)
               }
               if (isCSV) {
-                this.values = JSON.parse(csvJSON(xmlhttp.responseText))
+                this.values = csvJSON(xmlhttp.responseText)
               }
             }
           }
