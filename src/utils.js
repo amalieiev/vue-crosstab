@@ -55,18 +55,25 @@ export const csvJSON = function (csv) {
   let lines = csv.split('\n')
   let result = []
 
-  let headers = lines[0].split(',')
+  let headers = lines[0].split(',').map(header => normalize(header))
 
   for (let i = 1; i < lines.length; i++) {
     let obj = {}
     let currentline = lines[i].split(',')
 
     for (let j = 0; j < headers.length; j++) {
-      obj[headers[j]] = currentline[j]
+      obj[headers[j]] = normalize(currentline[j])
     }
 
     result.push(obj)
   }
 
   return JSON.parse(JSON.stringify(result))
+}
+
+function normalize (value) {
+  if (/^['|"]/.test(value) && /['|"]$/.test(value)) {
+    return value.slice(1, -1)
+  }
+  return value
 }
