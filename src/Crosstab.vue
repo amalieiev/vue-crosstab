@@ -13,7 +13,7 @@
     >
       <g :style="dataStyle">
         <rect
-                v-for="item in aggregatedData"
+                v-for="item in partialData"
                 :height="item.height"
                 :width="item.width"
                 :x="item.x"
@@ -23,7 +23,7 @@
                 @touchstart="onCellClick($event, item)"
         ></rect>
         <text
-                v-for="item in aggregatedData"
+                v-for="item in partialData"
                 :height="item.height"
                 :width="item.width"
                 :x="item.x"
@@ -133,7 +133,15 @@
         dragX: 0,
         dragY: 0,
         parentNodeHeight: Infinity,
-        parentNodeWidth: Infinity
+        parentNodeWidth: Infinity,
+
+        // partial rendering
+        nextPointX: 0,
+        nextPointY: 0,
+        previousPointX: 0,
+        previousPointY: 0,
+        partialScale: 1,
+        partialData: []
       }
     },
     props: {
@@ -189,6 +197,8 @@
     mounted () {
       this.parentNodeHeight = this.$el.parentNode.clientHeight
       this.parentNodeWidth = this.$el.parentNode.clientWidth
+
+      this.updatePartialRendering()
     },
     computed: {
       rawData () {
@@ -405,7 +415,7 @@
       },
 
       aggregatedData () {
-        if (!this.transformedData.length) return
+        if (!this.transformedData.length) return []
 
         let rowItems = flat(this.groupedRows)
         let colItems = flat(this.groupedCols)
@@ -504,7 +514,7 @@
           if (/%$/.test(this.width)) {
             return this.parentNodeWidth * Number.parseInt(this.width) / 100
           }
-          return this.width > fullWidth ? fullWidth : this.width
+          return +this.width > fullWidth ? fullWidth : +this.width
         } else {
           return fullWidth < this.parentNodeWidth ? fullWidth : this.parentNodeWidth
         }
@@ -516,7 +526,7 @@
           if (/%$/.test(this.height)) {
             return this.parentNodeHeight * Number.parseInt(this.height) / 100
           }
-          return this.height > fullHeight ? fullHeight : this.height
+          return +this.height > fullHeight ? fullHeight : +this.height
         } else {
           return fullHeight < this.parentNodeHeight ? fullHeight : this.parentNodeHeight
         }
@@ -543,10 +553,18 @@
     methods: {
       onDragX (value) {
         this.dragX = value
+
+        if (this.dragX < this.nextPointX || this.dragX > this.previousPointX) {
+          this.updatePartialRendering()
+        }
       },
 
       onDragY (value) {
         this.dragY = value
+
+        if (this.dragY < this.nextPointY || this.dragY > this.previousPointY) {
+          this.updatePartialRendering()
+        }
       },
 
       onCellClick (evt, item) {},
@@ -632,10 +650,30 @@
               if (isCSV) {
                 this.values = csvJSON(xmlhttp.responseText)
               }
+              this.updatePartialRendering()
             }
           }
         }
         xmlhttp.send(null)
+      },
+
+      updatePartialRendering () {
+        let visibleDataHeight = this.calculatedHeight - this.cornerHeight
+        let visibleDataWidth = this.calculatedWidth - this.cornerWidth
+
+        this.nextPointX = this.dragX - visibleDataWidth * (this.partialScale - 1)
+        this.nextPointY = this.dragY - visibleDataHeight * (this.partialScale - 1)
+        this.previousPointX = this.dragX + visibleDataWidth * this.partialScale
+        this.previousPointY = this.dragY + visibleDataHeight * this.partialScale
+
+        let partialData = this.aggregatedData.filter(item => {
+          return item.x >= -this.cellWidth - this.previousPointX &&
+            item.x <= (visibleDataWidth - this.nextPointX) &&
+            item.y >= -this.cellHeight - this.previousPointY &&
+            item.y <= (visibleDataHeight - this.nextPointY)
+        })
+
+        this.partialData = partialData
       }
     }
   }
