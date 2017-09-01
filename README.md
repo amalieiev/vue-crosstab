@@ -1,8 +1,12 @@
 Probably the most complete *crosstab* solution for Vue.js 2.0, without jQuery.
 
 ### Features & characteristics:
-* \> 99% test coverage
-* Fully configurable
+* Fixed headers
+* Portial rendering
+* Custom themes
+
+## Documentation and Examples
+http://amalieiev.github.io/vue-crosstab
 
 ## Install & basic usage
 
