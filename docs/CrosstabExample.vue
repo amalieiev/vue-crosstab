@@ -44,5 +44,7 @@ export default {
 </script>
 
 <style lang="scss">
-
+  #app .start .typo__h1 {
+    padding-top: 0;
+  }
 </style>
