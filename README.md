@@ -1,6 +1,6 @@
 Probably the most complete *crosstab* solution for Vue.js 2.0, without jQuery.
 
-### Features & characteristics:
+## Features & characteristics:
 * Fixed headers
 * Portial rendering
 * Custom themes
