@@ -74,7 +74,7 @@
                 :width="item.width"
                 :x="item.x"
                 :y="item.y"
-                :dy="item.height / 2 + calculatedFontSize / 2"
+                :dy="cellHeight / 2 + calculatedFontSize / 2"
                 :dx="item.width / 2"
                 text-anchor="middle"
                 :style="item.textStyle"
