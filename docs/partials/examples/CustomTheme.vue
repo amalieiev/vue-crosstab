@@ -2,22 +2,27 @@
 div
   label.typo__label Custom Theme
   div.overflow-auto
+    multiselect(v-model="theme", :options="themes",  label="name", track-by="name")
+    br
+    br
     crosstab(
       :data="data",
       :rows="rows",
       :cols="cols",
       :width="380",
-      :palette="palette"
+      :theme="theme"
     )
 </template>
 
 <script>
 import Crosstab from 'vue-crosstab'
+import Multiselect from 'vue-multiselect'
 import data from 'data/people.json'
 
 export default {
   components: {
-    Crosstab
+    Crosstab,
+    Multiselect
   },
   data () {
     return {
@@ -31,13 +36,15 @@ export default {
         {field: 'smoker'},
         {field: 'total_bill', aggregate: 'sum'}
       ],
-      palette: {
-        primary: '#edc68a',
-        secondary: '#edb118',
-        background: 'orange',
-        border: '#e07b21',
-        text: 'white'
-      }
+      theme: {name: 'Pink'},
+      themes: [
+        {name: 'Blue'},
+        {name: 'Light Blue'},
+        {name: 'Indigo'},
+        {name: 'Pink'},
+        {name: 'Deep Purple'},
+        {name: 'Teal'}
+      ]
     }
   }
 }

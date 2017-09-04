@@ -82,7 +82,7 @@
         </text>
       </g>
       <g>
-        <rect :height="cornerHeight" :width="cornerWidth" :style="`fill:${theme.background};stroke:${theme.border}`"></rect>
+        <rect :height="cornerHeight" :width="cornerWidth" :style="`fill:${Theme.bodyPrimary};stroke:${Theme.headerBorder}`"></rect>
         <rect
                 v-for="item in cornerItems"
                 :height="item.height"
@@ -104,6 +104,12 @@
         >{{ item.text }}
         </text>
       </g>
+      <rect
+              :height="calculatedHeight"
+              :width="calculatedWidth"
+              fill="none"
+              :stroke="Theme.headerBorder"
+      ></rect>
     </scrollbar>
   </svg>
 </template>
@@ -113,14 +119,7 @@
   import _ from 'underscore'
   import { aggregators, formatters, csvJSON, temporalMixin } from './utils'
   import Scrollbar from './Scrollbar.vue'
-
-  const palette = {
-    primary: '#d9e4f1',
-    secondary: '#f4f4f4',
-    border: '#d4d4d4',
-    background: '#ffffff',
-    text: '#555555'
-  }
+  import Theme from './Theme'
 
   export default {
     components: {
@@ -181,8 +180,13 @@
       fontSize: {
         type: Number
       },
-      palette: {
-        type: Object
+      theme: {
+        type: Object,
+        default: () => {
+          return {
+            name: 'Teal'
+          }
+        }
       },
       scrollReverse: {
         type: Boolean,
@@ -195,8 +199,8 @@
       }
     },
     mounted () {
-      this.parentNodeHeight = this.$el.parentNode.clientHeight
-      this.parentNodeWidth = this.$el.parentNode.clientWidth
+      this.parentNodeHeight = Math.floor(this.$el.parentNode.clientHeight)
+      this.parentNodeWidth = Math.floor(this.$el.parentNode.clientWidth - 1)
 
       this.updatePartialRendering()
     },
@@ -255,13 +259,13 @@
               textStyle: {
                 fontSize: this.calculatedFontSize,
                 fontWeight: 'bold',
-                fill: this.theme.text,
+                fill: this.Theme.headerText,
                 dx: this.cellWidth / 2,
                 'text-anchor': 'middle'
               },
               rectStyle: {
-                fill: this.theme.primary,
-                stroke: this.theme.border
+                fill: this.Theme.palette[0],
+                stroke: this.Theme.cornerBorder
               }
             })
           })
@@ -276,7 +280,7 @@
               textStyle: {
                 fontSize: this.calculatedFontSize,
                 fontWeight: 'bold',
-                fill: this.theme.text,
+                fill: this.Theme.bodyText,
                 dx: (this.cellWidth * this.rows.length) - this.cellWidth / 4,
                 'text-anchor': 'end'
               },
@@ -298,7 +302,7 @@
               textStyle: {
                 fontSize: this.calculatedFontSize,
                 fontWeight: 'bold',
-                fill: this.theme.text,
+                fill: this.Theme.headerText,
                 dx: this.cellWidth - this.cellWidth / 4,
                 'text-anchor': 'end'
               },
@@ -320,13 +324,13 @@
               textStyle: {
                 fontSize: this.calculatedFontSize,
                 fontWeight: 'bold',
-                fill: this.theme.text,
+                fill: this.Theme.headerText,
                 dx: this.cellWidth / 2,
                 'text-anchor': 'middle'
               },
               rectStyle: {
-                fill: 'none',
-                stroke: this.theme.border
+                fill: this.Theme.palette[0],
+                stroke: this.Theme.cornerBorder
               }
             })
           })
@@ -349,11 +353,11 @@
               width: this.cellWidth,
               textStyle: {
                 fontSize: this.calculatedFontSize,
-                fill: this.theme.text
+                fill: this.Theme.headerText
               },
               rectStyle: {
-                fill: this.theme.secondary,
-                stroke: this.theme.border
+                fill: this.Theme.bodySecondary,
+                stroke: this.Theme.bodyBorder
               }
             }
           })
@@ -374,11 +378,11 @@
               textStyle: {
                 fontSize: this.calculatedFontSize,
                 fontWeight: 'bold',
-                fill: this.theme.text
+                fill: this.Theme.headerText
               },
               rectStyle: {
-                fill: this.theme.primary,
-                stroke: this.theme.border
+                fill: this.Theme.palette[0],
+                stroke: this.Theme.headerBorder
               }
             }]
           }
@@ -403,12 +407,12 @@
             width: this.cellWidth,
             textStyle: {
               fontSize: this.calculatedFontSize,
-              fill: this.theme.text,
+              fill: this.Theme.headerText,
               fontWeight: 'bold'
             },
             rectStyle: {
-              fill: this.theme.primary,
-              stroke: this.theme.border
+              fill: this.Theme.palette[0],
+              stroke: this.Theme.headerBorder
             }
           }]
         }
@@ -504,8 +508,8 @@
         }
         return this.cellHeight / 2 < 14 ? this.cellHeight / 2 : 14
       },
-      theme () {
-        return _.extend({}, palette, this.palette)
+      Theme () {
+        return Theme(this.theme.name)
       },
       calculatedWidth () {
         let fullWidth = this.cellWidth * (this.rows.length + count(this.groupedCols) + (this.hasNothing ? 1 : 0))
@@ -572,14 +576,14 @@
       getTextStyle (item) {
         return {
           fontSize: this.calculatedFontSize,
-          fill: this.theme.text
+          fill: this.Theme.bodyText
         }
       },
 
       getRectStyle (item) {
         return {
-          fill: item.isOddRow ? this.theme.background : this.theme.secondary,
-          stroke: this.theme.border
+          fill: item.isOddRow ? this.Theme.bodyPrimary : this.Theme.bodySecondary,
+          stroke: this.Theme.bodyBorder
         }
       },
 
@@ -595,11 +599,11 @@
             width: count(item) * cellWidth,
             textStyle: {
               fontSize: this.calculatedFontSize,
-              fill: this.theme.text
+              fill: this.Theme.headerText
             },
             rectStyle: {
-              fill: this.theme.primary,
-              stroke: this.theme.border
+              fill: this.Theme.palette[item.y] || this.Theme.palette[6],
+              stroke: this.Theme.headerBorder
             }
           })
 
@@ -621,11 +625,11 @@
             width: cellWidth,
             textStyle: {
               fontSize: this.calculatedFontSize,
-              fill: this.theme.text
+              fill: this.Theme.headerText
             },
             rectStyle: {
-              fill: this.theme.primary,
-              stroke: this.theme.border
+              fill: this.Theme.palette[item.x] || this.Theme.palette[6],
+              stroke: this.Theme.headerBorder
             }
           })
 

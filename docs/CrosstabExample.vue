@@ -32,7 +32,8 @@ export default {
       ],
       rows: [
         {field: 'season', label: 'Season'},
-        {field: 'date', type: 'temporal', timeUnit: 'month', label: 'Month'}
+        {field: 'date', type: 'temporal', timeUnit: 'month', label: 'Month'},
+        {field: 'date', type: 'temporal', timeUnit: 'day', label: 'Day'}
       ],
       cols: [
         {field: 'date', type: 'temporal', timeUnit: 'year', label: 'Year'},
