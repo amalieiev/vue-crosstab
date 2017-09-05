@@ -85,6 +85,9 @@
         deltaY: 0
       }
     },
+    mounted () {
+      this.applyStyles()
+    },
     computed: {
       xScrollbarWidth () {
         return (this.viewportWidth / this.contentWidth) * this.viewportWidth
@@ -203,12 +206,17 @@
         this.$emit('dragY', this.currentY + deltaY)
         this.currentX = this.currentX + deltaX
         this.currentY = this.currentY + deltaY
+      },
+
+      applyStyles () {
+        let styleEl = document.createElement('style')
+        styleEl.innerHTML = styles
+        document.body.appendChild(styleEl)
       }
     }
   }
-</script>
 
-<style scoped lang="scss">
+  const styles = `
     svg text {
         -webkit-user-select: none;
         -moz-user-select: none;
@@ -218,7 +226,6 @@
     svg text::selection {
         background: none;
     }
-
     .x-scrollbar,
     .y-scrollbar {
         transition: fill-opacity .5s;
@@ -228,4 +235,5 @@
     .y-scrollbar:hover {
         fill-opacity: .7;
     }
-</style>
+  `
+</script>

@@ -875,7 +875,3 @@
     }
   }
 </script>
-
-<style>
-
-</style>
