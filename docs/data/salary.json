@@ -17,7 +17,7 @@
     "student": false,
     "english_level": "pre intermediate",
     "subject_area": "web development,telecomunication",
-    "submittal_date": "21/06/2017 08:54:23",
+    "date": "21/06/2017 08:54:23",
     "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -38,7 +38,7 @@
     "student": false,
     "english_level": "advanced",
     "subject_area": "Desktop Applications,web development",
-    "submittal_date": "21/06/2017 08:54:56",
+    "date": "21/06/2017 08:54:56",
     "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Redmi Note 4 Build/MRA58K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.83 Mobile Safari/537.36"
   },
   {
@@ -59,7 +59,7 @@
     "student": false,
     "english_level": "intermediate",
     "subject_area": "web development",
-    "submittal_date": "21/06/2017 08:56:04",
+    "date": "21/06/2017 08:56:04",
     "User-Agent": "Mozilla/5.0 (Linux; Android 5.1.1; Redmi 3 Build/LMY47V) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.83 Mobile Safari/537.36"
   },
   {
@@ -80,7 +80,7 @@
     "student": false,
     "english_level": "upper intermediate",
     "subject_area": "web development",
-    "submittal_date": "21/06/2017 08:56:06",
+    "date": "21/06/2017 08:56:06",
     "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36"
   },
   {
@@ -101,7 +101,7 @@
     "student": false,
     "english_level": "intermediate",
     "subject_area": "Embedded",
-    "submittal_date": "21/06/2017 08:57:45",
+    "date": "21/06/2017 08:57:45",
     "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -122,7 +122,7 @@
     "student": false,
     "english_level": "upper intermediate",
     "subject_area": "Desktop Applications",
-    "submittal_date": "21/06/2017 08:59:55",
+    "date": "21/06/2017 08:59:55",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -143,7 +143,7 @@
     "student": false,
     "english_level": "upper intermediate",
     "subject_area": "web development",
-    "submittal_date": "21/06/2017 09:02:50",
+    "date": "21/06/2017 09:02:50",
     "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:53.0) Gecko/20100101 Firefox/53.0"
   },
   {
@@ -164,7 +164,7 @@
     "student": false,
     "english_level": "intermediate",
     "subject_area": "web development",
-    "submittal_date": "21/06/2017 09:04:47",
+    "date": "21/06/2017 09:04:47",
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36"
   },
   {
@@ -185,7 +185,7 @@
     "student": false,
     "english_level": "upper intermediate",
     "subject_area": "Другое",
-    "submittal_date": "21/06/2017 09:07:54",
+    "date": "21/06/2017 09:07:54",
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/603.2.4 (KHTML, like Gecko) Version/10.1.1 Safari/603.2.4"
   },
   {
@@ -206,7 +206,7 @@
     "student": false,
     "english_level": "pre intermediate",
     "subject_area": "Gamedev",
-    "submittal_date": "21/06/2017 09:08:00",
+    "date": "21/06/2017 09:08:00",
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.104 Safari/537.36"
   },
   {
@@ -227,7 +227,7 @@
     "student": false,
     "english_level": "upper intermediate",
     "subject_area": "web development,telecomunication",
-    "submittal_date": "21/06/2017 09:08:28",
+    "date": "21/06/2017 09:08:28",
     "User-Agent": "Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko"
   },
   {
@@ -248,7 +248,7 @@
     "student": false,
     "english_level": "upper intermediate",
     "subject_area": "web development",
-    "submittal_date": "21/06/2017 09:10:37",
+    "date": "21/06/2017 09:10:37",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -269,7 +269,7 @@
     "student": false,
     "english_level": "advanced",
     "subject_area": "web development",
-    "submittal_date": "21/06/2017 09:10:45",
+    "date": "21/06/2017 09:10:45",
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.1 Safari/603.1.30"
   },
   {
@@ -290,7 +290,7 @@
     "student": false,
     "english_level": "intermediate",
     "subject_area": "web development",
-    "submittal_date": "21/06/2017 09:13:07",
+    "date": "21/06/2017 09:13:07",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -311,7 +311,7 @@
     "student": false,
     "english_level": "pre intermediate",
     "subject_area": "web development",
-    "submittal_date": "21/06/2017 09:14:26",
+    "date": "21/06/2017 09:14:26",
     "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:53.0) Gecko/20100101 Firefox/53.0"
   },
   {
@@ -332,7 +332,7 @@
     "student": false,
     "english_level": "upper intermediate",
     "subject_area": "Embedded,telecomunication",
-    "submittal_date": "21/06/2017 09:19:48",
+    "date": "21/06/2017 09:19:48",
     "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0"
   },
   {
@@ -353,7 +353,7 @@
     "student": false,
     "english_level": "intermediate",
     "subject_area": "web development",
-    "submittal_date": "21/06/2017 09:20:47",
+    "date": "21/06/2017 09:20:47",
     "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -374,7 +374,7 @@
     "student": false,
     "english_level": "upper intermediate",
     "subject_area": "web development",
-    "submittal_date": "21/06/2017 09:22:49",
+    "date": "21/06/2017 09:22:49",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:53.0) Gecko/20100101 Firefox/53.0"
   },
   {
@@ -395,7 +395,7 @@
     "student": false,
     "english_level": "pre intermediate",
     "subject_area": "web development,eCommerce",
-    "submittal_date": "21/06/2017 09:23:07",
+    "date": "21/06/2017 09:23:07",
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.104 Safari/537.36"
   },
   {
@@ -416,7 +416,7 @@
     "student": false,
     "english_level": "upper intermediate",
     "subject_area": "telecomunication",
-    "submittal_date": "21/06/2017 09:24:14",
+    "date": "21/06/2017 09:24:14",
     "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -437,7 +437,7 @@
     "student": false,
     "english_level": "basic",
     "subject_area": "web development",
-    "submittal_date": "21/06/2017 09:27:19",
+    "date": "21/06/2017 09:27:19",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -458,7 +458,7 @@
     "student": false,
     "english_level": "intermediate",
     "subject_area": "web development,telecomunication",
-    "submittal_date": "21/06/2017 09:35:47",
+    "date": "21/06/2017 09:35:47",
     "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:54.0) Gecko/20100101 Firefox/54.0"
   },
   {
@@ -479,7 +479,7 @@
     "student": false,
     "english_level": "upper intermediate",
     "subject_area": "Android,web development",
-    "submittal_date": "21/06/2017 09:37:18",
+    "date": "21/06/2017 09:37:18",
     "User-Agent": "Mozilla/5.0 (iPad; CPU OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) CriOS/59.0.3071.102 Mobile/14E304 Safari/602.1"
   },
   {
@@ -500,7 +500,7 @@
     "student": false,
     "english_level": "intermediate",
     "subject_area": "Android,web development",
-    "submittal_date": "21/06/2017 09:42:29",
+    "date": "21/06/2017 09:42:29",
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.104 Safari/537.36"
   },
   {
@@ -521,7 +521,7 @@
     "student": false,
     "english_level": "intermediate",
     "subject_area": "web development,Corp systems",
-    "submittal_date": "21/06/2017 09:44:33",
+    "date": "21/06/2017 09:44:33",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -542,7 +542,7 @@
     "student": false,
     "english_level": "intermediate",
     "subject_area": "web development",
-    "submittal_date": "21/06/2017 09:44:44",
+    "date": "21/06/2017 09:44:44",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -563,7 +563,7 @@
     "student": false,
     "english_level": "upper intermediate",
     "subject_area": "Desktop Applications,web development",
-    "submittal_date": "21/06/2017 09:45:11",
+    "date": "21/06/2017 09:45:11",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -584,7 +584,7 @@
     "student": false,
     "english_level": "pre intermediate",
     "subject_area": "telecomunication",
-    "submittal_date": "21/06/2017 09:46:05",
+    "date": "21/06/2017 09:46:05",
     "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; MZ-U20 Build/MRA58K) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/45.0.2454.94 Mobile Safari/537.36"
   },
   {
@@ -605,7 +605,7 @@
     "student": false,
     "english_level": "intermediate",
     "subject_area": "web development,Corp systems",
-    "submittal_date": "21/06/2017 09:47:16",
+    "date": "21/06/2017 09:47:16",
     "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3124.11 Safari/537.36"
   },
   {
@@ -626,7 +626,7 @@
     "student": false,
     "english_level": "upper intermediate",
     "subject_area": "finance",
-    "submittal_date": "21/06/2017 09:48:33",
+    "date": "21/06/2017 09:48:33",
     "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:53.0) Gecko/20100101 Firefox/53.0"
   },
   {
@@ -647,7 +647,7 @@
     "student": false,
     "english_level": "upper intermediate",
     "subject_area": "web development,finance",
-    "submittal_date": "21/06/2017 09:48:52",
+    "date": "21/06/2017 09:48:52",
     "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; Trident/7.0; rv:11.0) like Gecko"
   },
   {
@@ -668,7 +668,7 @@
     "student": false,
     "english_level": "intermediate",
     "subject_area": "web development",
-    "submittal_date": "21/06/2017 09:50:18",
+    "date": "21/06/2017 09:50:18",
     "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:53.0) Gecko/20100101 Firefox/53.0"
   },
   {
@@ -689,7 +689,7 @@
     "student": false,
     "english_level": "upper intermediate",
     "subject_area": "finance,Corp systems",
-    "submittal_date": "21/06/2017 09:51:31",
+    "date": "21/06/2017 09:51:31",
     "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.59 Safari/537.36 OPR/41.0.2353.46"
   },
   {
@@ -710,7 +710,7 @@
     "student": false,
     "english_level": "intermediate",
     "subject_area": "web development",
-    "submittal_date": "21/06/2017 09:51:56",
+    "date": "21/06/2017 09:51:56",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -731,7 +731,7 @@
     "student": false,
     "english_level": "intermediate",
     "subject_area": "web development",
-    "submittal_date": "21/06/2017 09:54:56",
+    "date": "21/06/2017 09:54:56",
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.104 Safari/537.36"
   },
   {
@@ -752,7 +752,7 @@
     "student": false,
     "english_level": "advanced",
     "subject_area": "web development",
-    "submittal_date": "21/06/2017 09:57:38",
+    "date": "21/06/2017 09:57:38",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -773,7 +773,7 @@
     "student": false,
     "english_level": "basic",
     "subject_area": "eCommerce,Другое",
-    "submittal_date": "21/06/2017 10:01:18",
+    "date": "21/06/2017 10:01:18",
     "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -794,7 +794,7 @@
     "student": true,
     "english_level": "upper intermediate",
     "subject_area": "iOS",
-    "submittal_date": "21/06/2017 10:01:24",
+    "date": "21/06/2017 10:01:24",
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/603.2.4 (KHTML, like Gecko) Version/10.1.1 Safari/603.2.4"
   },
   {
@@ -815,7 +815,7 @@
     "student": false,
     "english_level": "pre intermediate",
     "subject_area": "web development,eCommerce",
-    "submittal_date": "21/06/2017 10:04:29",
+    "date": "21/06/2017 10:04:29",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -836,7 +836,7 @@
     "student": false,
     "english_level": "upper intermediate",
     "subject_area": "Corp systems,Другое",
-    "submittal_date": "21/06/2017 10:04:29",
+    "date": "21/06/2017 10:04:29",
     "User-Agent": "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -857,7 +857,7 @@
     "student": false,
     "english_level": "pre intermediate",
     "subject_area": "telecomunication",
-    "submittal_date": "21/06/2017 10:06:03",
+    "date": "21/06/2017 10:06:03",
     "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:53.0) Gecko/20100101 Firefox/53.0"
   },
   {
@@ -878,7 +878,7 @@
     "student": false,
     "english_level": "intermediate",
     "subject_area": "eCommerce",
-    "submittal_date": "21/06/2017 10:06:04",
+    "date": "21/06/2017 10:06:04",
     "User-Agent": "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -899,7 +899,7 @@
     "student": false,
     "english_level": "upper intermediate",
     "subject_area": "web development,Corp systems",
-    "submittal_date": "21/06/2017 10:09:20",
+    "date": "21/06/2017 10:09:20",
     "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36"
   },
   {
@@ -920,7 +920,7 @@
     "student": false,
     "english_level": "intermediate",
     "subject_area": "web development,eCommerce",
-    "submittal_date": "21/06/2017 10:09:30",
+    "date": "21/06/2017 10:09:30",
     "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:53.0) Gecko/20100101 Firefox/53.0"
   },
   {
@@ -941,7 +941,7 @@
     "student": false,
     "english_level": "upper intermediate",
     "subject_area": "Embedded,Corp systems",
-    "submittal_date": "21/06/2017 10:09:46",
+    "date": "21/06/2017 10:09:46",
     "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:54.0) Gecko/20100101 Firefox/54.0"
   },
   {
@@ -962,7 +962,7 @@
     "student": false,
     "english_level": "pre intermediate",
     "subject_area": "web development",
-    "submittal_date": "21/06/2017 10:16:15",
+    "date": "21/06/2017 10:16:15",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -983,7 +983,7 @@
     "student": false,
     "english_level": "intermediate",
     "subject_area": "Desktop Applications",
-    "submittal_date": "21/06/2017 10:17:39",
+    "date": "21/06/2017 10:17:39",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36"
   },
   {
@@ -1004,7 +1004,7 @@
     "student": false,
     "english_level": "upper intermediate",
     "subject_area": "web development",
-    "submittal_date": "21/06/2017 10:18:20",
+    "date": "21/06/2017 10:18:20",
     "User-Agent": "Mozilla/5.0 (Linux; Android 5.0.2; Redmi Note 2 Build/LRX22G) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.81 Mobile Safari/537.36"
   },
   {
@@ -1025,7 +1025,7 @@
     "student": false,
     "english_level": "advanced",
     "subject_area": "web development",
-    "submittal_date": "21/06/2017 10:21:23",
+    "date": "21/06/2017 10:21:23",
     "User-Agent": "Mozilla/5.0 (Linux; Android 5.1; ZTE T620 Build/LMY47D) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.132 Mobile Safari/537.36"
   },
   {
@@ -1046,7 +1046,7 @@
     "student": false,
     "english_level": "intermediate",
     "subject_area": "web development",
-    "submittal_date": "21/06/2017 10:21:24",
+    "date": "21/06/2017 10:21:24",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -1067,7 +1067,7 @@
     "student": false,
     "english_level": "intermediate",
     "subject_area": "web development,Corp systems",
-    "submittal_date": "21/06/2017 10:22:09",
+    "date": "21/06/2017 10:22:09",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -1088,7 +1088,7 @@
     "student": false,
     "english_level": "intermediate",
     "subject_area": "telecomunication",
-    "submittal_date": "21/06/2017 10:24:00",
+    "date": "21/06/2017 10:24:00",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36"
   },
   {
@@ -1109,7 +1109,7 @@
     "student": false,
     "english_level": "upper intermediate",
     "subject_area": "Desktop Applications,web development",
-    "submittal_date": "21/06/2017 10:24:15",
+    "date": "21/06/2017 10:24:15",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36"
   },
   {
@@ -1130,7 +1130,7 @@
     "student": false,
     "english_level": "intermediate",
     "subject_area": "web development",
-    "submittal_date": "21/06/2017 10:25:59",
+    "date": "21/06/2017 10:25:59",
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -1151,7 +1151,7 @@
     "student": false,
     "english_level": "advanced",
     "subject_area": "finance",
-    "submittal_date": "21/06/2017 10:27:55",
+    "date": "21/06/2017 10:27:55",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko"
   },
   {
@@ -1172,7 +1172,7 @@
     "student": false,
     "english_level": "pre intermediate",
     "subject_area": "iOS",
-    "submittal_date": "21/06/2017 10:29:22",
+    "date": "21/06/2017 10:29:22",
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/603.1.20 (KHTML, like Gecko) Version/10.1 Safari/603.1.20"
   },
   {
@@ -1193,7 +1193,7 @@
     "student": false,
     "english_level": "intermediate",
     "subject_area": "Corp systems",
-    "submittal_date": "21/06/2017 10:30:04",
+    "date": "21/06/2017 10:30:04",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -1214,7 +1214,7 @@
     "student": false,
     "english_level": "upper intermediate",
     "subject_area": "Gamedev",
-    "submittal_date": "21/06/2017 10:30:42",
+    "date": "21/06/2017 10:30:42",
     "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -1235,7 +1235,7 @@
     "student": false,
     "english_level": "upper intermediate",
     "subject_area": "Corp systems",
-    "submittal_date": "21/06/2017 10:34:51",
+    "date": "21/06/2017 10:34:51",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -1256,7 +1256,7 @@
     "student": false,
     "english_level": "intermediate",
     "subject_area": "Gamedev",
-    "submittal_date": "21/06/2017 10:36:32",
+    "date": "21/06/2017 10:36:32",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -1277,7 +1277,7 @@
     "student": false,
     "english_level": "upper intermediate",
     "subject_area": "Gamedev",
-    "submittal_date": "21/06/2017 10:38:31",
+    "date": "21/06/2017 10:38:31",
     "User-Agent": "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:53.0) Gecko/20100101 Firefox/53.0"
   },
   {
@@ -1298,7 +1298,7 @@
     "student": false,
     "english_level": "intermediate",
     "subject_area": "iOS",
-    "submittal_date": "21/06/2017 10:38:37",
+    "date": "21/06/2017 10:38:37",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 OPR/45.0.2552.898"
   },
   {
@@ -1319,7 +1319,7 @@
     "student": false,
     "english_level": "basic",
     "subject_area": "Desktop Applications",
-    "submittal_date": "21/06/2017 10:38:59",
+    "date": "21/06/2017 10:38:59",
     "User-Agent": "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 OPR/45.0.2552.888"
   },
   {
@@ -1340,7 +1340,7 @@
     "student": false,
     "english_level": "upper intermediate",
     "subject_area": "web development",
-    "submittal_date": "21/06/2017 10:40:31",
+    "date": "21/06/2017 10:40:31",
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.104 Safari/537.36"
   },
   {
@@ -1361,7 +1361,7 @@
     "student": false,
     "english_level": "upper intermediate",
     "subject_area": "web development",
-    "submittal_date": "21/06/2017 10:41:15",
+    "date": "21/06/2017 10:41:15",
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -1382,7 +1382,7 @@
     "student": false,
     "english_level": "intermediate",
     "subject_area": "web development,eCommerce",
-    "submittal_date": "21/06/2017 10:41:29",
+    "date": "21/06/2017 10:41:29",
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.1 Safari/603.1.30"
   },
   {
@@ -1403,7 +1403,7 @@
     "student": false,
     "english_level": "intermediate",
     "subject_area": "Android,Desktop Applications",
-    "submittal_date": "21/06/2017 10:42:29",
+    "date": "21/06/2017 10:42:29",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   },
   {
@@ -1424,7 +1424,7 @@
     "student": false,
     "english_level": "upper intermediate",
     "subject_area": "finance,eCommerce",
-    "submittal_date": "21/06/2017 10:43:42",
+    "date": "21/06/2017 10:43:42",
     "User-Agent": "Mozilla/5.0 (Mobile; Windows Phone 8.1; Android 4.0; ARM; Trident/7.0; Touch; rv:11.0; IEMobile/11.0; NOKIA; Lumia 730 Dual SIM) like iPhone OS 7_0_3 Mac OS X AppleWebKit/537 (KHTML, like Gecko) Mobile Safari/537"
   },
   {
@@ -1445,7 +1445,7 @@
     "student": false,
     "english_level": "upper intermediate",
     "subject_area": "web development,Corp systems",
-    "submittal_date": "21/06/2017 10:44:51",
+    "date": "21/06/2017 10:44:51",
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
   }
 ]
