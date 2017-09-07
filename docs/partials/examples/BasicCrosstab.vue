@@ -23,7 +23,7 @@ export default {
       cols: [
         {field: 'sex'},
         {field: 'smoker'},
-        {field: 'total_bill', aggregate: 'sum'}
+        {field: 'total_bill', aggregate: 'sum', formatter: 'currency'}
       ],
       rows: [
         {field: 'day'},

@@ -24,10 +24,10 @@ div
         data,
         transform: [],
         rows: [
-          {field: 'Язык программирования', label: 'Speciality'}
+          {field: 'programming_language', label: 'Speciality'}
         ],
         cols: [
-          {field: 'Зарплата в месяц', label: 'Salary', aggregate: 'max', formatter: 'currency'}
+          {field: 'salary_per_month', label: 'Salary', aggregate: 'max', formatter: 'currency'}
         ]
       }
     }
