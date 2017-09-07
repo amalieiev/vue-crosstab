@@ -4,8 +4,7 @@ div
   div.overflow-auto
     crosstab(
       :data="data",
-      :cols="cols",
-      :width="380"
+      :cols="cols"
     )
 </template>
 

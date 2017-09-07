@@ -322,7 +322,7 @@
               textStyle: {
                 fontSize: this.calculatedFontSize,
                 fontWeight: 'bold',
-                fill: this.Theme.headerText,
+                fill: this.Theme.bodyText,
                 dx: this.cellWidth - this.cellWidth / 4,
                 'text-anchor': 'end'
               },
@@ -532,7 +532,7 @@
         return Theme(this.theme.name)
       },
       calculatedWidth () {
-        let fullWidth = this.cellWidth * (this.rows.length + count(this.groupedCols) + (this.hasNothing ? 1 : 0))
+        let fullWidth = this.cellWidth * (this.rows.length + count(this.groupedCols) + (this.hasNothing || this.hasColsOnly ? 1 : 0))
 
         if (this.width) {
           if (/%$/.test(this.width)) {

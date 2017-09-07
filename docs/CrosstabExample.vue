@@ -4,14 +4,14 @@
     :rows="rows"
     :cols="cols"
     :transform="transform"
-    height="200"
+    height="250"
   ></crosstab>
 </template>
 
 <script>
 import Crosstab from '../src/Crosstab.vue'
 import _ from 'underscore'
-import data from '../docs/data/seattle-weather-lite.json'
+import data from '../docs/data/salary.json'
 
 export default {
   components: {
@@ -21,23 +21,17 @@ export default {
     return {
       data,
       transform: [
-        {
-          calculate: 'season',
-          value: record => {
-            return _.contains(['December', 'January', 'February'], record.date_month) ? 'Winter' :
-                   _.contains(['March', 'April', 'May'], record.date_month) ? 'Spring' :
-                   _.contains(['June', 'July', 'August'], record.date_month) ? 'Summer' : 'Autumn'
-          }
-        }
-      ],
-      rows: [
-        {field: 'season', label: 'Season'},
-        {field: 'date', type: 'temporal', timeUnit: 'month', label: 'Month'},
-        {field: 'date', type: 'temporal', timeUnit: 'day', label: 'Day'}
+        {calculate: 'sex', value: record => record.sex === 'm' ? 'Male' : 'Female'},
+        {filter: 'city', isOneOf: ['Kiev', 'Kharkiv', 'Lviv', 'Odessa', 'Zaporozhye']}
       ],
       cols: [
         {field: 'date', type: 'temporal', timeUnit: 'year', label: 'Year'},
-        {field: 'weather', label: 'Weather', aggregate: 'count'}
+        {field: 'city', label: 'City'},
+        {field: 'sex', label: 'Sex'},
+        {field: 'salary_per_month', label: 'Salary', aggregate: 'avg', formatter: 'currency'}
+      ],
+      rows: [
+        {field: 'programming_language', label: 'Language'}
       ]
     }
   }
