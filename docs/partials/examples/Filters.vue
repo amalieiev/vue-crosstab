@@ -22,8 +22,8 @@ div
       return {
         data,
         transform: [
-          {filter: 'datum.weather === "sun"'},
-          {filter: 'datum.year_date === 2015'}
+          {filter: 'weather', equals: 'sun'},
+          {filter: 'year_date', isGreaterThan: 2012}
         ],
         cols: [
           {field: 'date', type: 'temporal', timeUnit: 'year', label: 'Year'},

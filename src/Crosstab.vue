@@ -232,7 +232,27 @@
 
         filters.forEach(filter => {
           data = data.filter(datum => {
-            return eval(filter.filter)
+            if (filter.equals) {
+              return datum[filter.filter] === filter.equals
+            }
+            if (filter.isNotEqualTo) {
+              return datum[filter.filter] !== filter.isNotEqualTo
+            }
+            if (filter.isOneOf) {
+              return _.contains(filter.isOneOf, datum[filter.filter])
+            }
+            if (filter.isNotOneOf) {
+              return !_.contains(filter.isNotOneOf, datum[filter.filter])
+            }
+            if (filter.isGreaterThan) {
+              return datum[filter.filter] > filter.isGreaterThan
+            }
+            if (filter.isSmallerThan) {
+              return datum[filter.filter] < filter.isGreaterThan
+            }
+            if (filter.contains) {
+              return datum[filter.filter].toLowerCase().indexOf(filter.contains.toLowerCase()) !== -1
+            }
           })
         })
 

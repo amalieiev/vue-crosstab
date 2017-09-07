@@ -22,9 +22,8 @@
 
       #### Optional configuration flags:
       - `transform` - an array with `filters` and `calsulated` fields
-      - `datum` – record in dataset.
-      - `datum.wearter` – `weather` field name in record.
-      - `datum.year_date` – `year` timeUnit name, `date` field name in record.
+      - `filter: weather` – `weather` field name in record.
+      - `equals` – name of the filter. Posible values `equals`, `isNotEqualTo`, `isOneOf`, `isNotOneOf`, `contains`, `isGreaterThan`, `isSmallerThan`.
     +example('Filters')
   +subsection('Formatters')
     :markdown-it
