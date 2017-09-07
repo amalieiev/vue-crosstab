@@ -226,7 +226,7 @@
 
         data.forEach(datum => {
           calculations.forEach(calculation => {
-            eval(calculation.calculate)
+            datum[calculation.calculate] = calculation.value(datum)
           })
         })
 
@@ -872,7 +872,7 @@
     let label = isCornerField && item.label
 
     if (item.type === 'temporal') {
-      return label || item.timeUnit.concat('_', item.field)
+      return label || item.field.concat('_', item.timeUnit)
     }
 
     return label || item.field

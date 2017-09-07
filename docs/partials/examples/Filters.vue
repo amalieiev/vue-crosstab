@@ -23,7 +23,7 @@ div
         data,
         transform: [
           {filter: 'weather', equals: 'sun'},
-          {filter: 'year_date', isGreaterThan: 2012}
+          {filter: 'date_year', isGreaterThan: 2012}
         ],
         cols: [
           {field: 'date', type: 'temporal', timeUnit: 'year', label: 'Year'},

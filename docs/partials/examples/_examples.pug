@@ -37,9 +37,8 @@
       The basic crosstab doesn’t require much configuration.
 
       #### Optional configuration flags:
-      - `datum` – record in dataset.
-      - `datum.season` – `season` new calculated field name in record.
-      - `datum.month_date` – `month` timeUnit name, `date` field name in record.
+      - `calculate: 'season'` – create `season` calculated field.
+      - `value: record => {}` – `value` value for `season` calculated field. Takes function which will be called with each `record` in data
     +example('CalculatedFields')
   +subsection('Rows only')
     :markdown-it

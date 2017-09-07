@@ -10,6 +10,7 @@
 
 <script>
 import Crosstab from '../src/Crosstab.vue'
+import _ from 'underscore'
 import data from '../docs/data/seattle-weather-lite.json'
 
 export default {
@@ -20,15 +21,14 @@ export default {
     return {
       data,
       transform: [
-        {calculate: `datum.season = datum.month_date === "December" ||
-                                      datum.month_date === "January" ||
-                                      datum.month_date === "February" ? 'Winter' :
-                                      datum.month_date === "March" ||
-                                      datum.month_date === "April" ||
-                                      datum.month_date === "May" ? 'Spring' :
-                                      datum.month_date === "June" ||
-                                      datum.month_date === "July" ||
-                                      datum.month_date === "August" ? 'Summer' : 'Autumn'`}
+        {
+          calculate: 'season',
+          value: record => {
+            return _.contains(['December', 'January', 'February'], record.date_month) ? 'Winter' :
+                   _.contains(['March', 'April', 'May'], record.date_month) ? 'Spring' :
+                   _.contains(['June', 'July', 'August'], record.date_month) ? 'Summer' : 'Autumn'
+          }
+        }
       ],
       rows: [
         {field: 'season', label: 'Season'},
