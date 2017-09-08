@@ -1,6 +1,6 @@
 {
   "name": "vue-crosstab",
-  "version": "0.7.5",
+  "version": "0.7.6",
   "description": "Crosstab component for vue.js",
   "author": "Artem Malieiev <artem.malieiev@gmail.com>",
   "private": false,

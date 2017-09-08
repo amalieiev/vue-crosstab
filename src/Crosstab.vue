@@ -46,18 +46,37 @@
                 :y="item.y"
                 :style="item.rectStyle"
         ></rect>
-        <text
+        <foreignObject
                 v-for="item in colItems"
+                :key="item.x + '_' + item.y"
                 :height="item.height"
                 :width="item.width"
                 :x="item.x"
                 :y="item.y"
-                :dy="item.height / 2 + calculatedFontSize / 2"
-                :dx="item.width / 2"
-                text-anchor="middle"
                 :style="item.textStyle"
-        >{{ item.text }}
-        </text>
+        ><div :title="item.text" :style="{
+                     textAlign: 'center',
+                     color: Theme.headerText,
+                     overflow: 'hidden',
+                     lineHeight: cellHeight + 'px',
+                     userSelect: 'none',
+                     padding: '0 5px',
+                     textOverflow: 'ellipsis',
+                     whiteSpace: 'nowrap'
+                  }">{{ item.text }}</div>
+        </foreignObject>
+        <!--<text-->
+                <!--v-for="item in colItems"-->
+                <!--:height="item.height"-->
+                <!--:width="item.width"-->
+                <!--:x="item.x"-->
+                <!--:y="item.y"-->
+                <!--:dy="item.height / 2 + calculatedFontSize / 2"-->
+                <!--:dx="item.width / 2"-->
+                <!--text-anchor="middle"-->
+                <!--:style="item.textStyle"-->
+        <!--&gt;{{ item.text }}-->
+        <!--</text>-->
       </g>
       <g :style="rowHeaderStyle">
         <rect
@@ -68,18 +87,37 @@
                 :y="item.y"
                 :style="item.rectStyle"
         ></rect>
-        <text
+        <foreignObject
                 v-for="item in rowItems"
+                :key="item.x + '_' + item.y"
                 :height="item.height"
                 :width="item.width"
                 :x="item.x"
                 :y="item.y"
-                :dy="cellHeight / 2 + calculatedFontSize / 2"
-                :dx="item.width / 2"
-                text-anchor="middle"
                 :style="item.textStyle"
-        >{{ item.text }}
-        </text>
+          ><div :title="item.text" :style="{
+                     textAlign: 'center',
+                     color: Theme.headerText,
+                     overflow: 'hidden',
+                     lineHeight: cellHeight + 'px',
+                     userSelect: 'none',
+                     padding: '0 5px',
+                     textOverflow: 'ellipsis',
+                     whiteSpace: 'nowrap'
+                  }">{{ item.text }}</div>
+        </foreignObject>
+        <!--<text-->
+                <!--v-for="item in rowItems"-->
+                <!--:height="item.height"-->
+                <!--:width="item.width"-->
+                <!--:x="item.x"-->
+                <!--:y="item.y"-->
+                <!--:dy="cellHeight / 2 + calculatedFontSize / 2"-->
+                <!--:dx="item.width / 2"-->
+                <!--text-anchor="middle"-->
+                <!--:style="item.textStyle"-->
+        <!--&gt;{{ item.text }}-->
+        <!--</text>-->
       </g>
       <g>
         <rect :height="cornerHeight" :width="cornerWidth" :style="`fill:${Theme.bodyPrimary};stroke:${Theme.headerBorder}`"></rect>
@@ -91,18 +129,37 @@
                 :y="item.y"
                 :style="item.rectStyle"
         ></rect>
-        <text
+        <foreignObject
                 v-for="item in cornerItems"
+                :key="item.x + '_' + item.y"
                 :height="item.height"
                 :width="item.width"
                 :x="item.x"
                 :y="item.y"
-                :dy="item.height / 2 + calculatedFontSize / 2"
-                :dx="item.textStyle.dx"
-                :text-anchor="item.textStyle.textAnchor"
                 :style="item.textStyle"
-        >{{ item.text }}
-        </text>
+        ><div :title="item.text" :style="{
+                     textAlign: item.textStyle.textAlign,
+                     color: item.textStyle.fill,
+                     overflow: 'hidden',
+                     lineHeight: cellHeight + 'px',
+                     userSelect: 'none',
+                     padding: item.textStyle.padding,
+                     textOverflow: 'ellipsis',
+                     whiteSpace: 'nowrap'
+                  }">{{ item.text }}</div>
+        </foreignObject>
+        <!--<text-->
+                <!--v-for="item in cornerItems"-->
+                <!--:height="item.height"-->
+                <!--:width="item.width"-->
+                <!--:x="item.x"-->
+                <!--:y="item.y"-->
+                <!--:dy="item.height / 2 + calculatedFontSize / 2"-->
+                <!--:dx="item.textStyle.dx"-->
+                <!--:text-anchor="item.textStyle.textAnchor"-->
+                <!--:style="item.textStyle"-->
+        <!--&gt;{{ item.text }}-->
+        <!--</text>-->
       </g>
       <rect
               :height="calculatedHeight"
@@ -281,7 +338,9 @@
                 fontWeight: 'bold',
                 fill: this.Theme.headerText,
                 dx: this.cellWidth / 2,
-                'text-anchor': 'middle'
+                'text-anchor': 'middle',
+                textAlign: 'center',
+                padding: '0 5px'
               },
               rectStyle: {
                 fill: this.Theme.palette[0],
@@ -302,7 +361,9 @@
                 fontWeight: 'bold',
                 fill: this.Theme.bodyText,
                 dx: (this.cellWidth * this.rows.length) - this.cellWidth / 4,
-                'text-anchor': 'end'
+                'text-anchor': 'end',
+                textAlign: 'right',
+                padding: '0 10px'
               },
               rectStyle: {
                 fill: 'none'
@@ -324,7 +385,9 @@
                 fontWeight: 'bold',
                 fill: this.Theme.bodyText,
                 dx: this.cellWidth - this.cellWidth / 4,
-                'text-anchor': 'end'
+                'text-anchor': 'end',
+                textAlign: 'right',
+                padding: '0 10px'
               },
               rectStyle: {
                 fill: 'none'
@@ -346,7 +409,8 @@
                 fontWeight: 'bold',
                 fill: this.Theme.headerText,
                 dx: this.cellWidth / 2,
-                'text-anchor': 'middle'
+                'text-anchor': 'middle',
+                textAlign: 'center'
               },
               rectStyle: {
                 fill: this.Theme.palette[0],

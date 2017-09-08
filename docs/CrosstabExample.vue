@@ -31,7 +31,8 @@ export default {
         {field: 'salary_per_month', label: 'Salary', aggregate: 'avg', formatter: 'currency'}
       ],
       rows: [
-        {field: 'programming_language', label: 'Language'}
+        {field: 'programming_language', label: 'Language'},
+        {field: 'position', label: 'Position'}
       ]
     }
   }
