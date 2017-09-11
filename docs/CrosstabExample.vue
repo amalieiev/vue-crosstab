@@ -1,6 +1,6 @@
 <template>
   <crosstab
-    :data="data"
+    dataUrl="https://raw.githubusercontent.com/amalieiev/vue-crosstab/master/docs/data/salary.json"
     :rows="rows"
     :cols="cols"
     :transform="transform"

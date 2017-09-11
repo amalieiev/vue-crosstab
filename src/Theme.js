@@ -1,69 +1,110 @@
-const palette = {
-  Blue: [
-    '#1565C0',
-    '#1976D2',
-    '#1E88E5',
-    '#2196F3',
-    '#42A5F5',
-    '#64B5F6',
-    '#90CAF9'
-  ],
-  'Light Blue': [
-    '#0277BD',
-    '#0288D1',
-    '#039BE5',
-    '#03A9F4',
-    '#29B6F6',
-    '#4FC3F7',
-    '#81D4FA'
-  ],
-  Teal: [
-    '#00695C',
-    '#00796B',
-    '#00897B',
-    '#009688',
-    '#26A69A',
-    '#4DB6AC',
-    '#80CBC4'
-  ],
-  Pink: [
-    '#AD1457',
-    '#C2185B',
-    '#D81B60',
-    '#E91E63',
-    '#EC407A',
-    '#F06292',
-    '#F48FB1'
-  ],
-  Indigo: [
-    '#283593',
-    '#303F9F',
-    '#3949AB',
-    '#3F51B5',
-    '#5C6BC0',
-    '#7986CB',
-    '#9FA8DA'
-  ],
-  'Deep Purple': [
-    '#4527A0',
-    '#512DA8',
-    '#5E35B1',
-    '#673AB7',
-    '#7E57C2',
-    '#9575CD',
-    '#B39DDB'
-  ]
+const colors = {
+  'Deep Purple': '#4527A0',
+  Indigo: '#283593',
+  Pink: '#AD1457',
+  Teal: '#00695C',
+  'Steel Blue': '#4682b4',
+  'Light Blue': '#0277BD',
+  Blue: '#1565C0'
 }
 
-export default (themeName) => {
+export default ({ name, baseColor, valueColor }) => {
+  valueColor = valueColor || '#09622a'
+
+  let hslValueColor = hexToHsl(valueColor)
+  let hslColor = hexToHsl(name ? colors[name] : baseColor)
+  let palette = []
+  let step = 3
+
+  for (let i = 0; i < 10; i++) {
+    let color = `hsl(${hslColor[0]}, ${hslColor[1]}%, ${hslColor[2] + i * step}%)`
+    palette.push(color)
+  }
+
   return {
-    palette: palette[themeName],
+    palette: palette,
     headerText: '#FFFFFF',
-    headerBorder: palette[themeName][0],
-    cornerBorder: palette[themeName][1],
+    headerBorder: palette[0],
+    cornerBorder: palette[1],
     bodyText: '#666666',
     bodyBorder: '#DADADA',
     bodyPrimary: '#FFFFFF',
-    bodySecondary: '#F2F2F2'
+    bodySecondary: '#F2F2F2',
+    valueToColor: (value, maxValue) => {
+      let valuePercent = value / maxValue
+      let color = `hsl(${hslValueColor[0]}, ${hslValueColor[1]}%, ${Math.round(70 - 50 * valuePercent)}%)`
+
+      return color
+    }
   }
+}
+
+function hexToRgb (hex) {
+  if (hex.charAt && hex.charAt(0) === '#') {
+    hex = removeHash(hex)
+  }
+
+  if (hex.length === 3) {
+    hex = expand(hex)
+  }
+
+  let bigint = parseInt(hex, 16)
+  let r = (bigint >> 16) & 255
+  let g = (bigint >> 8) & 255
+  let b = bigint & 255
+
+  return [r, g, b]
+}
+
+function removeHash (hex) {
+  let arr = hex.split('')
+  arr.shift()
+  return arr.join('')
+}
+
+function expand (hex) {
+  return hex
+    .split('')
+    .reduce(function (accum, value) {
+      return accum.concat([value, value])
+    }, [])
+    .join('')
+}
+
+function hexToHsl (hex) {
+  let hsl = rgbToHsl.apply(rgbToHsl, hexToRgb(hex))
+  return [hsl[0], parseInt(hsl[1], 10), parseInt(hsl[2], 10)]
+}
+
+function rgbToHsl (r, g, b) {
+  let d, h, l, max, min, s
+  r /= 255
+  g /= 255
+  b /= 255
+  max = Math.max(r, g, b)
+  min = Math.min(r, g, b)
+  h = 0
+  s = 0
+  l = (max + min) / 2
+  if (max === min) {
+    h = s = 0
+  } else {
+    d = max - min
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+    switch (max) {
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0)
+        break
+      case g:
+        h = (b - r) / d + 2
+        break
+      case b:
+        h = (r - g) / d + 4
+    }
+    h /= 6
+  }
+  h = Math.ceil(h * 360)
+  s = (Math.ceil(s * 100)) + '%'
+  l = (Math.ceil(l * 100)) + '%'
+  return [h, s, l]
 }

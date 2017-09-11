@@ -36,7 +36,7 @@ export default {
         {field: 'smoker'},
         {field: 'total_bill', aggregate: 'sum'}
       ],
-      theme: {name: 'Pink'},
+      theme: {name: 'Teal'},
       themes: [
         {name: 'Blue'},
         {name: 'Light Blue'},

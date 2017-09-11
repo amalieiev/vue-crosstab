@@ -22,6 +22,16 @@
                 @click="onCellClick($event, item)"
                 @touchstart="onCellClick($event, item)"
         ></rect>
+        <rect
+                v-for="item in partialData"
+                :height="item.height / 4"
+                :width="item.width * (item.value / maxValue)"
+                :x="item.x"
+                :y="item.y"
+                :fill="item.value ? Theme.valueToColor(item.value, maxValue) : 'none'"
+                @click="onCellClick($event, item)"
+                @touchstart="onCellClick($event, item)"
+        ></rect>
         <text
                 v-for="item in partialData"
                 :height="item.height"
@@ -190,6 +200,8 @@
         dragY: 0,
         parentNodeHeight: Infinity,
         parentNodeWidth: Infinity,
+        tmpMaxValue: -Infinity,
+        maxValue: -Infinity,
 
         // partial rendering
         nextPointX: 0,
@@ -241,7 +253,7 @@
         type: Object,
         default: () => {
           return {
-            name: 'Teal'
+            name: 'Steel Blue'
           }
         }
       },
@@ -510,6 +522,9 @@
         let result = []
         let aggregationInRows = this.rows.find(item => item.aggregate)
         let aggregatedData = aggregationInRows ? aggregateBy(this.transformedData, this.cols.concat(this.rows)) : aggregateBy(this.transformedData, this.rows.concat(this.cols))
+        let maxAggregation = aggregationInRows ? getMaxAggregation(this.transformedData, this.cols.concat(this.rows)) : getMaxAggregation(this.transformedData, this.rows.concat(this.cols))
+
+        this.maxValue = maxAggregation.value
 
         const isOdd = () => {
           if (isOdd.prev) {
@@ -529,7 +544,8 @@
             let value = aggregationInRows ? getValue(aggregatedData, col.concat(row)) : getValue(aggregatedData, row.concat(col))
 
             result.push({
-              text: value,
+              text: value && value.formattedAggregation,
+              value: value ? value.aggregation : 0,
               x: colIdx * this.cellWidth,
               y: rowIdx * this.cellHeight,
               isOddRow: isOddRow,
@@ -593,7 +609,7 @@
         return this.cellHeight / 2 < 14 ? this.cellHeight / 2 : 14
       },
       Theme () {
-        return Theme(this.theme.name)
+        return Theme({name: this.theme.name})
       },
       calculatedWidth () {
         let fullWidth = this.cellWidth * (this.rows.length + count(this.groupedCols) + (this.hasNothing || this.hasColsOnly ? 1 : 0))
@@ -666,8 +682,9 @@
 
       getRectStyle (item) {
         return {
-          fill: item.isOddRow ? this.Theme.bodyPrimary : this.Theme.bodySecondary,
-          stroke: this.Theme.bodyBorder
+          fill: this.Theme.bodyPrimary,
+          stroke: this.Theme.bodyBorder,
+          strokeOpacity: 0.5
         }
       },
 
@@ -687,7 +704,7 @@
             },
             rectStyle: {
               fill: this.Theme.palette[item.y] || this.Theme.palette[6],
-              stroke: this.Theme.headerBorder
+              stroke: this.Theme.palette[item.y + 1]
             }
           })
 
@@ -713,7 +730,7 @@
             },
             rectStyle: {
               fill: this.Theme.palette[item.x] || this.Theme.palette[6],
-              stroke: this.Theme.headerBorder
+              stroke: this.Theme.palette[item.x + 1]
             }
           })
 
@@ -778,6 +795,7 @@
         tmp.items = aggregateBy(data, items, levelIdx)
       } else {
         tmp.aggregation = data.length
+        tmp.formattedAggregation = data.length
       }
 
       return tmp
@@ -789,7 +807,8 @@
 
           return {
             name: key,
-            aggregation: formatter ? formatter(aggregation) : aggregation
+            aggregation: aggregation,
+            formattedAggregation: formatter ? formatter(aggregation) : aggregation
           }
         })
       }
@@ -799,7 +818,8 @@
 
         return [{
           name: items[levelIdx].aggregate,
-          aggregation: formatter ? formatter(aggregation) : aggregation
+          aggregation: aggregation,
+          formattedAggregation: formatter ? formatter(aggregation) : aggregation
         }]
       }
       return _.map(_.groupBy(data, getFieldLabel(items[levelIdx])), function (value, key) {
@@ -812,6 +832,39 @@
         }
 
         return tmp
+      })
+    }
+  }
+
+  function getMaxAggregation (data, items, levelIdx, result) {
+    if (result === undefined) result = {value: -Infinity}
+    if (levelIdx === undefined) {
+      levelIdx = 0
+
+      if (items.length) {
+        getMaxAggregation(data, items, levelIdx, result)
+      } else {
+        result.value = data.length
+      }
+
+      return result
+    } else {
+      if (items[levelIdx].aggregate && items[levelIdx].aggregate === 'count') {
+        return _.map(_.groupBy(data, getFieldLabel(items[levelIdx])), function (value, key) {
+          let aggregation = aggregators[items[levelIdx].aggregate](value, items[levelIdx].field)
+
+          if (result.value < aggregation) result.value = aggregation
+        })
+      }
+      if (items[levelIdx].aggregate) {
+        let aggregation = aggregators[items[levelIdx].aggregate](data, items[levelIdx].field)
+
+        if (result.value < aggregation) result.value = aggregation
+      }
+      return _.map(_.groupBy(data, getFieldLabel(items[levelIdx])), function (value, key) {
+        if (items.length > levelIdx + 1) {
+          getMaxAggregation(value, items, levelIdx + 1, result)
+        }
       })
     }
   }
@@ -945,7 +998,7 @@
   function getValue (aggregation, values) {
     let result = findWhere(aggregation, values)
 
-    return result && result.aggregation
+    return result
   }
 
   function findWhere (item, values, levelIdx) {
