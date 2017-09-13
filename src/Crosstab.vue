@@ -253,7 +253,7 @@
         type: Object,
         default: () => {
           return {
-            name: 'Steel Blue'
+            name: 'Teal'
           }
         }
       },
@@ -682,7 +682,7 @@
 
       getRectStyle (item) {
         return {
-          fill: this.Theme.bodyPrimary,
+          fill: item.isOddRow ? this.Theme.bodyPrimary : this.Theme.bodySecondary,
           stroke: this.Theme.bodyBorder,
           strokeOpacity: 0.5
         }

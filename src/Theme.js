@@ -3,6 +3,7 @@ const colors = {
   Indigo: '#283593',
   Pink: '#AD1457',
   Teal: '#00695C',
+  Vue: '#41b883',
   'Steel Blue': '#4682b4',
   'Light Blue': '#0277BD',
   Blue: '#1565C0'

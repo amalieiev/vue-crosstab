@@ -4,7 +4,6 @@
     :rows="rows"
     :cols="cols"
     :transform="transform"
-    height="250"
   ></crosstab>
 </template>
 
