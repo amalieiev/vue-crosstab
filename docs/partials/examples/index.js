@@ -11,6 +11,7 @@ import CustomTheme from './CustomTheme.vue'
 import ScrollReverse from './ScrollReverse.vue'
 import UIControls from './UIControls.vue'
 import LoadData from './LoadData.vue'
+import BarChart from './BarChart.vue'
 
 export {
   BasicCrosstab,
@@ -25,5 +26,6 @@ export {
   CustomTheme,
   ScrollReverse,
   UIControls,
-  LoadData
+  LoadData,
+  BarChart
 }

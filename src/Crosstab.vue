@@ -23,6 +23,7 @@
                 @touchstart="onCellClick($event, item)"
         ></rect>
         <rect
+                v-if="bars"
                 v-for="item in partialData"
                 :height="item.height / 4"
                 :width="item.width * (item.value / maxValue)"
@@ -231,6 +232,10 @@
       cols: {
         type: Array,
         default: () => []
+      },
+      bars: {
+        type: Boolean,
+        default: false
       },
       aggregator: {
         type: String,
